@@ -49,7 +49,7 @@ export default class Login extends Component {
                placeholder="password"
                />
                </div>
-               <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Signup</button>
+               <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Login</button>
                <hr />
                <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
             </form>

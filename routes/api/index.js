@@ -3,7 +3,7 @@ const userRoutes = require("./user");
 const db = require("../../models");
 const passport = require("../../config/passport");
 var isAuthenticated = require("../../config/middleware/isAuthenticated");
-
+// const jwt =require('jsonwebtoken');
 
 
 router.post("/login", passport.authenticate("local"), function (req, res) {
@@ -13,9 +13,9 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
-        db.User.create({username: req.body.username,
-        password: req.body.password,
-        email: req.body.email}).then(function(dbUser){
+        db.User.create({username: req.body.username.trim(),
+        password: req.body.password.trim(),
+        email: req.body.email.trim()}).then(function(dbUser){
             console.log(dbuser);
             res.redirect('/login')
         }).catch(function (err){
