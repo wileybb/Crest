@@ -49,6 +49,13 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
+router.post("/home/:id", function(req,res){
+    console.log(req.params.id);
+    console.log(req.body);
+    // db.Portfolio.create
+})
+
+
 // router.get("/user",  isAuthenticated, function(req, res) {
 //     //console.log(req.user);
 //     console.log("home get route")
