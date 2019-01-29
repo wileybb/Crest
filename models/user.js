@@ -23,7 +23,11 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    },
+    // amount: {
+    //   type: DataTypes.INTEGER,
+    //   default: 20000
+    // }
     // ,
     // admin: {
     //   type: DataTypes.BOOLEAN,

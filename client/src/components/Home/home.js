@@ -1,13 +1,42 @@
 import React, {Component} from "react";
 import API from "../../utils/API"
-import { Link, Redirect } from 'react-router-dom';
-
+import { Link, Router} from 'react-router-dom';
+import socketIOClient from "socket.io-client";
 
 export default class Home extends Component {
+    constructor() {
+        super();
+        // this.state = {
+        //   responseLiveStock: [],
+        //   endpoint: "https://ws-api.iextrading.com/1.0/tops"
+        // };
+      }
     state = {
         symbol:"",
-        response:{}
+        oneStockResponse:{},
+        responseLiveStock: [],
+        endpoint: "https://ws-api.iextrading.com/1.0/tops"
     }
+
+    componentDidMount(){
+        const{endpoint} = this.state;
+        const socket = socketIOClient(endpoint);
+        socket.on('connect', () => {
+            // Subscribe to topics (i.e. appl,fb,aig+)
+            //socket.on('message', message => console.log(message))
+            socket.emit('subscribe', 'snap,fb,aapl,googl')
+            // Unsubscribe from topics (i.e. aig+)
+            //socket.emit('unsubscribe', 'aig+')
+            //console.log(response);
+          })
+          socket.on('message', (message) => {
+              this.setState({responseLiveStock:message})
+              console.log(message)
+            })
+        //socket.on("FromAPI", data => this.setState({ response: data }));
+       }
+
+
     handleInputChange=(event) => {
         const{name, value} = event.target;
         this.setState({[name]: value});
@@ -27,14 +56,23 @@ export default class Home extends Component {
         API.singleStock(symbol)
       .then((res) => {
         //this.props.history.replace('/home');  
-        this.setState({response:res});
-        console.log(this.state.response)})
+        this.setState({oneStockResponse:res});
+        console.log(this.state.oneStockResponse)})
       .catch(err => console.log(err));
+    }
+    logoutUser = () => {
+        localStorage.removeItem("loggedIn");
+        API.signOutUser().then((res) => {
+            console.log(res);
+        }).catch(err => console.log(err));
     }
     
     render(){
+        const {responseLiveStock} = this.state;
         return (<div className="container">
-        
+                <hr></hr>
+                <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
+                <hr></hr>
                <h1 style={{textAlign:"center"}}>Welcome to home page</h1>
                <div className="row">
                <div className="col-md-4">
@@ -51,47 +89,64 @@ export default class Home extends Component {
             </form>
             </div>
             <div className="col-md-8">
-            {Object.keys(this.state.response).length === 0 ? (<p>No Symbol To display yet!!!</p>) : (
+            {Object.keys(this.state.oneStockResponse).length === 0 ? (<p>No Symbol To display yet!!!</p>) : (
             <tbody>
+
             <tr>
                 <td>Stock</td><br></br>
-                <td>{this.state.symbol}</td>
+                <td>{this.state.oneStockResponse.data.quote.symbol}</td>
             </tr>
             <tr>
                 <td>Close</td><br></br>
-                <td>{this.state.response.data.quote.close}</td>
+                <td>{this.state.oneStockResponse.data.quote.close}</td>
             </tr>
             <tr>
                 <td>Current $</td><br></br>
-                <td>{this.state.response.data.quote.latestPrice}</td>
+                <td>{this.state.oneStockResponse.data.quote.latestPrice}</td>
             </tr>
             <tr>
                 <td>Change</td><br></br>
-                <td>{this.state.response.data.quote.change}</td>
+                <td>{this.state.oneStockResponse.data.quote.change}</td>
             </tr>
             <tr>
                 <td>Change %</td><br></br>
-                <td>{this.state.response.data.quote.changePercent}</td>
+                <td>{this.state.oneStockResponse.data.quote.changePercent}</td>
             </tr>
             <tr>
                 <td>High</td><br></br>
-                <td>{this.state.response.data.quote.high}</td>
+                <td>{this.state.oneStockResponse.data.quote.high}</td>
             </tr>
             <tr>
                 <td>Low</td><br></br>
-                <td>{this.state.response.data.quote.low}</td>
+                <td>{this.state.oneStockResponse.data.quote.low}</td>
             </tr>
             <tr>
                 <td>52 Wk High</td><br></br>
-                <td>{this.state.response.data.quote.week52High}</td>
+                <td>{this.state.oneStockResponse.data.quote.week52High}</td>
             </tr>
             <tr>
                 <td>52 Wk Low</td><br></br>
-                <td>{this.state.response.data.quote.week52Low}</td>
+                <td>{this.state.oneStockResponse.data.quote.week52Low}</td>
             </tr>
             </tbody>
             )}
             </div>
+            </div>
+
+        {/* Live stock price update div */}
+        <div className="row">
+            <div style={{ textAlign: "center" }}>
+            {responseLiveStock
+               ? (<div>
+              {/* {response}  key={name}*/}
+              {/* Object.values(this.state.response).map({response} => {<div > */}
+                {/* this.state.response.map((res) => { */}
+                <div>Live Stock Price available in console log</div>
+                {/* }) */}
+              {/* </div>})  */}
+            </div>)
+             : <div>Loading...</div>}
+      </div>
             </div>
         </div>)}  //Render End
 }

@@ -1,12 +1,18 @@
 import React, {Component} from "react";
 import API from "../../utils/API"
-import { Link, Redirect } from 'react-router-dom';
+import {Router, Link, Redirect} from 'react-router-dom';
+import PropTypes from "prop-types";
+
+  
 
 export default class Login extends Component {
     state = {
         email:"",
         password:""
     }
+    static contextTypes = {
+        router: PropTypes.object
+    };
     handleInputChange=(event) => {
         const{name, value} = event.target;
         this.setState({[name]: value});
@@ -25,11 +31,13 @@ export default class Login extends Component {
     loginUser = (userLogin) => {
         API.loginUser(userLogin)
       .then((res) => {
-        this.props.history.replace('/home');  
+        const storeUser = localStorage.setItem("loggedIn","true");
+        //const storeUser = localStorage.removeItem("loggedIn") do this when logout
+        this.context.router.history.push('/home');  
         console.log(res)})
       .catch(err => console.log(err));
     }
-    
+
     render(){
         return (<div className="container">
             <form className="form">
@@ -53,6 +61,7 @@ export default class Login extends Component {
                <hr />
                <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
             </form>
+
         </div>)}  //Render End
 
 }
