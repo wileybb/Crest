@@ -12,6 +12,7 @@ export default class Home extends Component {
         // };
       }
     state = {
+        
         symbol:"",
         quantity:"",
         oneStockResponse:{},
@@ -57,6 +58,7 @@ export default class Home extends Component {
         // totalPrice = (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
 
         const purchaseData = {
+
             quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,

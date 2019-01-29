@@ -27,15 +27,15 @@ module.exports = function (sequelize, DataTypes) {
 
     });
   
-    Portfolio.associate = function (models) {
-      // Associating Portfolio with Users
-      Portfolio.belongsTo(models.User, {
-        foreignKey: {
-          allowNull: false
-        }
-      });
+    // Portfolio.associate = function (models) {
+    //   // Associating Portfolio with Users
+    //   Portfolio.belongsTo(models.User, {
+    //     foreignKey: {
+    //       allowNull: true
+    //     }
+    //   });
 
-    };
+    // };
   
     return Portfolio;
   };
