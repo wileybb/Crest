@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import API from "../../utils/API"
-import { Link } from 'react-router-dom';
+import {Router, Link } from 'react-router-dom';
 
 class Signup extends Component {
     state = {
@@ -27,7 +27,10 @@ class Signup extends Component {
       }
     createUser = (userSignup) => {
         API.createUser(userSignup)
-      .then(res => console.log(res))
+      .then(res => {
+        this.props.history.push("/login")
+        //this.context.router.history.push('/login');
+          console.log(res)})
       .catch(err => console.log(err));
     }
   render(){

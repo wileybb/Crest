@@ -2,13 +2,28 @@ const router = require("express").Router();
 const userRoutes = require("./user");
 const db = require("../../models");
 const passport = require("../../config/passport");
+var url = require("url")
 var isAuthenticated = require("../../config/middleware/isAuthenticated");
 // const jwt =require('jsonwebtoken');
 
-
+//passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
-    res.redirect("/home")
+    console.log("Login entered")
+    res.status(200).send('User logged in');
+    // if(req.user){
+    //res.redirect(url.format({pathname:"/user"}));
+   //res.json("/home");
+//    res.json(req.user.dataValues.username).send("User Logged in");
+    // console.log(req.user.dataValues.username)
+    // }
+    //res.redirect("/home")
+    // req.login(req.user, function(err) {
+    //     if (err) { return next(err); }
+    //     return res.redirect('/home');
+    //   });
   });
+
+// router.post("/login", passport.authenticate("local", {successRedirect:"/home", failureRedirect:"/login", failureFlash: true}))
 
 router.post("/signup", function(req,res){
     console.log(req.body);
@@ -16,8 +31,9 @@ router.post("/signup", function(req,res){
         db.User.create({username: req.body.username.trim(),
         password: req.body.password.trim(),
         email: req.body.email.trim()}).then(function(dbUser){
-            console.log(dbuser);
-            res.redirect('/login')
+            console.log("Uesr Created");
+            res.status(200).send("Signup Successful");
+            //res.redirect('/login')
         }).catch(function (err){
             res.json(err);
         })
@@ -25,6 +41,35 @@ router.post("/signup", function(req,res){
         res.redirect('/signup');
     }
 });
+
+router.get("/logout", function(req,res){
+    req.logout();
+    console.log("logging out");
+    //res.redirect("/login");
+    res.status(200).send('User Signed out');
+})
+
+// router.get("/user",  isAuthenticated, function(req, res) {
+//     //console.log(req.user);
+//     console.log("home get route")
+//     db.User.findOne({ where: { email: req.user.email } }).then(function(user) {
+//       // console.log(user.admin);
+//       console.log(user);
+//       res.json(user);
+//     //   if(user.admin){
+//     //     console.log("inside table")
+//     //     res.render("home", {
+//     //       user: req.user.name
+//     //     });
+//     //   }else {
+//     //     res.redirect("/employee")
+//     //   }
+//     });
+//   });
+
+// router.get("/user/home", isAuthenticated, function(req,res){
+//     res.redirect("/home")
+// })
 
 // app.post("/api/users", function (req, res) {
 //     console.log(req.body);
