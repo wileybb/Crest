@@ -56,65 +56,6 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
-router.post("/home/:id", function(req,res){
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log(" post buy route hit");
-    // db.Portfolio.create
-    // db.Portfolio.findOne({}).then(function(dbUser){
-    let newCashBalance = 0
-    let quantityNew = parseInt(req.body.quantity.trim());
-    let symbolNew = req.body.symbol.trim();
-    let quantityOld = 0
-    
-
-    
-    // })
-    db.Portfolio.findAll({
-        limit: 1,
-            where: {
-                symbol: symbolNew
-            },
-            order: [[ 'createdAt', 'DESC' ]]
-    }).then(function(found){
-        console.log(found[0].dataValues.quantity);
-        console.log("above is the found by symbol result_-___---_-")
-        quantityOld = parseInt((found[0].dataValues.quantity));
-    })
-
-    db.Portfolio.findAll({
-        limit: 1,
-        // where: {
-        //     id: 1
-        // },
-        order: [ [ 'createdAt', 'DESC' ]]
-      }).then(function(found){
-        // console.log(found)
-        // console.log("above is the found portfolio entry")
-        let currentCash = found[0].dataValues.cash;
-        quantityNew = quantityNew + quantityOld;
-        newCashBalance = currentCash - req.body.purchaseTotal;
-        console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
-
-        db.Portfolio.create({quantity: quantityNew, symbol: symbolNew, cash: newCashBalance});
-    })
-
-    db.Transaction.create({quantity: req.body.quantity.trim(),
-        symbol: req.body.symbol.trim(),
-        purchasePrice: req.body.purchasePrice,
-        purchaseTotal: req.body.purchaseTotal
-    }).then(function(dbTransaction){
-            res.status(200).send("Purchase Successful");
-            
-        }).catch(function (err){
-            res.json(err);
-        })
-    
-})
-
-
-
-
 // router.get("/user",  isAuthenticated, function(req, res) {
 //     //console.log(req.user);
 //     console.log("home get route")
