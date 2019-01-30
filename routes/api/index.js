@@ -49,24 +49,6 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
-router.post("/home/:id", function(req,res){
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log(" post buy route hit");
-    // db.Portfolio.create
-    db.Portfolio.create({quantity: req.body.quantity.trim(),
-        symbol: req.body.symbol.trim(),
-        purchasePrice: req.body.purchasePrice}).then(function(dbUser){
-            // console.log("Uesr Created");
-            res.status(200).send("Purchase Successful");
-            //res.redirect('/login')
-        }).catch(function (err){
-            res.json(err);
-        })
-    
-})
-
-
 // router.get("/user",  isAuthenticated, function(req, res) {
 //     //console.log(req.user);
 //     console.log("home get route")
