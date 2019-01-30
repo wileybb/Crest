@@ -12,18 +12,22 @@ module.exports = function (sequelize, DataTypes) {
 
       quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
+        defaultValue: 0
       },
 
-      purchasePrice: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // purchasePrice: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
 
       cash: {
           type: DataTypes.INTEGER,
-          defaultValue: 100
-      }
+          defaultValue: 20000
+      },
+      // purchaseTotal: {
+      //     type: DataTypes.INTEGER,  
+      // }
 
     });
   

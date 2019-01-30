@@ -9,7 +9,9 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-    res.status(200).send('User logged in');
+
+    res.status(200).send({"id":req.user.dataValues.id});
+
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
    //res.json("/home");
@@ -28,9 +30,14 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
+
+
         db.User.create({username: req.body.username.trim(),
         password: req.body.password.trim(),
         email: req.body.email.trim()}).then(function(dbUser){
+
+            db.Portfolio.create({symbol: "initial"});
+
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
@@ -54,17 +61,58 @@ router.post("/home/:id", function(req,res){
     console.log(req.body);
     console.log(" post buy route hit");
     // db.Portfolio.create
-    db.Portfolio.create({quantity: req.body.quantity.trim(),
+    // db.Portfolio.findOne({}).then(function(dbUser){
+    let newCashBalance = 0
+    let quantityNew = parseInt(req.body.quantity.trim());
+    let symbolNew = req.body.symbol.trim();
+    let quantityOld = 0
+    
+
+    
+    // })
+    db.Portfolio.findAll({
+        limit: 1,
+            where: {
+                symbol: symbolNew
+            },
+            order: [[ 'createdAt', 'DESC' ]]
+    }).then(function(found){
+        console.log(found[0].dataValues.quantity);
+        console.log("above is the found by symbol result_-___---_-")
+        quantityOld = parseInt((found[0].dataValues.quantity));
+    })
+
+    db.Portfolio.findAll({
+        limit: 1,
+        // where: {
+        //     id: 1
+        // },
+        order: [ [ 'createdAt', 'DESC' ]]
+      }).then(function(found){
+        // console.log(found)
+        // console.log("above is the found portfolio entry")
+        let currentCash = found[0].dataValues.cash;
+        quantityNew = quantityNew + quantityOld;
+        newCashBalance = currentCash - req.body.purchaseTotal;
+        console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+
+        db.Portfolio.create({quantity: quantityNew, symbol: symbolNew, cash: newCashBalance});
+    })
+
+    db.Transaction.create({quantity: req.body.quantity.trim(),
         symbol: req.body.symbol.trim(),
-        purchasePrice: req.body.purchasePrice}).then(function(dbUser){
-            // console.log("Uesr Created");
+        purchasePrice: req.body.purchasePrice,
+        purchaseTotal: req.body.purchaseTotal
+    }).then(function(dbTransaction){
             res.status(200).send("Purchase Successful");
-            //res.redirect('/login')
+            
         }).catch(function (err){
             res.json(err);
         })
     
 })
+
+
 
 
 // router.get("/user",  isAuthenticated, function(req, res) {

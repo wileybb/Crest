@@ -55,13 +55,14 @@ export default class Home extends Component {
     handleBuySubmit = (event) => {
         event.preventDefault();
 
-        // totalPrice = (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+        // let totalPrice = ()
 
         const purchaseData = {
 
             quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+            purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
         }
         console.log(purchaseData);
         this.addBuy(purchaseData);
@@ -72,6 +73,12 @@ export default class Home extends Component {
         .then(res => { console.log(res)})
         .catch(err => console.log(err))
     }
+    
+    // checkCash = (userId) => {
+    //     API.getCashValue(userId)
+    //     .then(res => {console.log(res)})
+    //     .catch(err => console.log(err))
+    // }
 
     validateForm() {
         return this.state.symbol.length > 0;
