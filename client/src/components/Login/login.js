@@ -33,7 +33,8 @@ export default class Login extends Component {
       .then((res) => {
         const storeUser = localStorage.setItem("loggedIn","true");
         //const storeUser = localStorage.removeItem("loggedIn") do this when logout
-        this.context.router.history.push('/home');  
+        this.context.router.history.push('/home');
+        console.log(this.state.userid)  
         console.log(res)})
       .catch(err => console.log(err));
     }
