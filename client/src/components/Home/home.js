@@ -12,29 +12,31 @@ export default class Home extends Component {
         // };
       }
     state = {
+        
         symbol:"",
+        quantity:"",
         oneStockResponse:{},
         responseLiveStock: [],
         endpoint: "https://ws-api.iextrading.com/1.0/tops"
     }
 
-    componentDidMount(){
-        const{endpoint} = this.state;
-        const socket = socketIOClient(endpoint);
-        socket.on('connect', () => {
-            // Subscribe to topics (i.e. appl,fb,aig+)
-            //socket.on('message', message => console.log(message))
-            socket.emit('subscribe', 'snap,fb,aapl,googl')
-            // Unsubscribe from topics (i.e. aig+)
-            //socket.emit('unsubscribe', 'aig+')
-            //console.log(response);
-          })
-          socket.on('message', (message) => {
-              this.setState({responseLiveStock:message})
-              console.log(message)
-            })
-        //socket.on("FromAPI", data => this.setState({ response: data }));
-       }
+    // componentDidMount(){
+    //     const{endpoint} = this.state;
+    //     const socket = socketIOClient(endpoint);
+    //     socket.on('connect', () => {
+    //         // Subscribe to topics (i.e. appl,fb,aig+)
+    //         //socket.on('message', message => console.log(message))
+    //         socket.emit('subscribe', 'snap,fb,aapl,googl')
+    //         // Unsubscribe from topics (i.e. aig+)
+    //         //socket.emit('unsubscribe', 'aig+')
+    //         //console.log(response);
+    //       })
+    //       socket.on('message', (message) => {
+    //           this.setState({responseLiveStock:message})
+    //           console.log(message)
+    //         })
+    //     //socket.on("FromAPI", data => this.setState({ response: data }));
+    //    }
 
 
     handleInputChange=(event) => {
@@ -49,6 +51,28 @@ export default class Home extends Component {
         this.setState({symbol:this.state.symbol});
         this.stockSymbol(this.state.symbol);
     }
+
+    handleBuySubmit = (event) => {
+        event.preventDefault();
+
+        // totalPrice = (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+
+        const purchaseData = {
+
+            quantity: this.state.quantity,
+            symbol: this.state.symbol,
+            purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+        }
+        console.log(purchaseData);
+        this.addBuy(purchaseData);
+    }
+
+    addBuy = (userBuy) => {
+        API.createPurchase(userBuy)
+        .then(res => { console.log(res)})
+        .catch(err => console.log(err))
+    }
+
     validateForm() {
         return this.state.symbol.length > 0;
       }
@@ -68,7 +92,7 @@ export default class Home extends Component {
     }
     
     render(){
-        const {responseLiveStock} = this.state;
+        // const {responseLiveStock} = this.state;
         return (<div className="container">
                 <hr></hr>
                 <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
@@ -135,18 +159,33 @@ export default class Home extends Component {
 
         {/* Live stock price update div */}
         <div className="row">
-            <div style={{ textAlign: "center" }}>
-            {responseLiveStock
-               ? (<div>
+            <div className="col-md-4">
+               <form className="form">
+                <div className="form-group">
+                {/* <label htmlFor="email">Email:</label> */}
+                <input type="text"
+                onChange={this.handleInputChange}
+                value={this.state.quantity}
+                name="quantity"
+               placeholder="How many shares?"/>
+               </div>
+               <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
+            </form>
+            </div>
+        </div>
+        {/* <div className="row"> */}
+            {/* <div style={{ textAlign: "center" }}> */}
+            {/* {responseLiveStock */}
+               {/* ? (<div> */}
               {/* {response}  key={name}*/}
               {/* Object.values(this.state.response).map({response} => {<div > */}
                 {/* this.state.response.map((res) => { */}
-                <div>Live Stock Price available in console log</div>
+                {/* <div>Live Stock Price available in console log</div> */}
                 {/* }) */}
               {/* </div>})  */}
-            </div>)
-             : <div>Loading...</div>}
-      </div>
-            </div>
+            {/* </div>) */}
+             {/* : <div>Loading...</div>} */}
+      {/* </div> */}
+            {/* // </div> */}
         </div>)}  //Render End
 }
