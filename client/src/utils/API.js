@@ -20,5 +20,8 @@ export default {
 
   createPurchase: function(userData){
     return axios.post("/user/home/:id", userData);
+  },
+  getCashValue: function(userData){
+    return axios.get("user/home/:id", userData);
   }
 };

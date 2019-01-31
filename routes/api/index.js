@@ -56,6 +56,23 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
+// route to check Wallet Value
+router.get("/home/:id", function(req,res){
+    db.Portfolio.findAll({
+        limit: 1,
+            // where: {
+            //     id: 1
+            // },
+            order: [[ 'createdAt', 'DESC']]
+    }).then(function(found){
+        console.log("GET WALLET VALUE ROUTE HIT!********************");
+        console.log(found[0].dataValues.cash);
+        let cashValue = found[0].dataValues.cash;
+        return(res);
+        return(cashValue);
+    })
+})
+
 router.post("/home/:id", function(req,res){
     console.log(req.params.id);
     console.log(req.body);
