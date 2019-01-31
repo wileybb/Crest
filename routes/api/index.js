@@ -4,6 +4,8 @@ const db = require("../../models");
 const passport = require("../../config/passport");
 var url = require("url")
 var isAuthenticated = require("../../config/middleware/isAuthenticated");
+//const socketIOClient =require("socket.io-client");
+//var socket = require('socket.io-client')('https://ws-api.iextrading.com/1.0/tops');
 // const jwt =require('jsonwebtoken');
 
 //passport.authenticate("local")
@@ -41,6 +43,28 @@ router.post("/signup", function(req,res){
         res.redirect('/signup');
     }
 });
+
+
+router.get("/", function(req,res){
+    console.log("get /user route hit");
+//         // Subscribe to topics (i.e. appl,fb,aig+)
+     
+        //  socket.on('connect', () => {
+        //     socket.emit('subscribe', 'googl,appl,fb');
+        //     socket.on('message', (message) => {
+        //         console.log(message);
+        //        })
+        //  })
+//         socket.emit('subscribe', 'googl,appl,fb')
+//         // Unsubscribe from topics (i.e. aig+)
+//         //socket.emit('unsubscribe', 'aig+')
+//       })
+//       socket.on('message', (message) => {
+//         console.log(message);})
+ //      })
+})
+
+
 
 router.get("/logout", function(req,res){
     req.logout();
