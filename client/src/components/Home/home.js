@@ -3,16 +3,12 @@ import API from "../../utils/API"
 import { Link, Router} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
+var stockArr =[];
 export default class Home extends Component {
-    constructor() {
-        super();
-        // this.state = {
-        //   responseLiveStock: [],
-        //   endpoint: "https://ws-api.iextrading.com/1.0/tops"
-        // };
-      }
+
     state = {
-        symbol:"",
+        stockResponse:[],
+        stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
         oneStockResponse:{},
         responseLiveStock: [],
         endpoint: "https://ws-api.iextrading.com/1.0/tops"
@@ -22,18 +18,18 @@ export default class Home extends Component {
         const{endpoint} = this.state;
         const socket = socketIOClient(endpoint);
         socket.on('connect', () => {
-            // Subscribe to topics (i.e. appl,fb,aig+)
-            //socket.on('message', message => console.log(message))
-            socket.emit('subscribe', 'snap,fb,aapl,googl')
+            // Subscribe to topics (i.e. appl,fb)
+            socket.emit('subscribe', this.state.stock.join(","))
             // Unsubscribe from topics (i.e. aig+)
             //socket.emit('unsubscribe', 'aig+')
-            //console.log(response);
+            socket.on('message', (message) => {
+              //this.state.stockResponse.empty();
+              let livesymbol = JSON.parse(message)
+              stockArr.push(livesymbol);
+              this.setState({stockResponse:stockArr});
+              // stockArr.length = 0;
+              })
           })
-          socket.on('message', (message) => {
-              this.setState({responseLiveStock:message})
-              console.log(message)
-            })
-        //socket.on("FromAPI", data => this.setState({ response: data }));
        }
 
 
@@ -134,19 +130,28 @@ export default class Home extends Component {
             </div>
 
         {/* Live stock price update div */}
-        <div className="row">
-            <div style={{ textAlign: "center" }}>
-            {responseLiveStock
-               ? (<div>
-              {/* {response}  key={name}*/}
-              {/* Object.values(this.state.response).map({response} => {<div > */}
-                {/* this.state.response.map((res) => { */}
-                <div>Live Stock Price available in console log</div>
-                {/* }) */}
-              {/* </div>})  */}
-            </div>)
-             : <div>Loading...</div>}
-      </div>
+        <div style={{textAling:"center"}} className="container">
+            <div style={{ textAlign: "center" }} className="row">
+            <div className="col-md-4">
+            {this.state.stockResponse
+               ? (
+            <div className="list-overflow-container">
+            <ul className="list-group">
+                {this.state.stockResponse.map((stock) => {
+                    return (
+                        <li key={stock.symbol} className="list-group-item">
+                            <h3><span>{stock.symbol}</span></h3>
+                            <p><span>{stock.lastSalePrice}</span></p>
+                        </li>
+                    )})}
+            </ul>
             </div>
+               )
+             : <div>Loading...</div>}
+        </div>
+        </div>
+        </div>
+
+
         </div>)}  //Render End
 }
