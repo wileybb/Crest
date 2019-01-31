@@ -27,7 +27,7 @@ export default class Home extends Component {
               let livesymbol = JSON.parse(message)
               stockArr.push(livesymbol);
               this.setState({stockResponse:stockArr});
-              // stockArr.length = 0;
+              stockArr.length = 0;
               })
           })
        }
