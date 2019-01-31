@@ -11,7 +11,9 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-    res.status(200).send('User logged in');
+
+    res.status(200).send({"id":req.user.dataValues.id});
+
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
    //res.json("/home");
@@ -30,9 +32,14 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
+
+
         db.User.create({username: req.body.username.trim(),
         password: req.body.password.trim(),
         email: req.body.email.trim()}).then(function(dbUser){
+
+            db.Portfolio.create({symbol: "initial"});
+
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
