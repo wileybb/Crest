@@ -14,6 +14,31 @@ export default class Home extends Component {
         endpoint: "https://ws-api.iextrading.com/1.0/tops"
     }
 
+
+    // componentDidMount(){
+    //     const{endpoint} = this.state;
+    //     const socket = socketIOClient(endpoint);
+    //     socket.on('connect', () => {
+    //         // Subscribe to topics (i.e. appl,fb,aig+)
+    //         //socket.on('message', message => console.log(message))
+    //         socket.emit('subscribe', 'snap,fb,aapl,googl')
+    //         // Unsubscribe from topics (i.e. aig+)
+    //         //socket.emit('unsubscribe', 'aig+')
+    //         //console.log(response);
+    //       })
+    //       socket.on('message', (message) => {
+    //           this.setState({responseLiveStock:message})
+    //           console.log(message)
+    //         })
+    //     //socket.on("FromAPI", data => this.setState({ response: data }));
+    //    }
+    walletCheck=() => {
+        // const userData = {
+        //     userId : userId
+        // }
+        this.checkCash()
+    }
+
     componentDidMount(){
         const{endpoint} = this.state;
         const socket = socketIOClient(endpoint);
@@ -33,6 +58,7 @@ export default class Home extends Component {
        }
 
 
+
     handleInputChange=(event) => {
         const{name, value} = event.target;
         this.setState({[name]: value});
@@ -45,6 +71,39 @@ export default class Home extends Component {
         this.setState({symbol:this.state.symbol});
         this.stockSymbol(this.state.symbol);
     }
+
+
+    handleBuySubmit = (event) => {
+        event.preventDefault();
+
+        // let totalPrice = ()
+
+        const purchaseData = {
+
+            quantity: this.state.quantity,
+            symbol: this.state.symbol,
+            purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+            purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+        }
+        console.log(purchaseData);
+        this.addBuy(purchaseData);
+    }
+
+    addBuy = (userBuy) => {
+        API.createPurchase(userBuy)
+        .then(res => { console.log(res)})
+        .catch(err => console.log(err))
+    }
+    
+    checkCash = () => {
+        API.getCashValue()
+        .then(res => {
+            return(res);
+        })
+        .catch(err => console.log(err))
+    }
+
+
     validateForm() {
         return this.state.symbol.length > 0;
       }
@@ -133,6 +192,35 @@ export default class Home extends Component {
         <div style={{textAling:"center"}} className="container">
             <div style={{ textAlign: "center" }} className="row">
             <div className="col-md-4">
+
+               <form className="form">
+                    <div className="form-group">
+                        <hr></hr>
+                        {/* <label htmlFor="email">Email:</label> */}
+                        <input type="text"
+                        onChange={this.handleInputChange}
+                        value={this.state.quantity}
+                        name="quantity"
+                        placeholder="How many shares to buy?"/>
+                    </div>
+                    <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
+                </form>
+                <hr></hr>
+                <form className="form">
+                    <div className="form-group">
+                        <input type="text"
+                        onchange={this.handleInputChange}
+                        value={this.state.quantity}
+                        name="quantity"
+                        placeholder="How many shares to sell?"/>
+                    </div>
+                    <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
+                </form>
+                <hr></hr>
+                <div>
+                    <h3>You have x{this.walletCheck} amount of dollars</h3>
+                </div>
+
             {this.state.stockResponse
                ? (
             <div className="list-overflow-container">
@@ -145,6 +233,7 @@ export default class Home extends Component {
                         </li>
                     )})}
             </ul>
+
             </div>
                )
              : <div>Loading...</div>}
