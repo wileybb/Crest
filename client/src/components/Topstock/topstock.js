@@ -44,26 +44,27 @@ export default class Topstock extends Component {
       console.log(this.state.stockResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
-            <div style={{ textAlign: "center" }}>
+        <div style={{textAling:"center"}} className="container">
+        <div style={{ textAlign: "center" }} className="row">
+        <div className="col-md-4">
         {this.state.stockResponse
-          ? (<div>
-              {/* {response}  key={name}*/}
-              {/* Object.values(this.state.response).map({response} => {<div > */}
-                
-                <div>Live Stock Price available in console log</div>
-                <hr></hr>
-                <ul>
-                  {this.state.stockResponse.map((res) =>{
-                    return(
-                    <li key={res.symbol}>
-                      <span>{res.symbol} : {res.lastSalePrice}</span>
-                    </li>
-                    )
-                  })}
-                </ul>
-            </div>)
-          : <div>Loading...</div>}
-      </div>
-        );
+           ? (
+        <div className="list-overflow-container">
+          <ul className="list-group">
+              {this.state.stockResponse.map((stock) => {
+                  return (
+                      <li key={stock.symbol} className="list-group-item">
+                          <h3><span>{stock.symbol}</span></h3>
+                          <p><span>{stock.lastSalePrice}</span></p>
+                      </li>
+                  )})}
+          </ul>
+        </div>
+           )
+         : <div>Loading...</div>}
+        </div>
+        </div>
+        </div>
+           );   //map return function end
     }
 }
