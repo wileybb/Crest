@@ -96,7 +96,7 @@ export default class Topstock extends Component {
                        return (
                            <li key={i} className="list-group-item">
                                <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
-                               <p><span>{this.state.stockResponse[key].quote.latestPrice}</span></p>
+                               <p><span>{this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></p>
                            </li>
                        )})}
                </ul>
