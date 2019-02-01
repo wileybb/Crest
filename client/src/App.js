@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js"
 import Home from "./components/Home/home.js"
+import SampleChart from "./components/Charts/exampleChart.js"
 import Jumbotron from "./components/Jumbotron";
 import Topstock from "./components/Topstock/topstock.js"
 // import logo from "./logo.svg";
@@ -23,30 +24,34 @@ class App extends Component {
       //   </p>
       // </div>
       <Router>
-      <div>
-         <Jumbotron />
-         <Switch>
-           <Route exact path="/signup" component={Signup} />
-           <Route exact path="/login" component={Login} />
-           <Route exact path="/" component={Topstock} />
-           {/* <Route exact path="/home" component={Home} /> */}
-           <Route
+        <div>
+          <Jumbotron />
+          <Switch>
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/" component={Topstock} />
+            {/* <Route exact path="/home" component={Home} /> */}
+            <Route
               path="/home"
               render={() =>
                 isLoggedIn ? (
                   <Route component={Home} />
                 ) : (
-                  <Route component={Login} />
-                )
+                    <Route component={Login} />
+                  )
               }
             />
-           {/* <Route exact path="/login" component={Login} /> */}
-           {/* <Route exact path="/books" component={Books} />
+            {/* <Route exact path="/login" component={Login} /> */}
+            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
            <Route component={NoMatch} /> */}
-         </Switch>
-       </div>
-     </Router>
+            <Route
+              path="/charts"
+              render={() => isLoggedIn ? (<Route component={SampleChart} />) : (<Route component={Login} />)}
+            />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
