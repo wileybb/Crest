@@ -17,4 +17,7 @@ export default {
   singleStock: function(symbol){
     return axios.get(`https://api.iextrading.com/1.0/stock/${symbol}/batch?types=quote,news,chart&range=1m&last=10`)
   },
+  alphaVantageCall: function(){
+    return axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=SK4M0EMARF3A00VS`)
+  },
 };
