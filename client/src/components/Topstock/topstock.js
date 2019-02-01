@@ -28,7 +28,11 @@ export default class Topstock extends Component {
               let livesymbol = JSON.parse(message)
               stockArr.push(livesymbol);
               this.setState({stockResponse:stockArr});
+<<<<<<< HEAD
                stockArr.length = 0;
+=======
+              stockArr.length = 0;
+>>>>>>> 26e5cd8b4053d74196da3f948a7f4d264223de55
                 //console.log((JSON.parse(message)));
               })
           })
