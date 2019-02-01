@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "berkeley",
+    "password": null,
     "database": "wavetrendingdb",
     "host": "localhost",
     "dialect": "mysql"
