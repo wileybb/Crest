@@ -54,21 +54,6 @@ router.post("/signup", function(req,res){
 
 router.get("/", function(req,res){
     console.log("get /user route hit");
-//         // Subscribe to topics (i.e. appl,fb,aig+)
-     
-        //  socket.on('connect', () => {
-        //     socket.emit('subscribe', 'googl,appl,fb');
-        //     socket.on('message', (message) => {
-        //         console.log(message);
-        //        })
-        //  })
-//         socket.emit('subscribe', 'googl,appl,fb')
-//         // Unsubscribe from topics (i.e. aig+)
-//         //socket.emit('unsubscribe', 'aig+')
-//       })
-//       socket.on('message', (message) => {
-//         console.log(message);})
- //      })
 })
 
 
