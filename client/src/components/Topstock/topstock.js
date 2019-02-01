@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import socketIOClient from "socket.io-client";
 // import Conditiontable from "./condition.js"
+import Jumbotron from "../Jumbotron/index";
+
 
 //stock: ["spy","dai","ndaq","iwm"]
 var stockArr =[];
@@ -44,7 +46,8 @@ export default class Topstock extends Component {
       console.log(this.state.stockResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
-        <div style={{textAling:"center"}} className="container">
+        <div style={{textAlign:"center"}} className="container">
+        <Jumbotron />
         <div style={{ textAlign: "center" }} className="row">
         <div className="col-md-4">
         {this.state.stockResponse

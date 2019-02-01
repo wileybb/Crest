@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import API from "../../utils/API"
 import {Router, Link, Redirect} from 'react-router-dom';
 import PropTypes from "prop-types";
+import Jumbotron from "../Jumbotron/index";
 
   
 
@@ -41,6 +42,7 @@ export default class Login extends Component {
 
     render(){
         return (<div className="container">
+            <Jumbotron />
             <form className="form">
                <div className="form-group">
                {/* <label htmlFor="email">Email:</label> */}
