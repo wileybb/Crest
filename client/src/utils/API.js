@@ -20,6 +20,12 @@ export default {
   batchStock: function(symbols){
     return axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote,news,chart&range=1m&last=5`)
   },
+  iexMarketNews: function(){
+    return axios.get(`https://api.iextrading.com/1.0/stock/market/news`);
+  },
+  iexStockNews: function(stockStmbol){
+    return axios.get(`https://api.iextrading.com/1.0/stock/${stockStmbol}/news`);
+  },
   createPurchase: function(userData){
     return axios.post("/user/home/:id", userData);
   },

@@ -9,6 +9,8 @@ import { DH_NOT_SUITABLE_GENERATOR } from "constants";
 export default class Topstock extends Component {
     state = {
           stockResponse:{},
+          newsResponse:[],
+          oneStockNews:[],
           stock: ["aapl", "googl", "fb"],
           endpoint: "https://ws-api.iextrading.com/1.0/tops",
         }
@@ -35,53 +37,143 @@ export default class Topstock extends Component {
             //     console.log(res)
             // });   
         this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
+        // this.newsIntervalId = setInterval(this.autoNewsData.bind(this), 60000);
+        this.autoNewsData();
       }
       componentWillUnmount(){
         clearInterval(this.intervalId);
+        // clearInterval(this.newsIntervalId);
       }
        autoStockData = () => {
         let symbols = this.state.stock.join(",") 
         API.batchStock(symbols).then((res) => {
             console.log("res.data")
-            //console.log(res.data);
-            // let obj = res.data
-            // //const stockArr = []
-            // for(const k in obj){
-            //     let dataValue = obj[k];
-            //     console.log(dataValue);
-            //     stockArr.push(dataValue);
-            // }
             this.setState({stockResponse:res.data});
            })
+        }
+        autoNewsData = () => {
+            API.iexMarketNews().then((res) => {
+                this.setState({newsResponse:res.data})
+            })
+        }
+
+        handleInputChange=(event) => {
+            const{name, value} = event.target;
+            this.setState({[name]: value});
+        }
+        handleFormSubmit = (event) => {
+            event.preventDefault();
+            // const stockTic = {
+            //     symbol: this.state.symbol,
+            // }
+            this.setState({symbol:this.state.symbol});
+            console.log(this.state.symbol);
+            API.iexStockNews(this.state.symbol).then((res) => {
+                console.log(res.data);
+                this.setState({oneStockNews: res.data});
+            })
         }
 
     render(){
       //const response = {};
       const stockResponse = this.state;
       // const {symbol} = this.state;
-      console.log(this.state.stockResponse);
+    //   console.log(this.state.stockResponse);
+    //   console.log(this.state.newsResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
-        <div style={{textAling:"center"}} className="container">
-        <div style={{ textAlign: "center" }} className="row">
-        <div className="col-md-4">
-        {this.state.stockResponse
-           ? (
-        <div className="list-overflow-container">
-          <ul className="list-group">
-              {Object.keys(this.state.stockResponse).map((key, i) => {
-                  return (
-                      <li key={i} className="list-group-item">
-                          <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
-                          <p><span>{this.state.stockResponse[key].quote.close}</span></p>
-                      </li>
-                  )})}
-          </ul>
-        </div>
-           )
-         : <div>Loading...</div>}
-        </div>
-        </div>
+        <div className="container">
+         <div  className="row">
+     
+             <div style={{textAlign:"center"}} className="col-md-4">
+             <div  className="row">
+             <div className="col-md-12">
+             {this.state.stockResponse
+                ? (
+             <div className="list-overflow-container">
+               <ul className="list-group">
+                   {Object.keys(this.state.stockResponse).map((key, i) => {
+                       return (
+                           <li key={i} className="list-group-item">
+                               <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
+                               <p><span>{this.state.stockResponse[key].quote.close}</span></p>
+                           </li>
+                       )})}
+               </ul>
+             </div>
+                )
+              : <div>Loading...</div>}
+             </div>
+             </div>
+                    
+              {/* Form to get perticular stock news */}
+             <div  style={{marginTop:10}}className="row">
+             <div className="col-md-12">
+                 <form className="form">
+                   <div className="form-group">
+               {/* <label htmlFor="email">Email:</label> */}
+                   <input type="text"
+                     onChange={this.handleInputChange}
+                     value={this.state.symbol}
+                     name="symbol"
+                     placeholder="GOOG"/>
+                   </div>
+                 <button className="btn btn-lg btn-info" onClick={this.handleFormSubmit}>Get Stock News</button>
+               </form>
+             </div>
+             </div>
+
+            {/* perticular stock news render */}
+            <section>
+             <div  style={{marginTop:10, height: 500, overflow:"auto"}} className="row">
+             <div className="col-md-12">
+                   <div className="list-overflow-container">
+                     {this.state.oneStockNews ? (
+                           <ul className="list-group">
+                             {this.state.oneStockNews.map((news) => {
+                             return (
+                                 <li className="list-group-item">
+                                     <h3><span>{news.headline}</span></h3>
+                                     {/* <p><span>{news.summary}</span></p> */}
+                                     <a rel="noreferrer noopener" target="_blank" href={news.url}>Read More...</a>
+                                 </li>
+                             );
+                         })}
+                           </ul>
+                         ) : (
+                           <h3 className="container">No News To Display</h3>
+                         )}
+                     </div>
+             </div>
+             </div>
+             </section>
+
+             </div>  {/* Col md 4 row end */}
+     
+               {/* Market News Rendering here */}
+               <div style={{height: 1000, overflow:"auto"}} className="col-md-8">
+               <div className="list-overflow-container">
+               {this.state.newsResponse ? (
+                     <ul className="list-group">
+                       {this.state.newsResponse.map((news) => {
+                       return (
+                           <li className="list-group-item">
+                               <h3><span>{news.headline}</span></h3>
+                               <p><span>{news.summary}</span></p>
+                               <a rel="noreferrer noopener" target="_blank" href={news.url}>Read More...</a>
+                           </li>
+                       );
+                   })}
+                     </ul>
+                   ) : (
+                     <h3 className="container">No News To Display</h3>
+                   )}
+               </div>
+               </div>   {/*News Div End*/}
+
+
+
+        </div>  {/*  Row div end */}
         </div>
            );   //map return function end
     }
