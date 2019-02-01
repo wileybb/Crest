@@ -78,7 +78,7 @@ export default class Topstock extends Component {
       //const response = {};
       const stockResponse = this.state;
       // const {symbol} = this.state;
-    //   console.log(this.state.stockResponse);
+        console.log(this.state.stockResponse);
     //   console.log(this.state.newsResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
@@ -96,7 +96,7 @@ export default class Topstock extends Component {
                        return (
                            <li key={i} className="list-group-item">
                                <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
-                               <p><span>{this.state.stockResponse[key].quote.close}</span></p>
+                               <p><span>{this.state.stockResponse[key].quote.latestPrice}</span></p>
                            </li>
                        )})}
                </ul>
