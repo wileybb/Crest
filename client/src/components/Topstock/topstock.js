@@ -176,28 +176,28 @@ export default class Topstock extends Component {
 
 
         </div>  {/*  Row div end */}
-//           Stephane's merge for reference
-//         <div style={{textAlign:"center"}} className="container">
-//         <Jumbotron />
-//         <div style={{ textAlign: "center" }} className="row">
-//         <div className="col-md-4">
-//         {this.state.stockResponse
-//            ? (
-//         <div className="list-overflow-container">
-//           <ul className="list-group">
-//               {this.state.stockResponse.map((stock) => {
-//                   return (
-//                       <li key={stock.symbol} className="list-group-item">
-//                           <h3><span>{stock.symbol}</span></h3>
-//                           <p><span>{stock.lastSalePrice}</span></p>
-//                       </li>
-//                   )})}
-//           </ul>
-//         </div>
-//            )
-//          : <div>Loading...</div>}
-//         </div>
-//         </div>
+{Stephane's merge for reference
+        <div style={{textAlign:"center"}} className="container">
+        <Jumbotron />
+        <div style={{ textAlign: "center" }} className="row">
+        <div className="col-md-4">
+        {this.state.stockResponse
+           ? (
+        <div className="list-overflow-container">
+          <ul className="list-group">
+              {this.state.stockResponse.map((stock) => {
+                  return (
+                      <li key={stock.symbol} className="list-group-item">
+                          <h3><span>{stock.symbol}</span></h3>
+                          <p><span>{stock.lastSalePrice}</span></p>
+                      </li>
+                  )})}
+          </ul>
+        </div>
+           )
+         : <div>Loading...</div>}
+        </div>
+        </div>}
         </div>
            );   //map return function end
     }
