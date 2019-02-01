@@ -2,12 +2,13 @@ import React, {Component} from "react";
 import API from "../../utils/API"
 import { Link, Router} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
+import Jumbotron from "../Jumbotron/index";
 
-var stockArr =[];
+//var stockArr =[];
 export default class Home extends Component {
 
     state = {
-        stockResponse:[],
+        stockResponse:{},
         stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
         oneStockResponse:{},
         responseLiveStock: [],
@@ -15,23 +16,6 @@ export default class Home extends Component {
     }
 
 
-    // componentDidMount(){
-    //     const{endpoint} = this.state;
-    //     const socket = socketIOClient(endpoint);
-    //     socket.on('connect', () => {
-    //         // Subscribe to topics (i.e. appl,fb,aig+)
-    //         //socket.on('message', message => console.log(message))
-    //         socket.emit('subscribe', 'snap,fb,aapl,googl')
-    //         // Unsubscribe from topics (i.e. aig+)
-    //         //socket.emit('unsubscribe', 'aig+')
-    //         //console.log(response);
-    //       })
-    //       socket.on('message', (message) => {
-    //           this.setState({responseLiveStock:message})
-    //           console.log(message)
-    //         })
-    //     //socket.on("FromAPI", data => this.setState({ response: data }));
-    //    }
     walletCheck=() => {
         // const userData = {
         //     userId : userId
@@ -40,23 +24,42 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
-        const{endpoint} = this.state;
-        const socket = socketIOClient(endpoint);
-        socket.on('connect', () => {
-            // Subscribe to topics (i.e. appl,fb)
-            socket.emit('subscribe', this.state.stock.join(","))
-            // Unsubscribe from topics (i.e. aig+)
-            //socket.emit('unsubscribe', 'aig+')
-            socket.on('message', (message) => {
-              //this.state.stockResponse.empty();
-              let livesymbol = JSON.parse(message)
-              stockArr.push(livesymbol);
-              this.setState({stockResponse:stockArr});
-              stockArr.length = 0;
-              })
-          })
-       }
-
+        //COMMENTING OUT SOCKET IO LIVE STOCK DUE TO SETSTATE ISSUE IN RENDERING 
+        // const{endpoint} = this.state;
+        // const socket = socketIOClient(endpoint);
+        // socket.on('connect', () => {
+        //     // Subscribe to topics (i.e. appl,fb)
+        //     socket.emit('subscribe', this.state.stock.join(","))
+        //     // Unsubscribe from topics (i.e. aig+)
+        //     //socket.emit('unsubscribe', 'aig+')
+        //     socket.on('message', (message) => {
+        //       //this.state.stockResponse.empty();
+        //       let livesymbol = JSON.parse(message)
+        //       stockArr.push(livesymbol);
+        //       this.setState({stockResponse:stockArr});
+        //       stockArr.length = 0;
+        //       })
+        //   })
+        this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
+    }
+    componentWillUnmount(){
+      clearInterval(this.intervalId);
+    }
+     autoStockData = () => {
+      let symbols = this.state.stock.join(",") 
+      API.batchStock(symbols).then((res) => {
+          console.log("res.data")
+          //console.log(res.data);
+          // let obj = res.data
+          // //const stockArr = []
+          // for(const k in obj){
+          //     let dataValue = obj[k];
+          //     console.log(dataValue);
+          //     stockArr.push(dataValue);
+          // }
+          this.setState({stockResponse:res.data});
+         })
+      }
 
 
     handleInputChange=(event) => {
@@ -72,15 +75,13 @@ export default class Home extends Component {
         this.stockSymbol(this.state.symbol);
     }
 
-
     handleBuySubmit = (event) => {
         event.preventDefault();
-
         // let totalPrice = ()
-
         const purchaseData = {
 
             buy: true,
+
             quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
@@ -145,6 +146,7 @@ export default class Home extends Component {
     render(){
         const {responseLiveStock} = this.state;
         return (<div className="container">
+                <Jumbotron />
                 <hr></hr>
                 <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
                 <hr></hr>
@@ -245,14 +247,14 @@ export default class Home extends Component {
                ? (
             <div className="list-overflow-container">
             <ul className="list-group">
-                {this.state.stockResponse.map((stock) => {
-                    return (
-                        <li key={stock.symbol} className="list-group-item">
-                            <h3><span>{stock.symbol}</span></h3>
-                            <p><span>{stock.lastSalePrice}</span></p>
-                        </li>
-                    )})}
-            </ul>
+              {Object.keys(this.state.stockResponse).map((key, i) => {
+                  return (
+                      <li key={i} className="list-group-item">
+                          <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
+                          <p><span>{this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></p>
+                      </li>
+                  )})}
+          </ul>
 
             </div>
                )
