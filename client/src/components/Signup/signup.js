@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import API from "../../utils/API"
 import {Router, Link } from 'react-router-dom';
+import Jumbotron from "../Jumbotron/index";
 
 class Signup extends Component {
     state = {
@@ -35,6 +36,7 @@ class Signup extends Component {
     }
   render(){
     return (<div className="container">
+        <Jumbotron />
         <form className="form">
            {/* <label htmlFor="username">Username:</label> */}
            <div className="form-group">

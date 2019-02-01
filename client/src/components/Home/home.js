@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import API from "../../utils/API"
 import { Link, Router} from 'react-router-dom';
 import socketIOClient from "socket.io-client";
+import Jumbotron from "../Jumbotron/index";
 
 var stockArr =[];
 export default class Home extends Component {
@@ -125,6 +126,7 @@ export default class Home extends Component {
     render(){
         const {responseLiveStock} = this.state;
         return (<div className="container">
+                <Jumbotron />
                 <hr></hr>
                 <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
                 <hr></hr>
