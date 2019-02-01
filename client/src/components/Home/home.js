@@ -80,6 +80,7 @@ export default class Home extends Component {
 
         const purchaseData = {
 
+            buy: true,
             quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
@@ -91,6 +92,25 @@ export default class Home extends Component {
 
     addBuy = (userBuy) => {
         API.createPurchase(userBuy)
+        .then(res => { console.log(res)})
+        .catch(err => console.log(err))
+    }
+
+    handleSellSubmit = (event) => {
+        event.preventDefault();
+        const sellData = {
+            buy: false,
+            quantity: this.state.quantity,
+            symbol: this.state.symbol,
+            purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+            purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+        }
+        console.log(sellData);
+        this.addSale(sellData);
+    }
+
+    addSale = (userSell) => {
+        API.createPurchase(userSell)
         .then(res => { console.log(res)})
         .catch(err => console.log(err))
     }
@@ -204,9 +224,9 @@ export default class Home extends Component {
                         placeholder="How many shares to buy?"/>
                     </div>
                     <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
-                </form>
+                
                 <hr></hr>
-                <form className="form">
+            
                     <div className="form-group">
                         <input type="text"
                         onchange={this.handleInputChange}
