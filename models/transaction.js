@@ -31,15 +31,15 @@ module.exports = function (sequelize, DataTypes) {
 
     });
   
-    // Transaction.associate = function (models) {
-    //   // Associating Transaction with Users
-    //   Transaction.belongsTo(models.User, {
-    //     foreignKey: {
-    //       allowNull: true
-    //     }
-    //   });
+    Transaction.associate = function (models) {
+      // Associating Transaction with Users
+      Transaction.belongsTo(models.User, {
+        foreignKey: {
+          allowNull: true
+        }
+      });
 
-    // };
+    };
   
     return Transaction;
   };

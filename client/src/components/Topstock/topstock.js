@@ -3,6 +3,8 @@ import socketIOClient from "socket.io-client";
 import API from "../../utils/API.js";
 import { DH_NOT_SUITABLE_GENERATOR } from "constants";
 // import Conditiontable from "./condition.js"
+import Jumbotron from "../Jumbotron/index";
+
 
 //stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"]
 //var stockArr =[];
@@ -174,6 +176,28 @@ export default class Topstock extends Component {
 
 
         </div>  {/*  Row div end */}
+//           Stephane's merge for reference
+//         <div style={{textAlign:"center"}} className="container">
+//         <Jumbotron />
+//         <div style={{ textAlign: "center" }} className="row">
+//         <div className="col-md-4">
+//         {this.state.stockResponse
+//            ? (
+//         <div className="list-overflow-container">
+//           <ul className="list-group">
+//               {this.state.stockResponse.map((stock) => {
+//                   return (
+//                       <li key={stock.symbol} className="list-group-item">
+//                           <h3><span>{stock.symbol}</span></h3>
+//                           <p><span>{stock.lastSalePrice}</span></p>
+//                       </li>
+//                   )})}
+//           </ul>
+//         </div>
+//            )
+//          : <div>Loading...</div>}
+//         </div>
+//         </div>
         </div>
            );   //map return function end
     }
