@@ -80,7 +80,7 @@ export default class Topstock extends Component {
       //const response = {};
       const stockResponse = this.state;
       // const {symbol} = this.state;
-    //   console.log(this.state.stockResponse);
+        console.log(this.state.stockResponse);
     //   console.log(this.state.newsResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
@@ -98,7 +98,7 @@ export default class Topstock extends Component {
                        return (
                            <li key={i} className="list-group-item">
                                <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
-                               <p><span>{this.state.stockResponse[key].quote.close}</span></p>
+                               <p><span>{this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></p>
                            </li>
                        )})}
                </ul>
@@ -176,28 +176,6 @@ export default class Topstock extends Component {
 
 
         </div>  {/*  Row div end */}
-{Stephane's merge for reference
-        <div style={{textAlign:"center"}} className="container">
-        <Jumbotron />
-        <div style={{ textAlign: "center" }} className="row">
-        <div className="col-md-4">
-        {this.state.stockResponse
-           ? (
-        <div className="list-overflow-container">
-          <ul className="list-group">
-              {this.state.stockResponse.map((stock) => {
-                  return (
-                      <li key={stock.symbol} className="list-group-item">
-                          <h3><span>{stock.symbol}</span></h3>
-                          <p><span>{stock.lastSalePrice}</span></p>
-                      </li>
-                  )})}
-          </ul>
-        </div>
-           )
-         : <div>Loading...</div>}
-        </div>
-        </div>}
         </div>
            );   //map return function end
     }
