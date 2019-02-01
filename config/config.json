@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "crest_db",
+    "password": "berkeley",
+    "database": "wavetrendingdb",
     "host": "localhost",
     "dialect": "mysql"
   },
