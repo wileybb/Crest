@@ -4,8 +4,11 @@ import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-rout
 import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js"
 import Home from "./components/Home/home.js"
-import Jumbotron from "./components/Jumbotron";
+// import Jumbotron from "./components/Jumbotron";
 import Topstock from "./components/Topstock/topstock.js"
+import Allocation from "./components/Allocation/Allocation";
+import Landing from "./components/Landing/Landing"
+import Navbar from "./components/Navbar/Navbar"
 // import logo from "./logo.svg";
 // import "./App.css";
 
@@ -24,8 +27,10 @@ class App extends Component {
       // </div>
       <Router>
       <div>
-         <Jumbotron />
+         <Navbar />
          <Switch>
+           <Route exact path="/landing" component={Landing} />
+           <Route exact path="/allocate" component={Allocation} />
            <Route exact path="/signup" component={Signup} />
            <Route exact path="/login" component={Login} />
            <Route exact path="/" component={Topstock} />
