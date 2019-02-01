@@ -17,4 +17,23 @@ export default {
   singleStock: function(symbol){
     return axios.get(`https://api.iextrading.com/1.0/stock/${symbol}/batch?types=quote,news,chart&range=1m&last=10`)
   },
+  batchStock: function(symbols){
+    return axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote,news,chart&range=1m&last=5`)
+  },
+  iexMarketNews: function(){
+    return axios.get(`https://api.iextrading.com/1.0/stock/market/news`);
+  },
+  iexStockNews: function(stockStmbol){
+    return axios.get(`https://api.iextrading.com/1.0/stock/${stockStmbol}/news`);
+  },
+  createPurchase: function(userData){
+    return axios.post("/user/home/:id", userData);
+  },
+  getCashValue: function(userData){
+    return axios.get("user/home/:id", userData);
+  },
+  alphaVantageCall: function(){
+    return axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=SK4M0EMARF3A00VS`)
+  },
+
 };
