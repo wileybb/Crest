@@ -7,7 +7,7 @@ var stockArr =[];
 export default class Topstock extends Component {
     state = {
           stockResponse:[],
-          stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
+          stock: ["spy"],
           endpoint: "https://ws-api.iextrading.com/1.0/tops",
         }
     componentDidMount(){
@@ -44,7 +44,7 @@ export default class Topstock extends Component {
       console.log(this.state.stockResponse);
       //console.log(this.state.response.symbol + this.state.response.lastSalePrice);
       return(
-        <div style={{textAling:"center"}} className="container">
+        <div style={{textAlign:"center"}} className="container">
         <div style={{ textAlign: "center" }} className="row">
         <div className="col-md-4">
         {this.state.stockResponse

@@ -60,10 +60,11 @@ export default class Login extends Component {
                     />
                 </div>
                 <a href="/home"><button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Login</button></a>
-                    <hr />
-                    <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
+                <hr />
+                <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
             </form>
 
-        </div>)}  //Render End
-        
+        </div>)
+    }  //Render End
+
 }
