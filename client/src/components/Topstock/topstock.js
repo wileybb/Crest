@@ -7,7 +7,7 @@ var stockArr =[];
 export default class Topstock extends Component {
     state = {
           stockResponse:[],
-          stock: ["spy"],
+          stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
           endpoint: "https://ws-api.iextrading.com/1.0/tops",
         }
     componentDidMount(){
@@ -61,7 +61,7 @@ export default class Topstock extends Component {
           </ul>
         </div>
            )
-         : <div>Loading...</div>}
+         : <div><p>Loading...</p></div>}
         </div>
         </div>
         </div>
