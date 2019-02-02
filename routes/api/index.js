@@ -11,9 +11,7 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-
     res.status(200).send({"id":req.user.dataValues.id});
-
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
    //res.json("/home");
@@ -26,20 +24,18 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
     //     return res.redirect('/home');
     //   });
   });
-
 // router.post("/login", passport.authenticate("local", {successRedirect:"/home", failureRedirect:"/login", failureFlash: true}))
 
+//Sign up user, creating new user in User table with provided input
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
-
-
         db.User.create({username: req.body.username.trim(),
         password: req.body.password.trim(),
         email: req.body.email.trim()}).then(function(dbUser){
-
+            console.log(dbUser.dataValues);
+            db.Stock.create({stock:"googl,msft,amzn", UserId:dbUser.dataValues.id});
             db.Portfolio.create({symbol: "initial"});
-
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
@@ -51,13 +47,11 @@ router.post("/signup", function(req,res){
     }
 });
 
-
 router.get("/", function(req,res){
     console.log("get /user route hit");
 })
 
-
-
+//Logging out user
 router.get("/logout", function(req,res){
     req.logout();
     console.log("logging out");
@@ -65,8 +59,27 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
+//Get Perticular user stock watchlist from stock table 
+router.get("/home/watchlist", isAuthenticated, function(req, res){
+    db.Stock.findOne({where:{UserId:parseInt(req.user.id)}}).then(function(userstock){
+        res.json(userstock.dataValues);
+    });
+})
+
+//Update Perticular user stock watchlist from stock table 
+router.put("/home/watchlist", isAuthenticated, function(req, res){
+    console.log(req.body.stockSymbols.toLowerCase());
+    db.Stock.update(
+        {stock:req.body.stockSymbols.toLowerCase().trim()},
+        {where:{UserId:parseInt(req.body.id)}}).then(function (userStock) {
+        console.log(userStock);
+        if(userStock){
+            res.status(200).send("updated");
+        }
+    });
+})
 // route to check Wallet Value
-router.get("/home/:id", function(req,res){
+router.get("/home/:id", isAuthenticated, function(req,res){ 
     db.Portfolio.findAll({
         limit: 1,
             // where: {
@@ -82,7 +95,7 @@ router.get("/home/:id", function(req,res){
     })
 })
 
-router.post("/home/:id", function(req,res){
+router.post("/home/:id", isAuthenticated, function(req,res){
     console.log(req.params.id);
     console.log(req.body);
     console.log(" post buy route hit");

@@ -26,16 +26,20 @@ export default {
   iexStockNews: function(stockStmbol){
     return axios.get(`https://api.iextrading.com/1.0/stock/${stockStmbol}/news`);
   },
+  getPertucularUserWatchList: function(){
+    return axios.get("/user/home/watchlist");
+  },
+  updatePertucularUserWatchList: function(stockTicker){
+    return axios.put("/user/home/watchlist", stockTicker);
+  },
   createPurchase: function(userData){
     return axios.post("/user/home/:id", userData);
   },
-
   // createSell: function(userData){
   //   return axios
   // }
-
   getCashValue: function(userData){
-    return axios.get("user/home/:id", userData);
+    return axios.get("/user/home/:id", userData);
   },
   alphaVantageCall: function(){
     return axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=SK4M0EMARF3A00VS`)
