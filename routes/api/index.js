@@ -74,9 +74,9 @@ router.put("/home/watchlist", isAuthenticated, function(req, res){
         {where:{UserId:parseInt(req.body.id)}}).then(function (userStock) {
         console.log(userStock);
         if(userStock){
-            res.json(200).send("updated");
+            res.status(200).send("updated");
         }
-    })
+    });
 })
 // route to check Wallet Value
 router.get("/home/:id", isAuthenticated, function(req,res){ 
