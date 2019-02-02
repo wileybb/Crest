@@ -11,9 +11,7 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-
     res.status(200).send({"id":req.user.dataValues.id});
-
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
    //res.json("/home");
@@ -26,9 +24,9 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
     //     return res.redirect('/home');
     //   });
   });
-
 // router.post("/login", passport.authenticate("local", {successRedirect:"/home", failureRedirect:"/login", failureFlash: true}))
 
+//Sign up user, creating new user in User table with provided input
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
@@ -37,15 +35,14 @@ router.post("/signup", function(req,res){
             username: req.body.username.trim(),
             password: req.body.password.trim(),
             email: req.body.email.trim()
+          
         }).then(function(dbUser){
-            // console.log(dbUser.dataValues.id);
             const userId = dbUser.dataValues.id;
-            // console.log("above is the returned object from the User Create function ********#############*********#############****")
             db.Portfolio.create({
                 symbol: "initial",
                 userId: userId
             });
-
+            db.Stock.create({stock:"googl,msft,amzn", UserId:dbUser.dataValues.id});
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
@@ -57,13 +54,11 @@ router.post("/signup", function(req,res){
     }
 });
 
-
 router.get("/", function(req,res){
     console.log("get /user route hit");
 })
 
-
-
+//Logging out user
 router.get("/logout", function(req,res){
     req.logout();
     console.log("logging out");
@@ -71,8 +66,27 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
+//Get Perticular user stock watchlist from stock table 
+router.get("/home/watchlist", isAuthenticated, function(req, res){
+    db.Stock.findOne({where:{UserId:parseInt(req.user.id)}}).then(function(userstock){
+        res.json(userstock.dataValues);
+    });
+})
+
+//Update Perticular user stock watchlist from stock table 
+router.put("/home/watchlist", isAuthenticated, function(req, res){
+    console.log(req.body.stockSymbols.toLowerCase());
+    db.Stock.update(
+        {stock:req.body.stockSymbols.toLowerCase().trim()},
+        {where:{UserId:parseInt(req.body.id)}}).then(function (userStock) {
+        console.log(userStock);
+        if(userStock){
+            res.status(200).send("updated");
+        }
+    });
+})
 // route to check Wallet Value
-router.get("/home/:id", function(req,res){
+router.get("/home/:id", isAuthenticated, function(req,res){ 
     db.Portfolio.findAll({
         limit: 1,
             // where: {
@@ -88,11 +102,12 @@ router.get("/home/:id", function(req,res){
     })
 })
 
+
 // post route to take in buys and sells and update portfolio and make a record in transactions
 router.post("/home/wallet", function(req,res){
     const userId = (req.user.id);
-
     console.log(" post buy/sell route hit");
+  
 // -------------IN THE CASE OF A BUY ---------------------------------->
     if(req.body.buy){
         console.log("YOU ARE BUYING A STOCK OMG!!")

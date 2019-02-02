@@ -9,12 +9,13 @@ export default class Home extends Component {
 
     state = {
         stockResponse:{},
-        stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
+        stock: ["googl", "fb"],
+        watchList:{},
+        watchListsymbol:"",
         oneStockResponse:{},
         responseLiveStock: [],
         endpoint: "https://ws-api.iextrading.com/1.0/tops"
     }
-
 
     walletCheck=() => {
         // const userData = {
@@ -24,48 +25,65 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
-        //COMMENTING OUT SOCKET IO LIVE STOCK DUE TO SETSTATE ISSUE IN RENDERING 
-        // const{endpoint} = this.state;
-        // const socket = socketIOClient(endpoint);
-        // socket.on('connect', () => {
-        //     // Subscribe to topics (i.e. appl,fb)
-        //     socket.emit('subscribe', this.state.stock.join(","))
-        //     // Unsubscribe from topics (i.e. aig+)
-        //     //socket.emit('unsubscribe', 'aig+')
-        //     socket.on('message', (message) => {
-        //       //this.state.stockResponse.empty();
-        //       let livesymbol = JSON.parse(message)
-        //       stockArr.push(livesymbol);
-        //       this.setState({stockResponse:stockArr});
-        //       stockArr.length = 0;
-        //       })
-        //   })
+        this.getPertucularUserWatchList();
         this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
     }
+
+    //Clear interval on real time stock purchase when unmounting from this component
     componentWillUnmount(){
       clearInterval(this.intervalId);
     }
+    
+    //Get perticular user stock from database table stock
+    getPertucularUserWatchList = () => {
+        API.getPertucularUserWatchList().then((res) => {
+            this.setState({watchList:res.data});
+            console.log(this.state.watchList);
+        });
+    }
+
+    //Watch list input update in state
+    handleWatchListInputChange=(event) => {
+        const{name, value} = event.target;
+        this.setState({[name]: value});
+    }
+    //Watch list submit button 
+    handleWatchListFormSubmit = (event) => {
+        event.preventDefault();
+        this.setState({watchListsymbol:this.state.watchListsymbol});
+        console.log(this.state.watchListsymbol);
+        const data = {
+            id: this.state.watchList.UserId,
+            stockSymbols:this.state.watchList.stock+","+this.state.watchListsymbol.toLowerCase()
+        }
+         console.log(data);
+         this.updateWatchList(data);
+    }
+    updateWatchList = (stockTicker) => {
+        API.updatePertucularUserWatchList(stockTicker)
+        .then(res => { 
+            console.log(res);
+            this.getPertucularUserWatchList();
+        })
+        .catch(err => console.log(err))
+    }
+
+    //Get Real time stock prices based on stocks in state stocks
      autoStockData = () => {
-      let symbols = this.state.stock.join(",") 
-      API.batchStock(symbols).then((res) => {
-          console.log("res.data")
-          //console.log(res.data);
-          // let obj = res.data
-          // //const stockArr = []
-          // for(const k in obj){
-          //     let dataValue = obj[k];
-          //     console.log(dataValue);
-          //     stockArr.push(dataValue);
-          // }
+      //console.log(this.state.watchList.stock);
+      //let symbols = this.state.stock.join(",") 
+      API.batchStock(this.state.watchList.stock).then((res) => {
           this.setState({stockResponse:res.data});
          })
       }
 
-
+    //Input value updated in state
     handleInputChange=(event) => {
         const{name, value} = event.target;
         this.setState({[name]: value});
     }
+
+    //Form Value submission to get once stock price 
     handleFormSubmit = (event) => {
         event.preventDefault();
         // const stockTic = {
@@ -88,6 +106,7 @@ export default class Home extends Component {
         this.addBuy(purchaseData);
     }
 
+    //Handle Buy stock
     addBuy = (userBuy) => {
         API.createPurchase(userBuy)
         .then(res => { console.log(res)})
@@ -98,7 +117,7 @@ export default class Home extends Component {
         event.preventDefault();
         const sellData = {
             buy: false,
-            quantity: this.state.quantity,
+            quantity: this.state.sellquantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
             purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
@@ -107,12 +126,14 @@ export default class Home extends Component {
         this.addSale(sellData);
     }
 
+    //Sell a stock
     addSale = (userSell) => {
         API.createPurchase(userSell)
         .then(res => { console.log(res)})
         .catch(err => console.log(err))
     }
     
+    //Check the cash value 
     checkCash = () => {
         API.getCashValue()
         .then(res => {
@@ -121,10 +142,12 @@ export default class Home extends Component {
         .catch(err => console.log(err))
     }
 
-
+    //Form Validataion to check if symbol is entered or not 
     validateForm() {
         return this.state.symbol.length > 0;
-      }
+    }
+    
+    //Get info on one stock symbol
     stockSymbol = (symbol) => {
         API.singleStock(symbol)
       .then((res) => {
@@ -133,6 +156,8 @@ export default class Home extends Component {
         console.log(this.state.oneStockResponse)})
       .catch(err => console.log(err));
     }
+
+    //Logout User Link 
     logoutUser = () => {
         localStorage.removeItem("loggedIn");
         API.signOutUser().then((res) => {
@@ -141,31 +166,34 @@ export default class Home extends Component {
     }
     
     render(){
-        const {responseLiveStock} = this.state;
-        return (<div className="container">
-                <Jumbotron />
-                <hr></hr>
-                <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
-                <hr></hr>
-               <h1 style={{textAlign:"center"}}>Welcome to home page</h1>
-               <div className="row">
-               <div className="col-md-4">
-               <form className="form">
-               <div className="form-group">
+      const {responseLiveStock} = this.state;
+      const watchListsymbol = this.state;
+      return (
+        <div className="container">
+          <Jumbotron />
+          <hr></hr>
+          <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
+          <hr></hr>
+          <div className="row">
+            {/* Get one stock price form column */}
+            <div className="col-md-4">
+            <form className="form">
+            <div className="form-group">
                {/* <label htmlFor="email">Email:</label> */}
-               <input type="text"
-               onChange={this.handleInputChange}
-               value={this.state.symbol}
-               name="symbol"
-               placeholder="GOOG"/>
-               </div>
-               <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Get-Quotes</button>
-            </form>
+            <input type="text"
+            onChange={this.handleInputChange}
+            value={this.state.symbol}
+            name="symbol"
+            placeholder="GOOG"/>
             </div>
-            <div className="col-md-8">
+            <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Get-Quotes</button>
+            </form>
+            </div> {/* 1st col-md-4 div end */}
+
+            {/* Get One stock data and appending to table */}
+            <div className="col-md-4">
             {Object.keys(this.state.oneStockResponse).length === 0 ? (<p>No Symbol To display yet!!!</p>) : (
             <tbody>
-
             <tr>
                 <td>Stock</td><br></br>
                 <td>{this.state.oneStockResponse.data.quote.symbol}</td>
@@ -204,8 +232,40 @@ export default class Home extends Component {
             </tr>
             </tbody>
             )}
+            </div> {/* 2nd col-md-4 div end */}
+            
+            {/*Live stock col md 4 for multiple sotcks */}
+            <div style={{marginTop:10, height: 500, overflow:"auto"}} className="col-md-4">
+
+            {this.state.stockResponse
+               ? (
+            <div className="list-overflow-container">
+            <ul className="list-group">
+              {Object.keys(this.state.stockResponse).map((key, i) => {
+                  return (
+                      <li key={i} className="list-group-item">
+                          <h2><span>{this.state.stockResponse[key].quote.symbol} : {this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></h2>
+                          {/* <p></p> */}
+                      </li>
+                )})}
+          </ul>
             </div>
+               )
+             : <div>Loading...</div>}
+             <form style={{marginTop:10}}className="form text-center">
+            <div className="form-group text-center">
+               {/* <label htmlFor="email">Email:</label> */}
+             <input className="col-md-6" type="text"
+               onChange={this.handleWatchListInputChange}
+                value={this.state.watchListsymbol}
+                name="watchListsymbol"
+                placeholder="AA"/>
             </div>
+            <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleWatchListFormSubmit}>Add Watch List</button>
+            </form>
+            </div> {/* 3rd col-md-4 div end */}
+
+        </div> {/* First Row Div End   */}
 
         {/* Live stock price update div */}
         <div style={{textAling:"center"}} className="container">
@@ -216,21 +276,19 @@ export default class Home extends Component {
                     <div className="form-group">
                         <hr></hr>
                         {/* <label htmlFor="email">Email:</label> */}
-                        <input type="text"
+                    <input type="text"
                         onChange={this.handleInputChange}
                         value={this.state.quantity}
                         name="quantity"
                         placeholder="How many shares to buy?"/>
                     </div>
-                    <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
-                
+                   <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
                 <hr></hr>
-            
-                    <div className="form-group">
-                        <input type="text"
-                        onchange={this.handleInputChange}
-                        value={this.state.quantity}
-                        name="quantity"
+                  <div className="form-group">
+                    <input type="text"
+                        onChange={this.handleInputChange}
+                        value={this.state.sellquantity}
+                        name="sellquantity"
                         placeholder="How many shares to sell?"/>
                     </div>
                     <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
@@ -239,27 +297,9 @@ export default class Home extends Component {
                 <div>
                     <h3>You have x{this.walletCheck} amount of dollars</h3>
                 </div>
-
-            {this.state.stockResponse
-               ? (
-            <div className="list-overflow-container">
-            <ul className="list-group">
-              {Object.keys(this.state.stockResponse).map((key, i) => {
-                  return (
-                      <li key={i} className="list-group-item">
-                          <h3><span>{this.state.stockResponse[key].quote.symbol}</span></h3>
-                          <p><span>{this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></p>
-                      </li>
-                  )})}
-          </ul>
-
-            </div>
-               )
-             : <div>Loading...</div>}
         </div>
         </div>
         </div>
-
 
         </div>)}  //Render End
 }
