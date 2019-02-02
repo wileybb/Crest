@@ -27,7 +27,7 @@ export default {
     return axios.get(`https://api.iextrading.com/1.0/stock/${stockStmbol}/news`);
   },
   createPurchase: function(userData){
-    return axios.post("/user/home/:id", userData);
+    return axios.post("/user/home/wallet", userData);
   },
 
   // createSell: function(userData){

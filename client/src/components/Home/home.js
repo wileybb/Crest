@@ -77,16 +77,13 @@ export default class Home extends Component {
 
     handleBuySubmit = (event) => {
         event.preventDefault();
-        // let totalPrice = ()
         const purchaseData = {
-
             buy: true,
-
             quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
             purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
-        }
+        };
         console.log(purchaseData);
         this.addBuy(purchaseData);
     }

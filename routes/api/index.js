@@ -33,12 +33,18 @@ router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
 
-
-        db.User.create({username: req.body.username.trim(),
-        password: req.body.password.trim(),
-        email: req.body.email.trim()}).then(function(dbUser){
-
-            db.Portfolio.create({symbol: "initial"});
+        db.User.create({
+            username: req.body.username.trim(),
+            password: req.body.password.trim(),
+            email: req.body.email.trim()
+        }).then(function(dbUser){
+            // console.log(dbUser.dataValues.id);
+            const userId = dbUser.dataValues.id;
+            // console.log("above is the returned object from the User Create function ********#############*********#############****")
+            db.Portfolio.create({
+                symbol: "initial",
+                userId: userId
+            });
 
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
@@ -82,13 +88,12 @@ router.get("/home/:id", function(req,res){
     })
 })
 
-router.post("/home/:id", function(req,res){
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log(" post buy route hit");
-    // db.Portfolio.create
-    // db.Portfolio.findOne({}).then(function(dbUser){
+// post route to take in buys and sells and update portfolio and make a record in transactions
+router.post("/home/wallet", function(req,res){
+    const userId = (req.user.id);
 
+    console.log(" post buy/sell route hit");
+// -------------IN THE CASE OF A BUY ---------------------------------->
     if(req.body.buy){
         console.log("YOU ARE BUYING A STOCK OMG!!")
         let newCashBalance = 0
@@ -97,23 +102,23 @@ router.post("/home/:id", function(req,res){
         let quantityOld = 0
     
         db.Portfolio.findAll({
-        limit: 1,
+            limit: 1,
             where: {
-                symbol: symbolNew
+                symbol: symbolNew,
+                userId: userId
             },
             order: [[ 'createdAt', 'DESC' ]]
         }).then(function(found){
-            console.log(found[0].dataValues.quantity);
-            console.log("above is the found by symbol result_-___---_-")
+
             quantityOld = parseInt((found[0].dataValues.quantity));
         })
 
         db.Portfolio.findAll({
-        limit: 1,
-        // where: {
-        //     id: 1
-        // },
-        order: [ [ 'createdAt', 'DESC' ]]
+            limit: 1,
+            where: {
+                userId: userId
+            },
+            order: [ [ 'createdAt', 'DESC' ]]
         }).then(function(found){
 
             let currentCash = found[0].dataValues.cash;
@@ -121,10 +126,17 @@ router.post("/home/:id", function(req,res){
             newCashBalance = currentCash - req.body.purchaseTotal;
             console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
 
-            db.Portfolio.create({quantity: quantityNew, symbol: symbolNew, cash: newCashBalance});
-        })
+            db.Portfolio.create({
+                userId: userId,
+                quantity: quantityNew, 
+                symbol: symbolNew, 
+                cash: newCashBalance
+            });
+        });
 
-        db.Transaction.create({quantity: req.body.quantity.trim(),
+        db.Transaction.create({
+            userIdTransaction: userId,
+            quantity: req.body.quantity.trim(),
             symbol: req.body.symbol.trim(),
             purchasePrice: req.body.purchasePrice,
             purchaseTotal: req.body.purchaseTotal
@@ -133,8 +145,9 @@ router.post("/home/:id", function(req,res){
             
         }).catch(function (err){
             res.json(err);
-        })
+        });
     }else{
+ //------------IN THE CASE OF A SELL-------------------------------->
         console.log("YOU ARE SELLING A STOCK!!!! OMG!")
         let newCashBalance = 0
         let quantitySold = parseInt(req.body.quantity.trim());
@@ -145,20 +158,20 @@ router.post("/home/:id", function(req,res){
         db.Portfolio.findAll({
             limit: 1,
                 where: {
-                    symbol: symbolNew
+                    symbol: symbolNew,
+                    userId: userId
                 },
                 order: [[ 'createdAt', 'DESC' ]]
         }).then(function(found){
-            console.log(found[0].dataValues.quantity);
-            console.log("above is the found by symbol result_-___---_-")
+      
             quantityOld = parseInt((found[0].dataValues.quantity));
         })
     
         db.Portfolio.findAll({
             limit: 1,
-            // where: {
-            //     id: 1
-            // },
+            where: {
+                userId: userId
+            },
             order: [ [ 'createdAt', 'DESC' ]]
         }).then(function(found){
             // console.log(found)
@@ -166,12 +179,19 @@ router.post("/home/:id", function(req,res){
             let currentCash = found[0].dataValues.cash;
             quantityNew = quantityOld - quantitySold;
             newCashBalance = currentCash + req.body.purchaseTotal;
-            console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+            // console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
     
-            db.Portfolio.create({quantity: quantityNew, symbol: symbolNew, cash: newCashBalance});
+            db.Portfolio.create({
+                userId: userId,
+                quantity: quantityNew, 
+                symbol: symbolNew, 
+                cash: newCashBalance
+            });
         })
         
-        db.Transaction.create({quantity: req.body.quantity.trim(),
+        db.Transaction.create({
+            userIdTransaction: userId,
+            quantity: req.body.quantity.trim(),
             buy: false,
             symbol: req.body.symbol.trim(),
             purchasePrice: req.body.purchasePrice,

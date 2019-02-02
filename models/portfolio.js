@@ -1,6 +1,9 @@
 
 module.exports = function (sequelize, DataTypes) {
   var Portfolio = sequelize.define("Portfolio", {
+    userId: {
+      type: DataTypes.INTEGER
+    },
 
     symbol: {
       type: DataTypes.STRING,
