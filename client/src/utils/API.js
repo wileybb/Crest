@@ -33,7 +33,7 @@ export default {
     return axios.put("/user/home/watchlist", stockTicker);
   },
   createPurchase: function(userData){
-    return axios.post("/user/home/:id", userData);
+    return axios.post("/user/home/wallet", userData);
   },
   // createSell: function(userData){
   //   return axios
