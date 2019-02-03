@@ -1,7 +1,9 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Transaction = sequelize.define("Transaction", {
-
+      userIdTransaction: {
+        type: DataTypes.INTEGER
+      },
       symbol: {
         type: DataTypes.STRING,
         allowNull: false,
