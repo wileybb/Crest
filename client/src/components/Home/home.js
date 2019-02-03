@@ -30,8 +30,13 @@ export default class Home extends Component {
     }
 
     //Clear interval on real time stock purchase when unmounting from this component
-    componentWillUnmount(){
-      clearInterval(this.intervalId);
+    // componentWillUnmount(){
+    //   clearInterval(this.intervalId);
+    // }
+
+    //Clear interval when logging out or move to portfolio page or other page
+    intervalClear(){
+        clearInterval(this.intervalId);
     }
     
     //Get perticular user stock from database table stock
@@ -74,6 +79,7 @@ export default class Home extends Component {
       //let symbols = this.state.stock.join(",") 
       API.batchStock(this.state.watchList.stock).then((res) => {
           this.setState({stockResponse:res.data});
+          console.log(this.state.stockResponse);
          })
       }
 
@@ -159,10 +165,17 @@ export default class Home extends Component {
 
     //Logout User Link 
     logoutUser = () => {
+        this.intervalClear();
         localStorage.removeItem("loggedIn");
         API.signOutUser().then((res) => {
             console.log(res);
         }).catch(err => console.log(err));
+    }
+
+    //Go to Portfolio page when user clicked on portfolio link
+    userPortfolio = () => {
+        this.intervalClear();
+        this.props.history.push("/portfolio")
     }
     
     render(){
@@ -172,7 +185,8 @@ export default class Home extends Component {
         <div className="container">
           <Jumbotron />
           <hr></hr>
-          <Link to={'/login'} onClick={this.logoutUser}>Logout</Link>
+          <Link to={'/login'} onClick={this.logoutUser}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link>
           <hr></hr>
           <div className="row">
             {/* Get one stock price form column */}
@@ -188,6 +202,28 @@ export default class Home extends Component {
             </div>
             <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Get-Quotes</button>
             </form>
+
+            {/* <form className="form">
+                    <div className="form-group">
+                        <hr></hr>
+                    <input type="text"
+                        onChange={this.handleInputChange}
+                        value={this.state.quantity}
+                        name="quantity"
+                        placeholder="How many shares to buy?"/>
+                    </div>
+                   <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
+                <hr></hr>
+                  <div className="form-group">
+                    <input type="text"
+                        onChange={this.handleInputChange}
+                        value={this.state.sellquantity}
+                        name="sellquantity"
+                        placeholder="How many shares to sell?"/>
+                    </div>
+                    <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
+                </form> */}
+
             </div> {/* 1st col-md-4 div end */}
 
             {/* Get One stock data and appending to table */}
@@ -243,9 +279,10 @@ export default class Home extends Component {
             <ul className="list-group">
               {Object.keys(this.state.stockResponse).map((key, i) => {
                   return (
-                      <li key={i} className="list-group-item">
-                          <h2><span>{this.state.stockResponse[key].quote.symbol} : {this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></h2>
-                          {/* <p></p> */}
+                      <li style={{height:100}} key={i} className="list-group-item">
+                          <div><h5 style={{display:"inline", float:"left"}}><span>{this.state.stockResponse[key].quote.symbol} : {this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></h5>
+                          <div style={{display:"inline", float:"right"}}><h5 style={(this.state.stockResponse[key].quote.change > 0) ? {color:"green"} : {color:"red"}}>{this.state.stockResponse[key].quote.change}</h5></div></div><br />
+                          <div><p style={{display:"inlineBlock", float:"middle", fontSize:14}}>{this.state.stockResponse[key].quote.companyName}</p></div>
                       </li>
                 )})}
           </ul>
