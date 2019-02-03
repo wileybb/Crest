@@ -26,10 +26,7 @@ class StaticAreaChart extends Component {
     let yAxisMax = 0;
 
     Object.keys(chart).forEach(function (key) {
-      // let dataEntry = {
-      //   "label": chart[key].date,
-      //   "value": chart[key].close
-      // }
+
       dates.push({ "label": chart[key].date.slice(-5) });
       dataset.push({ "value": chart[key].close });
       // dataset.push({ "label": chart[key].date, "value": chart[key].close })
@@ -76,7 +73,7 @@ class StaticAreaChart extends Component {
         }
 
       },
-      message: chart
+      // message: chart
 
       // message: newData
 
