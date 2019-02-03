@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
 
 import Signup from "./components/Signup/signup.js";
-import Login from "./components/Login/login.js"
-import Home from "./components/Home/home.js"
+import Login from "./components/Login/login.js";
+import Home from "./components/Home/home.js";
+import Portfolio from "./components/Portfolio/portfolio.js";
 // import Jumbotron from "./components/Jumbotron";
-import Topstock from "./components/Topstock/topstock.js"
+import Topstock from "./components/Topstock/topstock.js";
 import Allocation from "./components/Allocation/Allocation";
-import Landing from "./components/Landing/Landing"
+
+import Landing from "./components/Landing/Landing";
 import Navbar from "./components/Navbar/Navbar"
 import LoginUI from "./components/LoginUI/LoginUI"
 import SignupUI from "./components/SignupUI/SignupUI"
@@ -40,6 +42,11 @@ class App extends Component {
                 )
               }
             />
+           <Route path="/portfolio" 
+              render={() => 
+                isLoggedIn ? ( 
+                 <Route component={Portfolio} />
+                 ) : (<Route component={Login} /> )} />
            {/* <Route exact path="/login" component={Login} /> */}
            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
