@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js"
 import Home from "./components/Home/home.js"
-// import Jumbotron from "./components/Jumbotron";
+import SampleChart from "./components/Charts/exampleChart.js"
+import Jumbotron from "./components/Jumbotron";
 import Topstock from "./components/Topstock/topstock.js"
 import Allocation from "./components/Allocation/Allocation";
 import Landing from "./components/Landing/Landing"
@@ -41,17 +42,21 @@ class App extends Component {
                 isLoggedIn ? (
                   <Route component={Home} />
                 ) : (
-                  <Route component={Login} />
-                )
+                    <Route component={Login} />
+                  )
               }
             />
-           {/* <Route exact path="/login" component={Login} /> */}
-           {/* <Route exact path="/books" component={Books} />
+            {/* <Route exact path="/login" component={Login} /> */}
+            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
            <Route component={NoMatch} /> */}
-         </Switch>
-       </div>
-     </Router>
+            <Route
+              path="/charts"
+              render={() => isLoggedIn ? (<Route component={SampleChart} />) : (<Route component={Login} />)}
+            />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
