@@ -85,7 +85,7 @@ class StaticAreaChart extends Component {
 
 
   render() {
-    console.log(this.state.chartConfigs)
+    // console.log(this.state.chartConfigs)
     return (
       <ReactFC
         {...this.state.chartConfigs} />
