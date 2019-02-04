@@ -315,7 +315,7 @@ export default class Home extends Component {
         </div> {/* First Row Div End   */}
 
         {/* Live stock price update div */}
-        <div style={{textAling:"center"}} className="container">
+        <div style={{textAlign:"center"}} className="container">
             <div style={{ textAlign: "center" }} className="row">
             <div className="col-md-4">
                 <hr></hr>
