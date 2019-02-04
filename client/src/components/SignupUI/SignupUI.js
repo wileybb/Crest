@@ -1,8 +1,41 @@
 import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
+import API from "../../utils/API"
+
 
 class SignupUI extends React.Component {
+  state = {
+    username:"",
+    password:"",
+    email:"",
+  }
+  handleInputChange = (event) => {
+      const {name, value} = event.target;
+      this.setState({[name]:value});
+  };
+  handleFormSubmit = (event) => {
+      event.preventDefault();
+      const userData = {  
+          username: this.state.username,
+          password: this.state.password,
+          email: this.state.email
+          }
+      console.log(userData);
+      this.createUser(userData)
+  }
+  validateForm() {
+      return this.state.email.length > 0 && this.state.password.length > 0 && this.state.username.length >0;
+    }
+  createUser = (userSignup) => {
+      API.createUser(userSignup)
+    .then(res => {
+      window.location.href = "/login"      //this.context.router.history.push('/login');
+        console.log(res);
+        alert(res.data);
+      })
+    .catch(err => console.log(err));
+  }
   render() {
     return (
       <div>
@@ -26,7 +59,7 @@ class SignupUI extends React.Component {
                               <p className="h2 py-4"><small>Create an Account</small></p>
                               <div className="white-text text-left mx-auto px-2">
                                 <MDBInput
-                                  label="Full Name"
+                                  label="Username"
                                   icon="user"
                                   group
                                   type="text"
@@ -34,6 +67,9 @@ class SignupUI extends React.Component {
                                   error="wrong"
                                   success="right"
                                   className="white-text"
+                                  name="username"
+                                  onChange={this.handleInputChange}
+                                  value={this.state.username}
                                 />
                                 <MDBInput
                                   label="Your email"
@@ -44,6 +80,9 @@ class SignupUI extends React.Component {
                                   error="wrong"
                                   success="right"
                                   className="white-text"
+                                  name="email"
+                                  onChange={this.handleInputChange}
+                                  value={this.state.email}
                                 />
                                 <MDBInput
                                   label="Confirm your email"
@@ -62,12 +101,17 @@ class SignupUI extends React.Component {
                                   type="password"
                                   validate
                                   className="white-text"
+                                  name="password"
+                                  onChange={this.handleInputChange}
+                                  value={this.state.password}
                                 />
                               </div>
                               <div className="text-center mt-3">
-                                <MDBBtn color="grey" type="submit">
-                                  Register
-                                </MDBBtn>
+                                <Link to="/login">
+                                  <MDBBtn color="grey" type="submit" onClick={this.handleFormSubmit}>
+                                    Register
+                                  </MDBBtn>
+                                </Link>
                               </div>
                               <hr style={{ width: 250, backgroundColor: 'grey' }}/>
                               <p className="grey-text"><small>Already a user? </small></p>
