@@ -11,9 +11,7 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-
     res.status(200).send({"id":req.user.dataValues.id});
-
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
    //res.json("/home");
@@ -26,20 +24,25 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
     //     return res.redirect('/home');
     //   });
   });
-
 // router.post("/login", passport.authenticate("local", {successRedirect:"/home", failureRedirect:"/login", failureFlash: true}))
 
+//Sign up user, creating new user in User table with provided input
 router.post("/signup", function(req,res){
     console.log(req.body);
     if(req.body.username && req.body.password && req.body.email){
 
-
-        db.User.create({username: req.body.username.trim(),
-        password: req.body.password.trim(),
-        email: req.body.email.trim()}).then(function(dbUser){
-
-            db.Portfolio.create({symbol: "initial"});
-
+        db.User.create({
+            username: req.body.username.trim(),
+            password: req.body.password.trim(),
+            email: req.body.email.trim()
+          
+        }).then(function(dbUser){
+            const userId = dbUser.dataValues.id;
+            db.Portfolio.create({
+                symbol: "initial",
+                userId: userId
+            });
+            db.Stock.create({stock:"googl,msft,amzn", UserId:dbUser.dataValues.id});
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
@@ -51,28 +54,11 @@ router.post("/signup", function(req,res){
     }
 });
 
-
 router.get("/", function(req,res){
     console.log("get /user route hit");
-//         // Subscribe to topics (i.e. appl,fb,aig+)
-     
-        //  socket.on('connect', () => {
-        //     socket.emit('subscribe', 'googl,appl,fb');
-        //     socket.on('message', (message) => {
-        //         console.log(message);
-        //        })
-        //  })
-//         socket.emit('subscribe', 'googl,appl,fb')
-//         // Unsubscribe from topics (i.e. aig+)
-//         //socket.emit('unsubscribe', 'aig+')
-//       })
-//       socket.on('message', (message) => {
-//         console.log(message);})
- //      })
 })
 
-
-
+//Logging out user
 router.get("/logout", function(req,res){
     req.logout();
     console.log("logging out");
@@ -80,8 +66,43 @@ router.get("/logout", function(req,res){
     res.status(200).send('User Signed out');
 })
 
+//Get Perticular user stock watchlist from stock table 
+router.get("/home/watchlist", isAuthenticated, function(req, res){
+    db.Stock.findOne({where:{UserId:parseInt(req.user.id)}}).then(function(userstock){
+        console.log(userstock.dataValues);
+        res.json(userstock.dataValues);
+    });
+})
+
+//Update Perticular user stock watchlist from stock table 
+router.put("/home/watchlist", isAuthenticated, function(req, res){
+    console.log(req.body.stockSymbols.toLowerCase());
+    db.Stock.update(
+        {stock:req.body.stockSymbols.toLowerCase().trim()},
+        {where:{UserId:parseInt(req.body.id)}}).then(function (userStock) {
+        console.log(userStock);
+        if(userStock){
+            res.status(200).send("updated");
+        }
+    });
+})
+
+//Get User Portfolio //Ritesh please work on this 
+router.get("/portfolio/:id", isAuthenticated, function(req, res){
+    console.log("portfolio id hit");
+    console.log(parseInt(req.user.id) === parseInt(req.params.id));
+    console.log("user id from req.user " + req.user.id);
+    console.log("user id from params " + req.params.id);
+    if(parseInt(req.user.id) === parseInt(req.params.id)){
+        db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
+            console.log(userFolio);
+        })
+    }
+
+})
+
 // route to check Wallet Value
-router.get("/home/:id", function(req,res){
+router.get("/home/:id", isAuthenticated, function(req,res){ 
     db.Portfolio.findAll({
         limit: 1,
             // where: {
@@ -97,60 +118,123 @@ router.get("/home/:id", function(req,res){
     })
 })
 
-router.post("/home/:id", function(req,res){
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log(" post buy route hit");
-    // db.Portfolio.create
-    // db.Portfolio.findOne({}).then(function(dbUser){
-    let newCashBalance = 0
-    let quantityNew = parseInt(req.body.quantity.trim());
-    let symbolNew = req.body.symbol.trim();
-    let quantityOld = 0
-    
 
+// post route to take in buys and sells and update portfolio and make a record in transactions
+router.post("/home/wallet", function(req,res){
+    const userId = (req.user.id);
+    console.log(" post buy/sell route hit");
+  
+// -------------IN THE CASE OF A BUY ---------------------------------->
+    if(req.body.buy){
+        console.log("YOU ARE BUYING A STOCK OMG!!")
+        let newCashBalance = 0
+        let quantityNew = parseInt(req.body.quantity.trim());
+        let symbolNew = req.body.symbol.trim();
+        let quantityOld = 0
     
-    // })
-    db.Portfolio.findAll({
-        limit: 1,
+        db.Portfolio.findAll({
+            limit: 1,
             where: {
-                symbol: symbolNew
+                symbol: symbolNew,
+                userId: userId
             },
             order: [[ 'createdAt', 'DESC' ]]
-    }).then(function(found){
-        console.log(found[0].dataValues.quantity);
-        console.log("above is the found by symbol result_-___---_-")
-        quantityOld = parseInt((found[0].dataValues.quantity));
-    })
+        }).then(function(found){
 
-    db.Portfolio.findAll({
-        limit: 1,
-        // where: {
-        //     id: 1
-        // },
-        order: [ [ 'createdAt', 'DESC' ]]
-      }).then(function(found){
-        // console.log(found)
-        // console.log("above is the found portfolio entry")
-        let currentCash = found[0].dataValues.cash;
-        quantityNew = quantityNew + quantityOld;
-        newCashBalance = currentCash - req.body.purchaseTotal;
-        console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+            quantityOld = parseInt((found[0].dataValues.quantity));
+        })
 
-        db.Portfolio.create({quantity: quantityNew, symbol: symbolNew, cash: newCashBalance});
-    })
+        db.Portfolio.findAll({
+            limit: 1,
+            where: {
+                userId: userId
+            },
+            order: [ [ 'createdAt', 'DESC' ]]
+        }).then(function(found){
 
-    db.Transaction.create({quantity: req.body.quantity.trim(),
-        symbol: req.body.symbol.trim(),
-        purchasePrice: req.body.purchasePrice,
-        purchaseTotal: req.body.purchaseTotal
-    }).then(function(dbTransaction){
+            let currentCash = found[0].dataValues.cash;
+            quantityNew = quantityNew + quantityOld;
+            newCashBalance = currentCash - req.body.purchaseTotal;
+            console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+
+            db.Portfolio.create({
+                userId: userId,
+                quantity: quantityNew, 
+                symbol: symbolNew, 
+                cash: newCashBalance
+            });
+        });
+
+        db.Transaction.create({
+            userIdTransaction: userId,
+            quantity: req.body.quantity.trim(),
+            symbol: req.body.symbol.trim(),
+            purchasePrice: req.body.purchasePrice,
+            purchaseTotal: req.body.purchaseTotal
+        }).then(function(dbTransaction){
             res.status(200).send("Purchase Successful");
             
         }).catch(function (err){
             res.json(err);
+        });
+    }else{
+ //------------IN THE CASE OF A SELL-------------------------------->
+        console.log("YOU ARE SELLING A STOCK!!!! OMG!")
+        let newCashBalance = 0
+        let quantitySold = parseInt(req.body.quantity.trim());
+        let symbolNew = req.body.symbol.trim();
+        let quantityOld = 0
+        let quantityNew = 0
+        
+        db.Portfolio.findAll({
+            limit: 1,
+                where: {
+                    symbol: symbolNew,
+                    userId: userId
+                },
+                order: [[ 'createdAt', 'DESC' ]]
+        }).then(function(found){
+      
+            quantityOld = parseInt((found[0].dataValues.quantity));
         })
     
+        db.Portfolio.findAll({
+            limit: 1,
+            where: {
+                userId: userId
+            },
+            order: [ [ 'createdAt', 'DESC' ]]
+        }).then(function(found){
+            // console.log(found)
+            // console.log("above is the found portfolio entry")
+            let currentCash = found[0].dataValues.cash;
+            quantityNew = quantityOld - quantitySold;
+            newCashBalance = currentCash + req.body.purchaseTotal;
+            // console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+    
+            db.Portfolio.create({
+                userId: userId,
+                quantity: quantityNew, 
+                symbol: symbolNew, 
+                cash: newCashBalance
+            });
+        })
+        
+        db.Transaction.create({
+            userIdTransaction: userId,
+            quantity: req.body.quantity.trim(),
+            buy: false,
+            symbol: req.body.symbol.trim(),
+            purchasePrice: req.body.purchasePrice,
+            purchaseTotal: req.body.purchaseTotal
+        }).then(function(dbTransaction){
+            res.status(200).send("Sale Successful");
+            
+        }).catch(function (err){
+            res.json(err);
+        })
+
+    }    
 })
 
 
