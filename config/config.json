@@ -1,7 +1,15 @@
 {
   "development": {
     "username": "root",
+<<<<<<< HEAD
     "password": "",
+=======
+<<<<<<< HEAD
+    "password": "",
+=======
+    "password": null,
+>>>>>>> 664019f698f46baec89e5cfffbffb26c2bf7d0e8
+>>>>>>> 738ff177a764667ec01cf3474d57c82db17d515f
     "database": "crest_db",
     "host": "localhost",
     "dialect": "mysql"

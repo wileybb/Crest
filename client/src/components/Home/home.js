@@ -9,9 +9,7 @@ export default class Home extends Component {
 
     state = {
         stockResponse:{},
-        stock: ["googl", "fb"],
-        watchList:{},
-        watchListsymbol:"",
+        stock: ["spy","dai","ndaq","iwm","aapl", "googl", "fb"],
         oneStockResponse:{},
         responseLiveStock: [],
         endpoint: "https://ws-api.iextrading.com/1.0/tops"
@@ -25,7 +23,22 @@ export default class Home extends Component {
     }
 
     componentDidMount(){
-        this.getPertucularUserWatchList();
+        //COMMENTING OUT SOCKET IO LIVE STOCK DUE TO SETSTATE ISSUE IN RENDERING 
+        // const{endpoint} = this.state;
+        // const socket = socketIOClient(endpoint);
+        // socket.on('connect', () => {
+        //     // Subscribe to topics (i.e. appl,fb)
+        //     socket.emit('subscribe', this.state.stock.join(","))
+        //     // Unsubscribe from topics (i.e. aig+)
+        //     //socket.emit('unsubscribe', 'aig+')
+        //     socket.on('message', (message) => {
+        //       //this.state.stockResponse.empty();
+        //       let livesymbol = JSON.parse(message)
+        //       stockArr.push(livesymbol);
+        //       this.setState({stockResponse:stockArr});
+        //       stockArr.length = 0;
+        //       })
+        //   })
         this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
     }
 
