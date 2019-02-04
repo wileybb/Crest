@@ -14,6 +14,8 @@ import Landing from "./components/Landing/Landing";
 import Navbar from "./components/Navbar/Navbar"
 import LoginUI from "./components/LoginUI/LoginUI"
 import SignupUI from "./components/SignupUI/SignupUI"
+import HomeUI from "./components/HomeUI/HomeUI"
+
 // import logo from "./logo.svg";
 // import "./App.css";
 
@@ -25,6 +27,7 @@ class App extends Component {
       <div>
          <Navbar />
          <Switch>
+           <Route exact path="/homeUI" component={HomeUI} />
            <Route exact path="/login" component={LoginUI} />
            <Route exact path="/signup" component={SignupUI} />
            <Route exact path="/landing" component={Landing} />
