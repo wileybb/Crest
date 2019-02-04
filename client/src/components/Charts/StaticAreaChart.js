@@ -78,4 +78,3 @@ class StaticAreaChart extends Component {
 };
 
 export default StaticAreaChart;
-// ReactDOM.render(<StaticAreaChart />, document.getElementById('app'));
