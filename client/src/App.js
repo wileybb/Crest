@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js";
@@ -39,8 +39,8 @@ class App extends Component {
                 isLoggedIn ? (
                   <Route component={Home} />
                 ) : (
-                  <Route component={Login} />
-                )
+                    <Route component={Login} />
+                  )
               }
             />
            <Route path="/portfolio" 
@@ -57,9 +57,9 @@ class App extends Component {
            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
            <Route component={NoMatch} /> */}
-         </Switch>
-       </div>
-     </Router>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
