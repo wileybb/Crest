@@ -175,7 +175,13 @@ export default class Home extends Component {
     //Go to Portfolio page when user clicked on portfolio link
     userPortfolio = () => {
         this.intervalClear();
-        this.props.history.push("/portfolio")
+        this.props.history.push("/portfolio");
+    }
+
+    //Go to Transaction page when user clicked on Transactions link
+    userTransaction = () => {
+        this.intervalClear();
+        this.props.history.push("/transactions");
     }
     
     render(){
@@ -185,8 +191,9 @@ export default class Home extends Component {
         <div className="container">
           <Jumbotron />
           <hr></hr>
-          <Link to={'/login'} onClick={this.logoutUser}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link>
+          <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
           <hr></hr>
           <div className="row">
             {/* Get one stock price form column */}
@@ -228,11 +235,12 @@ export default class Home extends Component {
 
             {/* Get One stock data and appending to table */}
             <div className="col-md-4">
-            {Object.keys(this.state.oneStockResponse).length === 0 ? (<p>No Symbol To display yet!!!</p>) : (
+            {Object.keys(this.state.oneStockResponse).length === 0 ? (<div><img src={require('../../image.png')} alt="stock" className="img-responsive" /></div>) : (
+            <table className="table">
             <tbody>
             <tr>
-                <td>Stock</td><br></br>
-                <td>{this.state.oneStockResponse.data.quote.symbol}</td>
+                <td><b>Stock</b></td><br></br>
+                <td><b>{this.state.oneStockResponse.data.quote.symbol}</b></td>
             </tr>
             <tr>
                 <td>Close</td><br></br>
@@ -267,6 +275,7 @@ export default class Home extends Component {
                 <td>{this.state.oneStockResponse.data.quote.week52Low}</td>
             </tr>
             </tbody>
+            </table>
             )}
             </div> {/* 2nd col-md-4 div end */}
             
@@ -279,10 +288,11 @@ export default class Home extends Component {
             <ul className="list-group">
               {Object.keys(this.state.stockResponse).map((key, i) => {
                   return (
-                      <li style={{height:100}} key={i} className="list-group-item">
+                      <li style={{height:60}} key={i} className="list-group-item">
                           <div><h5 style={{display:"inline", float:"left"}}><span>{this.state.stockResponse[key].quote.symbol} : {this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></h5>
-                          <div style={{display:"inline", float:"right"}}><h5 style={(this.state.stockResponse[key].quote.change > 0) ? {color:"green"} : {color:"red"}}>{this.state.stockResponse[key].quote.change}</h5></div></div><br />
-                          <div><p style={{display:"inlineBlock", float:"middle", fontSize:14}}>{this.state.stockResponse[key].quote.companyName}</p></div>
+                          <div style={{display:"inline", float:"right"}}><h5 style={(this.state.stockResponse[key].quote.change > 0) ? {color:"green"} : {color:"red"}}>
+                          {this.state.stockResponse[key].quote.change > 0 ? ("+" + this.state.stockResponse[key].quote.change):(this.state.stockResponse[key].quote.change)}</h5></div></div><br />
+                          <div><p style={{display:"inlineBlock", float:"middle", fontSize:10}}>{this.state.stockResponse[key].quote.companyName}</p></div>
                       </li>
                 )})}
           </ul>

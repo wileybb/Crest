@@ -98,7 +98,9 @@ export default class Topstock extends Component {
                        return (
                         <li style={{height:60}}key={i} className="list-group-item">
                         <div><h5 style={{display:"inline", float:"left"}}><span>{this.state.stockResponse[key].quote.symbol} : {this.state.stockResponse[key].quote.latestPrice.toFixed(2)}</span></h5>
-                        <div style={{display:"inline", float:"right"}}><h5 style={(this.state.stockResponse[key].quote.change > 0) ? {color:"green"} : {color:"red"}}>{this.state.stockResponse[key].quote.change}</h5></div></div><br />
+                        <div style={{display:"inline", float:"right"}}><h5 style={(this.state.stockResponse[key].quote.change > 0) ? {color:"green"} : {color:"red"}}>
+                        {this.state.stockResponse[key].quote.change > 0 ? ("+" + this.state.stockResponse[key].quote.change):(this.state.stockResponse[key].quote.change)}</h5>
+                        </div></div><br />
                         <div><p style={{display:"inlineBlock", float:"middle", fontSize:14}}>{this.state.stockResponse[key].quote.companyName}</p></div>
                     </li>
                        )})}

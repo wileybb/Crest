@@ -5,6 +5,7 @@ import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js";
 import Home from "./components/Home/home.js";
 import Portfolio from "./components/Portfolio/portfolio.js";
+import Transactions from "./components/Transactions/transactions.js";
 // import Jumbotron from "./components/Jumbotron";
 import Topstock from "./components/Topstock/topstock.js";
 import Allocation from "./components/Allocation/Allocation";
@@ -51,6 +52,11 @@ class App extends Component {
               render={() => 
                 isLoggedIn ? ( 
                  <Route component={Portfolio} />
+                 ) : (<Route component={Login} /> )} />
+            <Route path="/transactions" 
+              render={() => 
+                isLoggedIn ? ( 
+                 <Route component={Transactions} />
                  ) : (<Route component={Login} /> )} />
            {/* <Route exact path="/login" component={Login} /> */}
            {/* <Route exact path="/books" component={Books} />
