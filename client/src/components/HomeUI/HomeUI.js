@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
+import Newsfeed from '../Newsfeed/Newsfeed'
 
 class HomeUI extends React.Component {
   render() {
@@ -13,33 +14,33 @@ class HomeUI extends React.Component {
               <h1>Welcome back to Crest,<br />(username).</h1> 
             </MDBRow>
             
-            <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: 0, height: 2500 }}>
+            <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -25, height: 2500 }}>
               <MDBCol md="12">
 
                 <MDBRow>
                   <MDBContainer>
                     <MDBRow>
                       <MDBCol lg="5" className="mx-auto white-text">
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)' }}>
-                          <MDBCardBody>
-                            <p className="h2 py-4"><small>View Portfolio</small></p>
-                          </MDBCardBody>
-                        </MDBCard>
+
+                        <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                          <p className="h2 py-4"><small>View Portfolio</small></p>
+                        </MDBBtn>
+
                       </MDBCol>
                       <MDBCol lg="5" className="mx-auto white-text">
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)' }}>
-                          <MDBCardBody>
-                            <p className="h2 py-4"><small>View Watchlist</small></p>
-                          </MDBCardBody>
-                        </MDBCard>
+
+                        <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                          <p className="h2 py-4"><small>View Watchlist</small></p>
+                        </MDBBtn>
+                        
                       </MDBCol>
                     </MDBRow>
 
                     <MDBRow>
-                      <MDBCol lg="11" className="mx-auto white-text mt-5">
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 300 }}>
+                      <MDBCol lg="11" className="mx-auto mt-3">
+                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 400, overflow: "scroll" }}>
                           <MDBCardBody>
-                            <p className="h2 py-4"><small>News Articles</small></p>
+                            <Newsfeed />
                           </MDBCardBody>
                         </MDBCard>
                       </MDBCol>
