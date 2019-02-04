@@ -30,8 +30,7 @@ class SignupUI extends React.Component {
   createUser = (userSignup) => {
       API.createUser(userSignup)
     .then(res => {
-      this.props.history.push("/login")
-      //this.context.router.history.push('/login');
+      window.location.href = "/login"      //this.context.router.history.push('/login');
         console.log(res);
         alert(res.data);
       })

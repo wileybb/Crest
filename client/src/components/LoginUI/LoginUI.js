@@ -33,8 +33,7 @@ class LoginUI extends React.Component {
     .then((res) => {
       const storeUser = localStorage.setItem("loggedIn","true");
       //const storeUser = localStorage.removeItem("loggedIn") do this when logout
-      this.props.history.push("/home");
-      //this.context.router.history.push('/home');
+      window.location.href = "/home"      //this.context.router.history.push('/home');
       console.log(this.state.userid)  
       console.log(res)})
     .catch(err => {
