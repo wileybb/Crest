@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Jbl.92196",
+    "password": null,
     "database": "wavetrendingdb",
     "host": "localhost",
     "dialect": "mysql"
