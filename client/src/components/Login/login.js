@@ -31,14 +31,16 @@ export default class Login extends Component {
     }
     loginUser = (userLogin) => {
         API.loginUser(userLogin)
-            .then((res) => {
-                const storeUser = localStorage.setItem("loggedIn", "true");
-                //const storeUser = localStorage.removeItem("loggedIn") do this when logout
-                this.context.router.history.push('/home');
-                console.log(this.state.userid)
-                console.log(res)
-            })
-            .catch(err => console.log(err));
+      .then((res) => {
+        const storeUser = localStorage.setItem("loggedIn","true");
+        //const storeUser = localStorage.removeItem("loggedIn") do this when logout
+        this.props.history.push("/home");
+        //this.context.router.history.push('/home');
+        console.log(this.state.userid)  
+        console.log(res)})
+      .catch(err => {
+          alert("Email or Password is invalid");
+          console.log(err);});
     }
 
     render() {
