@@ -35,11 +35,11 @@ class StaticAreaChart extends Component {
 
     });
 
-
+   
     this.state = {
       type: 'scrollarea2d',// The chart type
-      width: '100%', // Width of the chart
-      height: '300', // Height of the chartf
+      width: this.props.width, // Width of the chart
+      height: this.props.height, // Height of the chartf
       dataFormat: 'json', // Data type
       dataSource: {
         // Chart Configuration
