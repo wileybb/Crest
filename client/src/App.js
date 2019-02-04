@@ -57,10 +57,6 @@ class App extends Component {
            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
            <Route component={NoMatch} /> */}
-            <Route
-              path="/charts"
-              render={() => isLoggedIn ? (<Route component={SampleChart} />) : (<Route component={Login} />)}
-            />
           </Switch>
         </div>
       </Router>
