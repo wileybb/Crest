@@ -35,6 +35,9 @@ export default {
   getUserPortfolioData: function(id){
     return axios.get("/user/portfolio/"+id);
   },
+  getUserTransactionData: function(id){
+    return axios.get("/user/transactions/"+id);
+  },
   createPurchase: function(userData){
     return axios.post("/user/home/wallet", userData);
   },

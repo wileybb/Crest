@@ -31,7 +31,9 @@ class Signup extends Component {
       .then(res => {
         this.props.history.push("/login")
         //this.context.router.history.push('/login');
-          console.log(res)})
+          console.log(res);
+          alert(res.data);
+        })
       .catch(err => console.log(err));
     }
   render(){
