@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import {BrowserRouter as Router, Route, Link, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Signup from "./components/Signup/signup.js";
 import Login from "./components/Login/login.js";
 import Home from "./components/Home/home.js";
 import Portfolio from "./components/Portfolio/portfolio.js";
+import Transactions from "./components/Transactions/transactions.js";
 // import Jumbotron from "./components/Jumbotron";
 import Topstock from "./components/Topstock/topstock.js";
 import Allocation from "./components/Allocation/Allocation";
@@ -41,8 +42,8 @@ class App extends Component {
                 isLoggedIn ? (
                   <Route component={Home} />
                 ) : (
-                  <Route component={Login} />
-                )
+                    <Route component={Login} />
+                  )
               }
             />
            <Route path="/portfolio" 
@@ -50,13 +51,18 @@ class App extends Component {
                 isLoggedIn ? ( 
                  <Route component={Portfolio} />
                  ) : (<Route component={Login} /> )} />
+            <Route path="/transactions" 
+              render={() => 
+                isLoggedIn ? ( 
+                 <Route component={Transactions} />
+                 ) : (<Route component={Login} /> )} />
            {/* <Route exact path="/login" component={Login} /> */}
            {/* <Route exact path="/books" component={Books} />
            <Route exact path="/books/:id" component={Detail} />
            <Route component={NoMatch} /> */}
-         </Switch>
-       </div>
-     </Router>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
