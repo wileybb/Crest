@@ -1,22 +1,22 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import API from "../../utils/API"
-import {Router, Link, Redirect} from 'react-router-dom';
+import { Router, Link, Redirect } from 'react-router-dom';
 import PropTypes from "prop-types";
 import Jumbotron from "../Jumbotron/index";
 
-  
+
 
 export default class Login extends Component {
     state = {
-        email:"",
-        password:""
+        email: "",
+        password: ""
     }
     static contextTypes = {
         router: PropTypes.object
     };
-    handleInputChange=(event) => {
-        const{name, value} = event.target;
-        this.setState({[name]: value});
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
     }
     handleFormSubmit = (event) => {
         event.preventDefault();
@@ -27,8 +27,8 @@ export default class Login extends Component {
         this.loginUser(loginData);
     }
     validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0 && this.state.username.length >0;
-      }
+        return this.state.email.length > 0 && this.state.password.length > 0 && this.state.username.length > 0;
+    }
     loginUser = (userLogin) => {
         API.loginUser(userLogin)
       .then((res) => {
@@ -43,31 +43,32 @@ export default class Login extends Component {
           console.log(err);});
     }
 
-    render(){
+    render() {
         return (<div className="container">
             <Jumbotron />
             <form className="form">
-               <div className="form-group">
-               {/* <label htmlFor="email">Email:</label> */}
-               <input type="email"
-               onChange={this.handleInputChange}
-               value={this.state.email}
-               name="email"
-               placeholder="abc@abc.com"/>
-               </div>
-               <div className="form-group">
-               {/* <label htmlFor="password">Password:</label> */}
-               <input type="password"
-               name="password" value={this.state.password}
-               onChange={this.handleInputChange}
-               placeholder="password"
-               />
-               </div>
-               <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Login</button>
-               <hr />
-               <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
+                <div className="form-group">
+                    {/* <label htmlFor="email">Email:</label> */}
+                    <input type="email"
+                        onChange={this.handleInputChange}
+                        value={this.state.email}
+                        name="email"
+                        placeholder="abc@abc.com" />
+                </div>
+                <div className="form-group">
+                    {/* <label htmlFor="password">Password:</label> */}
+                    <input type="password"
+                        name="password" value={this.state.password}
+                        onChange={this.handleInputChange}
+                        placeholder="password"
+                    />
+                </div>
+                <a href="/home"><button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Login</button></a>
+                <hr />
+                <p>Open an account? <Link to={'/signup'}>SignUp</Link></p>
             </form>
 
-        </div>)}  //Render End
+        </div>)
+    }  //Render End
 
 }
