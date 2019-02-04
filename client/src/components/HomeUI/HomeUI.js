@@ -22,18 +22,18 @@ class HomeUI extends React.Component {
                   <MDBContainer>
                     <MDBRow className="mx-auto">
                       <MDBCol lg="5" className="mx-auto white-text">
-
-                        <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                          <p className="h2 py-4"><small>View Portfolio</small></p>
-                        </MDBBtn>
-
+                        <Link to="/portfolio">
+                          <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                            <p className="h2 py-4"><small>View Portfolio</small></p>
+                          </MDBBtn>
+                        </Link>
                       </MDBCol>
                       <MDBCol lg="5" className="mx-auto white-text">
-
-                        <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                          <p className="h2 py-4"><small>View Watchlist</small></p>
-                        </MDBBtn>
-                        
+                        <Link to="/home">
+                          <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                            <p className="h2 py-4"><small>View Watchlist</small></p>
+                          </MDBBtn>
+                        </Link>
                       </MDBCol>
                     </MDBRow>
 
