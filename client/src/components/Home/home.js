@@ -123,7 +123,7 @@ export default class Home extends Component {
         event.preventDefault();
         const sellData = {
             buy: false,
-            quantity: this.state.sellquantity,
+            quantity: this.state.quantity,
             symbol: this.state.symbol,
             purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
             purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
@@ -135,7 +135,7 @@ export default class Home extends Component {
     //Sell a stock
     addSale = (userSell) => {
         API.createPurchase(userSell)
-        .then(res => { console.log(res)})
+        .then(res => {console.log(res)})
         .catch(err => console.log(err))
     }
     
@@ -210,7 +210,7 @@ export default class Home extends Component {
             <button className="btn btn-lg btn-info" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Get-Quotes</button>
             </form>
 
-            {/* <form className="form">
+            <form className="form">
                     <div className="form-group">
                         <hr></hr>
                     <input type="text"
@@ -219,17 +219,17 @@ export default class Home extends Component {
                         name="quantity"
                         placeholder="How many shares to buy?"/>
                     </div>
-                   <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
+                   <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button><spam>&nbsp;&nbsp;</spam>
+                   <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
                 <hr></hr>
-                  <div className="form-group">
+                  {/* <div className="form-group">
                     <input type="text"
                         onChange={this.handleInputChange}
                         value={this.state.sellquantity}
                         name="sellquantity"
                         placeholder="How many shares to sell?"/>
-                    </div>
-                    <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
-                </form> */}
+                    </div> */}
+                </form>
 
             </div> {/* 1st col-md-4 div end */}
 
@@ -318,28 +318,6 @@ export default class Home extends Component {
         <div style={{textAling:"center"}} className="container">
             <div style={{ textAlign: "center" }} className="row">
             <div className="col-md-4">
-
-               <form className="form">
-                    <div className="form-group">
-                        <hr></hr>
-                        {/* <label htmlFor="email">Email:</label> */}
-                    <input type="text"
-                        onChange={this.handleInputChange}
-                        value={this.state.quantity}
-                        name="quantity"
-                        placeholder="How many shares to buy?"/>
-                    </div>
-                   <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button>
-                <hr></hr>
-                  <div className="form-group">
-                    <input type="text"
-                        onChange={this.handleInputChange}
-                        value={this.state.sellquantity}
-                        name="sellquantity"
-                        placeholder="How many shares to sell?"/>
-                    </div>
-                    <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
-                </form>
                 <hr></hr>
                 <div>
                     <h3>You have x{this.walletCheck} amount of dollars</h3>

@@ -73,6 +73,7 @@ export default class Topstock extends Component {
             API.iexStockNews(this.state.symbol).then((res) => {
                 console.log(res.data);
                 this.setState({oneStockNews: res.data});
+                this.setState({symbol:""});
             })
         }
 

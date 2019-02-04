@@ -60,11 +60,11 @@ export default class Portfolio extends Component {
           <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
           <hr></hr>
         <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-6">
 
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-6">
             
             </div>
         </div> {/* Row div end */}

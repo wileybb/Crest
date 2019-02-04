@@ -91,6 +91,7 @@ export default class Transactions extends Component {
                  <tr>
                      <th scope="col">Stock</th>
                      <th scope="col">Quantity</th>
+                     <th scope="col">Type</th>
                      <th scope="col">Purchase Price</th>
                      <th scope="col">Purchase Total</th>
                      <th scope="col">Purchase Date</th>
@@ -102,6 +103,7 @@ export default class Transactions extends Component {
                         <tr>
                         <td><b>{data.symbol.toUpperCase()}</b></td>
                         <td>{data.quantity}</td>
+                        <td>{(data.buy) ? ("Buy") : ("Sell")}</td>
                         <td>{data.purchasePrice}</td>
                         <td>{data.purchaseTotal}</td>
                         <td>{data.updatedAt}</td>
