@@ -43,7 +43,6 @@ export default class Home extends Component {
     getPertucularUserWatchList = () => {
         API.getPertucularUserWatchList().then((res) => {
             this.setState({watchList:res.data});
-            console.log(this.state.watchList);
         });
     }
 
