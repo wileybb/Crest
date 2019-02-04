@@ -2,6 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Newsfeed from '../Newsfeed/Newsfeed'
+import '../HomeUI/HomeUI.css'
 
 class HomeUI extends React.Component {
   render() {
@@ -11,7 +12,7 @@ class HomeUI extends React.Component {
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
             <MDBRow className="flex-center text-white mt-5">
-              <h1>Welcome back to Crest,<br />(username).</h1> 
+              <h1 className="">Welcome back to <strong>Crest.</strong></h1> 
             </MDBRow>
             
             <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -25, height: 2500 }}>
@@ -19,7 +20,7 @@ class HomeUI extends React.Component {
 
                 <MDBRow>
                   <MDBContainer>
-                    <MDBRow>
+                    <MDBRow className="mx-auto">
                       <MDBCol lg="5" className="mx-auto white-text">
 
                         <MDBBtn color="elegant" size="sm" style={{width: 300}}>
