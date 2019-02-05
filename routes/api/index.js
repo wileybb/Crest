@@ -11,15 +11,15 @@ var isAuthenticated = require("../../config/middleware/isAuthenticated");
 //passport.authenticate("local")
 router.post("/login", passport.authenticate("local"), function (req, res) {
     console.log("Login entered")
-    if(req.user){
-    res.status(200).send({"id":req.user.dataValues.id});
-    }else{
+    if (req.user) {
+        res.status(200).send({ "id": req.user.dataValues.id });
+    } else {
         res.status(401).send("Email or Password is invalid");
     }
     // if(req.user){
     //res.redirect(url.format({pathname:"/user"}));
-   //res.json("/home");
-//    res.json(req.user.dataValues.username).send("User Logged in");
+    //res.json("/home");
+    //    res.json(req.user.dataValues.username).send("User Logged in");
     // console.log(req.user.dataValues.username)
     // }
     //res.redirect("/home")
@@ -27,43 +27,43 @@ router.post("/login", passport.authenticate("local"), function (req, res) {
     //     if (err) { return next(err); }
     //     return res.redirect('/home');
     //   });
-  });
+});
 // router.post("/login", passport.authenticate("local", {successRedirect:"/home", failureRedirect:"/login", failureFlash: true}))
 
 //Sign up user, creating new user in User table with provided input
-router.post("/signup", function(req,res){
+router.post("/signup", function (req, res) {
     console.log(req.body);
-    if(req.body.username && req.body.password && req.body.email){
+    if (req.body.username && req.body.password && req.body.email) {
 
         db.User.create({
             username: req.body.username.trim(),
             password: req.body.password.trim(),
             email: req.body.email.trim()
-          
-        }).then(function(dbUser){
+
+        }).then(function (dbUser) {
             const userId = dbUser.dataValues.id;
             db.Portfolio.create({
                 symbol: "initial",
                 userId: userId
             });
-            db.Stock.create({stock:"googl,msft,amzn", UserId:dbUser.dataValues.id});
+            db.Stock.create({ stock: "googl,msft,amzn", UserId: dbUser.dataValues.id });
             console.log("Uesr Created");
             res.status(200).send("Signup Successful");
             //res.redirect('/login')
-        }).catch(function (err){
+        }).catch(function (err) {
             res.json(err);
         })
-    }else{
+    } else {
         res.redirect('/signup');
     }
 });
 
-router.get("/", function(req,res){
+router.get("/", function (req, res) {
     console.log("get /user route hit");
 })
 
 //Logging out user
-router.get("/logout", function(req,res){
+router.get("/logout", function (req, res) {
     req.logout();
     console.log("logging out");
     //res.redirect("/login");
@@ -71,25 +71,26 @@ router.get("/logout", function(req,res){
 })
 
 //Get Perticular user stock watchlist from stock table 
-router.get("/home/watchlist", isAuthenticated, function(req, res){
-    db.Stock.findOne({where:{UserId:parseInt(req.user.id)}}).then(function(userstock){
+router.get("/home/watchlist", isAuthenticated, function (req, res) {
+    db.Stock.findOne({ where: { UserId: parseInt(req.user.id) } }).then(function (userstock) {
         console.log(userstock.dataValues);
         res.json(userstock.dataValues);
     });
 })
 
 //Update Perticular user stock watchlist from stock table 
-router.put("/home/watchlist", isAuthenticated, function(req, res){
+router.put("/home/watchlist", isAuthenticated, function (req, res) {
     console.log(req.body.stockSymbols.toLowerCase());
     db.Stock.update(
-        {stock:req.body.stockSymbols.toLowerCase().trim()},
-        {where:{UserId:parseInt(req.body.id)}}).then(function (userStock) {
-        console.log(userStock);
-        if(userStock){
-            res.status(200).send("updated");
-        }
-    });
+        { stock: req.body.stockSymbols.toLowerCase().trim() },
+        { where: { UserId: parseInt(req.body.id) } }).then(function (userStock) {
+            console.log(userStock);
+            if (userStock) {
+                res.status(200).send("updated");
+            }
+        });
 })
+
 
 //Get User Portfolio data for rendering on portfolio page
 router.get("/portfolio/:id", isAuthenticated, function(req, res){
@@ -106,41 +107,42 @@ router.get("/portfolio/:id", isAuthenticated, function(req, res){
 });
 
 //Get User Transaction data for rendering on transaction page
-router.get("/transactions/:id", isAuthenticated, function(req,res){
+router.get("/transactions/:id", isAuthenticated, function (req, res) {
     console.log("transaction id hit");
     console.log(parseInt(req.user.id) === parseInt(req.params.id));
-    if(parseInt(req.user.id) === parseInt(req.params.id)){
-    db.Transaction.findAll({
-        where:{userIdTransaction:req.params.id},
-        order:[['id', 'DESC']],    
-    }).then(function(userTransaction){
-        res.json(userTransaction);
-    })
+    if (parseInt(req.user.id) === parseInt(req.params.id)) {
+        db.Transaction.findAll({
+            where: { userIdTransaction: req.params.id },
+            order: [['id', 'DESC']],
+        }).then(function (userTransaction) {
+            res.json(userTransaction);
+        })
     }
 });
 
 // route to check Wallet Value
-router.get("/home/:id", isAuthenticated, function(req,res){ 
+router.get("/home/:id", isAuthenticated, function (req, res) {
     db.Portfolio.findAll({
         limit: 1,
-            // where: {
-            //     id: 1
-            // },
-            order: [[ 'createdAt', 'DESC']]
-    }).then(function(found){
+        // where: {
+        //     id: 1
+        // },
+        order: [['createdAt', 'DESC']]
+    }).then(function (found) {
         console.log("GET WALLET VALUE ROUTE HIT!********************");
         console.log(found[0].dataValues.cash);
         let cashValue = found[0].dataValues.cash;
-        return(res);
-        return(cashValue);
+        return (res);
+        return (cashValue);
     })
 })
 
 
 // post route to take in buys and sells and update portfolio and make a record in transactions
-router.post("/home/wallet", function(req,res){
+router.post("/home/wallet", function (req, res) {
     const userId = (req.user.id);
     console.log(" post buy/sell route hit");
+
     let newCashBalance = 0
     let quantityNew = parseInt(req.body.quantity.trim());
     let symbolNew = req.body.symbol.trim();
@@ -158,6 +160,7 @@ router.post("/home/wallet", function(req,res){
                 symbol: symbolNew,
                 userId: userId
             },
+
             order: [[ 'createdAt', 'DESC' ]]
         }).then(function(found){
             if(found.length == 0){
@@ -175,12 +178,13 @@ router.post("/home/wallet", function(req,res){
             where: {
                 userId: userId
             },
-            order: [ [ 'createdAt', 'DESC' ]]
-        }).then(function(found){
+            order: [['createdAt', 'DESC']]
+        }).then(function (found) {
 
             let purchaseTotal = parseInt(req.body.purchaseTotal)
             let currentCash = parseInt(found[0].dataValues.cash);
             quantityNew = quantityNew + quantityOld;
+
             newCashBalance = currentCash - parseInt(req.body.purchaseTotal);
             console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
             // checking if user has adequate funds -------------->
@@ -233,17 +237,18 @@ router.post("/home/wallet", function(req,res){
         // let symbolNew = req.body.symbol.trim();
         let quantityOld = 0
         let quantityNew = 0
-        
+
         db.Portfolio.findAll({
             limit: 1,
-                where: {
-                    symbol: symbolNew,
-                    userId: userId
-                },
-                order: [[ 'createdAt', 'DESC' ]]
-        }).then(function(found){
-      
+            where: {
+                symbol: symbolNew,
+                userId: userId
+            },
+            order: [['createdAt', 'DESC']]
+        }).then(function (found) {
+
             quantityOld = parseInt((found[0].dataValues.quantity));
+
         });
     
         db.Portfolio.findAll({
@@ -262,6 +267,7 @@ router.post("/home/wallet", function(req,res){
 
             newCashBalance = currentCash + req.body.purchaseTotal;
             // console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+
             console.log(quantityNew + " is quantity new");
             if(quantityNew > -1){
 
@@ -299,7 +305,7 @@ router.post("/home/wallet", function(req,res){
         
 
 
-    }    
+    }
 })
 
 
@@ -342,4 +348,4 @@ router.post("/home/wallet", function(req,res){
 //   });
 
 
- module.exports = router;
+module.exports = router;
