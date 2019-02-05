@@ -83,7 +83,7 @@ export default class Portfolio extends Component {
     }
 
     render() {
-
+        console.log("The user's portfolio data: " + this.state.portfolio)
         return (
             <div className="container">
                 <Jumbotron />
@@ -95,12 +95,14 @@ export default class Portfolio extends Component {
 
                 </div>
                 <hr />
+                <button className="btn btn-info align-center" onClick={this.printDocument.bind(this)}>Generate PDF Report</button>
+                <hr></hr>
                 <div className="row">
                     <div className="col-md-6">
                         <div className="container">
                             {/* <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> */}
-                            <button className="btn btn-info" onClick={this.printDocument.bind(this)}>Generate PDF Report</button>
-                            <hr></hr>
+                            {/* <button className="btn btn-info" onClick={this.printDocument.bind(this)}>Generate PDF Report</button>
+                            <hr></hr> */}
                             <div className="row">
                                 <div className="col-md-12">
                                     {(this.state.portfolio).length === 0 ? (<div><img src={require('../../image.png')} alt="stock" className="img-responsive" /></div>) : (
@@ -141,7 +143,7 @@ export default class Portfolio extends Component {
                         {(this.state.portfolio).length === 0 ?
                             (
                                 <div>
-                                    <p>Your Portfolio is Empty!</p>
+                                    <p className="text-center">Your Portfolio is Empty!</p>
                                     {/* for reference */}
                                     {/* < FolioCharts width="100%" height="500" /> */}
                                 </div>
