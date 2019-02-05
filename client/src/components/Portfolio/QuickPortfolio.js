@@ -82,7 +82,7 @@ export default class QuickPortfolio extends Component {
           <div className="container">
              <div className="row">
                <div className="col-md-12">
-               {(this.state.portfolio).length === 0 ? (<div><img src={require('../../image.png')} alt="stock" className="img-responsive" /></div>) : (
+               {(this.state.portfolio).length === 0 ? (<div>Portfolio will appear here.</div>) : (
                 <table id="mytable" className="table table-striped">
                  <thead className="table-dark">
                      <tr>

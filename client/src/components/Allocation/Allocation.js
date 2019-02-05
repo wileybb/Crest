@@ -1,12 +1,196 @@
 import React from 'react';
-import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
+import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput, MDBTable, MDBTableHead, MDBTableBody } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
+import API from '../../utils/API';
 
 import Navbar from "../Navbar/Navbar";
 import QuickPortfolio from "../Portfolio/QuickPortfolio"
+import HomeCopy from "./HomeCopy"
+import StaticAreaChart from "../Charts/StaticAreaChart.js";
+import Footer from "../Footer/Footer"
+
 
 
 class Allocation extends React.Component {
+
+  state = {
+    stockResponse: {},
+    stock: ["googl", "fb"],
+    watchList: {},
+    watchListsymbol: "",
+    oneStockResponse: {},
+    responseLiveStock: [],
+    endpoint: "https://ws-api.iextrading.com/1.0/tops"
+  }
+
+  walletCheck = () => {
+      // const userData = {
+      //     userId : userId
+      // }
+      this.checkCash()
+  }
+
+  componentDidMount() {
+      this.getPertucularUserWatchList();
+      this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
+  }
+
+  //Clear interval on real time stock purchase when unmounting from this component
+  // componentWillUnmount(){
+  //   clearInterval(this.intervalId);
+  // }
+
+  //Clear interval when logging out or move to portfolio page or other page
+  intervalClear() {
+      clearInterval(this.intervalId);
+  }
+
+  //Get perticular user stock from database table stock
+  getPertucularUserWatchList = () => {
+      API.getPertucularUserWatchList().then((res) => {
+          this.setState({ watchList: res.data });
+          console.log(this.state.watchList);
+      });
+  }
+
+  //Watch list input update in state
+  handleWatchListInputChange = (event) => {
+      const { name, value } = event.target;
+      this.setState({ [name]: value });
+  }
+  //Watch list submit button 
+  handleWatchListFormSubmit = (event) => {
+      event.preventDefault();
+      this.setState({ watchListsymbol: this.state.watchListsymbol });
+      console.log(this.state.watchListsymbol);
+      const data = {
+          id: this.state.watchList.UserId,
+          stockSymbols: this.state.watchList.stock + "," + this.state.watchListsymbol.toLowerCase()
+      }
+      console.log(data);
+      this.updateWatchList(data);
+  }
+  updateWatchList = (stockTicker) => {
+      API.updatePertucularUserWatchList(stockTicker)
+          .then(res => {
+              console.log(res);
+              this.getPertucularUserWatchList();
+          })
+          .catch(err => console.log(err))
+  }
+
+  //Get Real time stock prices based on stocks in state stocks
+  autoStockData = () => {
+      //console.log(this.state.watchList.stock);
+      //let symbols = this.state.stock.join(",") 
+      API.batchStock(this.state.watchList.stock).then((res) => {
+          this.setState({ stockResponse: res.data });
+          console.log(this.state.stockResponse);
+      })
+  }
+
+  //Input value updated in state
+  handleInputChange = (event) => {
+      const { name, value } = event.target;
+      this.setState({ [name]: value });
+  }
+
+  //Form Value submission to get once stock price 
+  handleFormSubmit = (event) => {
+      event.preventDefault();
+      // const stockTic = {
+      //     symbol: this.state.symbol,
+      // }
+      this.setState({ symbol: this.state.symbol });
+      this.stockSymbol(this.state.symbol);
+  }
+
+  handleBuySubmit = (event) => {
+      event.preventDefault();
+      const purchaseData = {
+          buy: true,
+          quantity: this.state.quantity,
+          symbol: this.state.symbol,
+          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+      };
+      console.log(purchaseData);
+      this.addBuy(purchaseData);
+  }
+
+  //Handle Buy stock
+  addBuy = (userBuy) => {
+      API.createPurchase(userBuy)
+          .then(res => { console.log(res) })
+          .catch(err => console.log(err))
+  }
+
+  handleSellSubmit = (event) => {
+      event.preventDefault();
+      const sellData = {
+          buy: false,
+          quantity: this.state.quantity,
+          symbol: this.state.symbol,
+          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
+          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+      }
+      console.log(sellData);
+      this.addSale(sellData);
+  }
+
+  //Sell a stock
+  addSale = (userSell) => {
+      API.createPurchase(userSell)
+          .then(res => { console.log(res) })
+          .catch(err => console.log(err))
+  }
+
+  //Check the cash value 
+  checkCash = () => {
+      API.getCashValue()
+          .then(res => {
+              return (res);
+          })
+          .catch(err => console.log(err))
+  }
+
+  //Form Validataion to check if symbol is entered or not 
+  validateForm() {
+      return this.state.symbol.length > 0;
+  }
+
+  //Get info on one stock symbol
+  stockSymbol = (symbol) => {
+      API.singleStock(symbol)
+          .then((res) => {
+              //this.props.history.replace('/home');  
+              this.setState({ oneStockResponse: res });
+              console.log(this.state.oneStockResponse)
+          })
+          .catch(err => console.log(err));
+  }
+
+  //Logout User Link 
+  logoutUser = () => {
+      this.intervalClear();
+      localStorage.removeItem("loggedIn");
+      API.signOutUser().then((res) => {
+          console.log(res);
+      }).catch(err => console.log(err));
+  }
+
+  //Go to Portfolio page when user clicked on portfolio link
+  userPortfolio = () => {
+      this.intervalClear();
+      this.props.history.push("/portfolio");
+  }
+
+  //Go to Transaction page when user clicked on Transactions link
+  userTransaction = () => {
+      this.intervalClear();
+      this.props.history.push("/transactions");
+  }
+
   render() {
     return (
       <div>
@@ -33,15 +217,57 @@ class Allocation extends React.Component {
                               <MDBCardBody>
                                 <MDBCardTitle><strong>Remaining Budget:</strong> $20,000</MDBCardTitle>
                                 <MDBCardText>
-                                  <form className="form-inline mt-4 mb-4 ml-5">
+                                  <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
-                                    <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search by Stock Symbol" aria-label="Search" />
+                                    <input type="text"
+                                      onChange={this.handleInputChange}
+                                      value={this.state.symbol}
+                                      name="symbol"
+                                      placeholder="Search by Stock Symbol"
+                                      className="form-control form-control-sm ml-3 w-75"  />
+                                    <MDBBtn size="sm" color="elegant" disabled={!this.validateForm} onClick={this.handleFormSubmit}>Search</MDBBtn>
                                   </form>
                                 </MDBCardText>
                                 <MDBContainer>
-                                  Results appear here
+                                    {Object.keys(this.state.oneStockResponse).length === 0 ? (<div>Results will appear here.</div>) : (
+                                      <MDBTable className="table col-lg-12">
+                                        <MDBTableHead>
+                                          <tr>
+                                            <th>Stock Symbol</th>
+                                            <th>Close</th>
+                                            <th>Current</th>
+                                            <th>Change</th>
+                                            <th>Change %</th>
+                                            <th>High</th>
+                                            <th>Low</th>
+                                            {/* <th>52 Week High</th>
+                                            <th>52 Week Low</th> */}
+                                          </tr>
+                                        </MDBTableHead>
+                                        <MDBTableBody>
+                                          <tr>
+                                            <td>{this.state.oneStockResponse.data.quote.symbol}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.close}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.latestPrice}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.change}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.changePercent}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.high}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.low}</td>
+                                            {/* <td>{this.state.oneStockResponse.data.quote.week52High}</td>
+                                            <td>{this.state.oneStockResponse.data.quote.week52Low}</td> */}
+                                          </tr>
+                                        </MDBTableBody>
+                                      </MDBTable>
+                                    )}
+                                  <MDBContainer>
+                                      {Object.keys(this.state.oneStockResponse).length === 0 ?
+                                          <div /> :
+                                          <StaticAreaChart data={this.state.oneStockResponse.data} width="75%" height="200" />
+                                      }
+                                  </MDBContainer>
                                 </MDBContainer>
-                                <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }}>Buy</MDBBtn>
+                                <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleSellSubmit}>Sell</MDBBtn>
+                                <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleBuySubmit}>Buy</MDBBtn>
                                 <div className="float-right" style={{ width: 75 }}>
                                   <MDBInput name="quantity" label="Quantity" />
                                 </div>
@@ -70,6 +296,7 @@ class Allocation extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Footer/>
       </div>
     );
   }
