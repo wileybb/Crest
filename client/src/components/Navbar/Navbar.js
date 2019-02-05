@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBTooltip, MDBDropdown,
 MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
 
 class Navbar extends Component {
@@ -24,7 +24,6 @@ class Navbar extends Component {
     return (
       <div>
         <header>
-          <Router>
             <MDBNavbar color="bg-dark" fixed="top" dark expand="md" scrolling transparent>
               <MDBNavbarBrand href="/">
                 <strong className="text-uppercase">Crest</strong>
@@ -33,15 +32,19 @@ class Navbar extends Component {
               <MDBCollapse isOpen={this.state.collapse} navbar>
                 <MDBNavbarNav right>
                   <MDBNavItem>
-                    <MDBNavLink to="/" className="text-uppercase">Home</MDBNavLink>
+                    <MDBNavLink to="/home" className="text-uppercase">Home</MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBNavLink to="/github-repo" className="text-uppercase">GitHub Repo</MDBNavLink>
+                    <MDBTooltip
+                      placement="bottom"
+                      tag="div"
+                      tooltipContent="Right click and open in new tab">
+                       <MDBNavLink to="//github.com/sgenini/projectThree" className="text-uppercase">GitHub Repo</MDBNavLink>
+                    </MDBTooltip>
                   </MDBNavItem>
                 </MDBNavbarNav>
               </MDBCollapse>
             </MDBNavbar>
-          </Router>
         </header>
       </div>
     )
