@@ -3,7 +3,7 @@ import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCar
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 import API from "../../utils/API"
-
+import Footer from '../Footer/Footer'
 
 class LoginUI extends React.Component {
   state = {
@@ -109,6 +109,7 @@ class LoginUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Footer />
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Newsfeed from '../Newsfeed/Newsfeed'
+import Footer from '../Footer/Footer'
 import '../HomeUI/HomeUI.css'
 
 class HomeUI extends React.Component {
@@ -15,31 +16,34 @@ class HomeUI extends React.Component {
               <h1 className="">Welcome back to <strong>Crest.</strong></h1> 
             </MDBRow>
             
-            <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -25, height: 2500 }}>
-              <MDBCol md="12">
-
+            <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -75, height: 2500 }}>
+              <MDBCol md="12" className="mx-auto">
                 <MDBRow>
                   <MDBContainer>
-                    <MDBRow className="mx-auto">
-                      <MDBCol lg="5" className="mx-auto white-text">
-                        <Link to="/portfolio">
-                          <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                            <p className="h2 py-4"><small>View Portfolio</small></p>
-                          </MDBBtn>
-                        </Link>
-                      </MDBCol>
-                      <MDBCol lg="5" className="mx-auto white-text">
-                        <Link to="/home">
-                          <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                            <p className="h2 py-4"><small>View Watchlist</small></p>
-                          </MDBBtn>
-                        </Link>
-                      </MDBCol>
-                    </MDBRow>
+                    <MDBCol lg="8" className="mx-auto">
+                      <MDBRow className="mx-auto">
+                        <MDBCol lg="5" className="mx-auto white-text">
+                          <Link to="/portfolio">
+                            <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                              <p className="h2 py-4"><small>View Portfolio</small></p>
+                            </MDBBtn>
+                          </Link>
+                        </MDBCol>
+                        <MDBCol lg="5" className="mx-auto white-text">
+                          <Link to="/watchlist">
+                            <MDBBtn color="elegant" size="sm" style={{width: 300}}>
+                              <p className="h2 py-4"><small>View Watchlist</small></p>
+                            </MDBBtn>
+                          </Link>
+                        </MDBCol>
+                      </MDBRow>
+
+                    </MDBCol>
 
                     <MDBRow>
                       <MDBCol lg="11" className="mx-auto mt-3">
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 400, overflow: "scroll" }}>
+                      <h3 className="text-white mb-3">Market News</h3>
+                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 450, overflow: "auto" }}>
                           <MDBCardBody>
                             <Newsfeed />
                           </MDBCardBody>
@@ -52,6 +56,7 @@ class HomeUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Footer />
       </div>
     );
   }

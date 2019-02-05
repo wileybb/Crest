@@ -14,8 +14,8 @@ const Footer = () => {
           </MDBCol>
           <MDBCol md="4" className="text-center">
             <h5 className="title"><strong>Navigation</strong></h5>
-            <a href="#!">Home</a> <br />
-            <a href="#!">GitHub Repo</a>
+            <a href="/">Home</a> <br />
+            <a href="https://github.com/sgenini/projectThree">GitHub Repo</a>
           </MDBCol>
         </MDBRow>
       </MDBContainer>
