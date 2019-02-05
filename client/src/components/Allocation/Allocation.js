@@ -3,6 +3,7 @@ import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCar
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import Navbar from "../Navbar/Navbar";
+import QuickPortfolio from "../Portfolio/QuickPortfolio"
 
 
 class Allocation extends React.Component {
@@ -13,8 +14,8 @@ class Allocation extends React.Component {
         <MDBView src="https://images.unsplash.com/photo-1460620105278-b7f0516e6d65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
-            <MDBRow className="flex-center text-white">
-              <h1>Welcome to Crest,<br/><strong>User First Name</strong></h1> 
+            <MDBRow className="flex-center text-white mt-3">
+              <h1>Welcome to Crest.</h1> 
             </MDBRow>
 
             <MDBContainer className="flex-center flex-column" style={{ marginTop: -50, height: 2500 }}>
@@ -53,7 +54,7 @@ class Allocation extends React.Component {
                                 <MDBCardTitle><strong>Current Portfolio</strong></MDBCardTitle>
                                 <MDBCardText>
                                   <MDBContainer>
-                                    Results appear here
+                                    <QuickPortfolio />
                                   </MDBContainer>
                                 </MDBCardText>
                                 <MDBBtn color="elegant" href="#">Continue</MDBBtn>
