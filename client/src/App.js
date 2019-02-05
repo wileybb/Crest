@@ -28,7 +28,7 @@ class App extends Component {
       <div>
          <Navbar />
          <Switch>
-           <Route exact path="/homeUI" component={HomeUI} />
+           <Route exact path="/old-home" component={Home} />
            <Route exact path="/login" component={LoginUI} />
            <Route exact path="/signup" component={SignupUI} />
            <Route exact path="/landing" component={Landing} />
