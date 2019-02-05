@@ -106,7 +106,7 @@ export default class Transactions extends Component {
                         <td>{(data.buy) ? ("Buy") : ("Sell")}</td>
                         <td>{data.purchasePrice}</td>
                         <td>{data.purchaseTotal}</td>
-                        <td>{data.updatedAt}</td>
+                        <td>{data.updatedAt.slice(0, data.updatedAt.length-5).replace(/T/g, " ")}</td>
                         </tr>)
                  })}
              </tbody>
