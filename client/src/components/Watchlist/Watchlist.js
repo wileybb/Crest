@@ -119,7 +119,7 @@ export default class Watchlist extends Component {
                 <div className="row mt-5">
             
                     {/*Live stock col md 4 for multiple sotcks */}
-                    <div style={{ marginTop: -25, height: 500, overflow: "auto" }} className="col-md-8 mx-auto">
+                    <div style={{ marginTop: -25, height: 500, overflow: "auto" }} className="col-md-12 mx-auto">
                                                                                   
                                   <form style={{ marginTop: 10 }} className="form text-center">
                                     <div className="form-group text-center">

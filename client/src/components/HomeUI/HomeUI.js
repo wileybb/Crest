@@ -2,6 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Newsfeed from '../Newsfeed/Newsfeed'
+import Footer from '../Footer/Footer'
 import '../HomeUI/HomeUI.css'
 
 class HomeUI extends React.Component {
@@ -55,6 +56,7 @@ class HomeUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Footer />
       </div>
     );
   }

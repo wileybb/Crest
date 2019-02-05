@@ -2,6 +2,8 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Watchlist from '../Watchlist/Watchlist'
+import Footer from '../Footer/Footer'
+
 
 class WatchlistUI extends React.Component {
   render() {
@@ -42,6 +44,8 @@ class WatchlistUI extends React.Component {
 
           </MDBMask>
         </MDBView>
+        <Footer />
+        
       </div>
     );
   }
