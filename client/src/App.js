@@ -16,6 +16,7 @@ import LoginUI from "./components/LoginUI/LoginUI"
 import SignupUI from "./components/SignupUI/SignupUI"
 import HomeUI from "./components/HomeUI/HomeUI"
 import WatchlistUI from "./components/Watchlist/WatchlistUI"
+import DefaultStock from "./components/Topstock/DefaultStock"
 
 // import logo from "./logo.svg";
 // import "./App.css";
@@ -38,6 +39,7 @@ class App extends Component {
            <Route exact path="/" component={Landing} />
            <Route exact path="/watchlist" component={WatchlistUI} />
            <Route exact path="/topstock" component={Topstock} />
+           <Route exact path="/defaultStock" component={DefaultStock} />
 
            {/* <Route exact path="/home" component={Home} /> */}
            <Route

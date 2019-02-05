@@ -32,7 +32,7 @@ class HomeUI extends React.Component {
                         <MDBCol lg="5" className="mx-auto white-text">
                           <Link to="/watchlist">
                             <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                              <p className="h2 py-4"><small>View Watchlist</small></p>
+                              <p className="h2 py-4"><small>My Watchlist</small></p>
                             </MDBBtn>
                           </Link>
                         </MDBCol>
@@ -42,7 +42,7 @@ class HomeUI extends React.Component {
 
                     <MDBRow>
                       <MDBCol lg="11" className="mx-auto mt-3">
-                      <h3 className="text-white mb-3">Market News</h3>
+                      <h3 className="text-white mb-3">IEX Market News Articles</h3>
                         <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 450, overflow: "auto" }}>
                           <MDBCardBody>
                             <Newsfeed />
