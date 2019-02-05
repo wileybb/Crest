@@ -98,7 +98,8 @@ router.get("/portfolio/:id", isAuthenticated, function(req, res){
     console.log("user id from params " + req.params.id);
     if(parseInt(req.user.id) === parseInt(req.params.id)){
         db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
-            console.log(userFolio);
+            res.json(userFolio);
+
         })
     }
 
@@ -141,7 +142,7 @@ router.post("/home/wallet", function(req,res){
     const userId = (req.user.id);
     console.log(" post buy/sell route hit");
   
-// -------------IN THE CASE OF A BUY ---------------------------------->
+    // -------------IN THE CASE OF A BUY ---------------------------------->
     if(req.body.buy){
         console.log("YOU ARE BUYING A STOCK OMG!!")
         let newCashBalance = 0
@@ -195,7 +196,7 @@ router.post("/home/wallet", function(req,res){
             res.json(err);
         });
     }else{
- //------------IN THE CASE OF A SELL-------------------------------->
+    //------------IN THE CASE OF A SELL-------------------------------->
         console.log("YOU ARE SELLING A STOCK!!!! OMG!")
         let newCashBalance = 0
         let quantitySold = parseInt(req.body.quantity.trim());
