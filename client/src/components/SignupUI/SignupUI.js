@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import API from "../../utils/API"
-
+import Footer from '../Footer/Footer'
 
 class SignupUI extends React.Component {
   state = {
@@ -127,6 +127,7 @@ class SignupUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Footer />
       </div>
     );
   }
