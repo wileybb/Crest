@@ -2,21 +2,20 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import { Link, Router } from "react-router-dom";
 import Jumbotron from "../Jumbotron/index";
-import FolioCharts from "./FolioCharts.js";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import 'jspdf-autotable';
 
-// import FolioPie from "../Charts/FolioPie.js";
-// import FolioBar from "../Charts/FolioBar.js";
-// import FolioDoughnut from "../Charts/FolioDoughnut.js";
-// import FolioMultiLine from "../Charts/FolioMultiLine.js";
+import FolioPie from "../Charts/FolioPie.js";
+import FolioBar from "../Charts/FolioBar.js";
+import FolioDoughnut from "../Charts/FolioDoughnut.js";
+import FolioMultiLine from "../Charts/FolioMultiLine.js";
 
 export default class Portfolio extends Component {
     state = {
         watchList: {},
         portfolio: [],
-        chartData: []
+        // chartData: []
     }
     componentDidMount() {
         API.getPertucularUserWatchList().then((res) => {
@@ -90,9 +89,9 @@ export default class Portfolio extends Component {
                 <Jumbotron />
                 <hr />
                 <div className="text-center">
-                <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <Link to={'/home'} onClick={this.goToHomePage.bind(this)}>Home</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
+                    <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <Link to={'/home'} onClick={this.goToHomePage.bind(this)}>Home</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
 
                 </div>
                 <hr />
@@ -136,22 +135,47 @@ export default class Portfolio extends Component {
                             </div>
                         </div>
                     </div>
+                    {/* End of Stocklist column */}
 
                     <div className="col-md-6">
-                        {(this.state.chartData).length === 0 ?
+                        {(this.state.portfolio).length === 0 ?
                             (
                                 <div>
                                     <p>Your Portfolio is Empty!</p>
                                     {/* for reference */}
-                                    < FolioCharts width="100%" height="500" />
+                                    {/* < FolioCharts width="100%" height="500" /> */}
                                 </div>
                             )
                             :
                             (
-                                <FolioCharts width="100%" height="500" />
+                                <div>
+                                    <FolioPie
+                                        width="100%"
+                                        height="600"
+                                        data={""}
+                                    />
+                                    <FolioDoughnut
+                                        width="100%"
+                                        height="600"
+                                        data={""}
+                                    />
+                                    <FolioBar
+                                        width="100%"
+                                        height="600"
+                                        data={""}
+                                    />
+                                    <FolioMultiLine
+                                        width="100%"
+                                        height="600"
+                                        data={""}
+                                    />
+                                </div>
                             )
                         }
                     </div>
+                    {/* End of Chart column */}
+
+
                 </div> {/* Row div end */}
 
             </div> //Container Div End
