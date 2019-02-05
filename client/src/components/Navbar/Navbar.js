@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBTooltip, MDBDropdown,
 MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
+import API from "../../utils/API"
 
 class Navbar extends Component {
   constructor(props) {
@@ -18,6 +19,13 @@ class Navbar extends Component {
     this.setState({
       collapse: !this.state.collapse,
     });
+  }
+  logoutUser = () => {
+      //this.intervalClear();
+      localStorage.removeItem("loggedIn");
+      API.signOutUser().then((res) => {
+          console.log(res);
+      }).catch(err => console.log(err));
   }
 
   render() {
@@ -35,7 +43,7 @@ class Navbar extends Component {
                     <MDBNavLink to="/home" className="text-uppercase">Home</MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBNavLink to="/login" className="text-uppercase" onClick={localStorage.setItem("loggedIn","false")}>Log Out</MDBNavLink>
+                    <MDBNavLink to="/login" className="text-uppercase" onClick={this.logoutUser.bind(this)}>Log Out</MDBNavLink>
                   </MDBNavItem>
                 </MDBNavbarNav>
               </MDBCollapse>
