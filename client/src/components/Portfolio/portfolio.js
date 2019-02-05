@@ -27,9 +27,24 @@ export default class Portfolio extends Component {
     getUserPortfolio = () => {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
             console.log("front portfolio route hit");
-            this.setState({portfolio: res.data})
+            // this.setState({portfolio: res.data})
             console.log(this.state.portfolio)
+            this.filterPortfolioData(res.data)
         })
+    }
+    filterPortfolioData = (dataArray) => {
+        console.log(dataArray);
+        console.log("above is the data");
+        let primedArray = []
+        for (var i=0; i<dataArray.length; i++){
+            // console.log(dataArray[i].symbol)
+            if(dataArray[i].quantity > 0){
+                    primedArray.push(dataArray[i]);
+                    console.log(primedArray)
+            }else{};
+        }
+        this.setState({portfolio: primedArray});
+        console.log(primedArray);
     }
 
     //Logout User Link 
