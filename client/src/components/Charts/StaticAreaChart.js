@@ -30,16 +30,16 @@ class StaticAreaChart extends Component {
       dataset.push({ "value": chart[key].close });
       // dataset.push({ "label": chart[key].date, "value": chart[key].close })
 
-      yAxisMax = (chart[key].high > yAxisMax) ? chart[key].high : yAxisMax;
+      yAxisMax = (chart[key].high > yAxisMax) ? Math.round(chart[key].high) : yAxisMax;
       yAxisMin = (yAxisMin === null || chart[key].low < yAxisMin) ? Math.round(chart[key].low) : yAxisMin;
 
     });
 
-
+   
     this.state = {
       type: 'scrollarea2d',// The chart type
-      width: '100%', // Width of the chart
-      height: '300', // Height of the chartf
+      width: this.props.width, // Width of the chart
+      height: this.props.height, // Height of the chartf
       dataFormat: 'json', // Data type
       dataSource: {
         // Chart Configuration

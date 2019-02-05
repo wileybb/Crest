@@ -1,7 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import API from "../../utils/API";
-import {Link, Router} from "react-router-dom";
+import { Link, Router } from "react-router-dom";
 import Jumbotron from "../Jumbotron/index";
+import FolioCharts from "./FolioCharts.js";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import 'jspdf-autotable';
@@ -22,7 +23,7 @@ export default class Portfolio extends Component {
             });
         }
     //}
-    
+
     //API AJAX Call to user portfolio table 
     getUserPortfolio = () => {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
@@ -75,11 +76,20 @@ export default class Portfolio extends Component {
             pdf.save("myDocument.pdf");
           });
     }
-
-    render (){
+    
+    render() {
 
         return (
-          <div className="container">
+            <div className="container">
+                <Jumbotron />
+                <hr></hr>
+                <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <Link to={'/home'} onClick={this.goToHomePage.bind(this)}>Home</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
+                <hr></hr>
+                <div className="row">
+                    <div className="col-md-6">
+ <div className="container">
             <Jumbotron />
             <hr></hr>
             <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -120,7 +130,26 @@ export default class Portfolio extends Component {
                </div> 
              </div>
             </div>
-    
-        ) //Return Method end
-      } //Render Method End
-    } //Transaction class end 
+                    </div>
+
+                    <div className="col-md-6">
+                        {(this.state.chartData).length === 0 ?
+                            (
+                                <div>
+                                    <p>Your Portfolio is Empty!</p>
+                                    {/* for reference */}
+                                    < FolioCharts width="100%" height="500" />
+                                </div>
+                            )
+                            :
+                            (
+                                <FolioCharts width="100%" height="500" />
+                            )
+                        }
+                    </div>
+                </div> {/* Row div end */}
+
+            </div> //Container Div End
+        )
+    }   //Return and Render-Method End
+} //Portfolio Class end 
