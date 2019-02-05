@@ -30,7 +30,7 @@ class StaticAreaChart extends Component {
       dataset.push({ "value": chart[key].close });
       // dataset.push({ "label": chart[key].date, "value": chart[key].close })
 
-      yAxisMax = (chart[key].high > yAxisMax) ? chart[key].high : yAxisMax;
+      yAxisMax = (chart[key].high > yAxisMax) ? Math.round(chart[key].high) : yAxisMax;
       yAxisMin = (yAxisMin === null || chart[key].low < yAxisMin) ? Math.round(chart[key].low) : yAxisMin;
 
     });
