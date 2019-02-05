@@ -149,6 +149,7 @@ router.post("/home/wallet", function(req,res){
         let quantityNew = parseInt(req.body.quantity.trim());
         let symbolNew = req.body.symbol.trim();
         let quantityOld = 0
+        // let currentCash = 0
     
         db.Portfolio.findAll({
             limit: 1,
@@ -170,31 +171,39 @@ router.post("/home/wallet", function(req,res){
             order: [ [ 'createdAt', 'DESC' ]]
         }).then(function(found){
 
+            let purchaseTotal = parseInt(req.body.purchaseTotal)
             let currentCash = found[0].dataValues.cash;
             quantityNew = quantityNew + quantityOld;
             newCashBalance = currentCash - req.body.purchaseTotal;
             console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
+            // checking if user has adequate funds -------------->
+            if(currentCash > purchaseTotal){
+                db.Portfolio.create({
+                    userId: userId,
+                    quantity: quantityNew, 
+                    symbol: symbolNew, 
+                    cash: newCashBalance
+                });
 
-            db.Portfolio.create({
-                userId: userId,
-                quantity: quantityNew, 
-                symbol: symbolNew, 
-                cash: newCashBalance
-            });
+                db.Transaction.create({
+                    userIdTransaction: userId,
+                    quantity: req.body.quantity.trim(),
+                    symbol: req.body.symbol.trim(),
+                    purchasePrice: req.body.purchasePrice,
+                    purchaseTotal: req.body.purchaseTotal
+                }).then(function(dbTransaction){
+                    res.status(200).send("Purchase Successful");
+                    console.log("Purchase successful")
+                
+                }).catch(function (err){
+                    res.json(err);
+                });
+
+            }else{
+                console.log("INSUFFICIENT CASH");
+            };
         });
 
-        db.Transaction.create({
-            userIdTransaction: userId,
-            quantity: req.body.quantity.trim(),
-            symbol: req.body.symbol.trim(),
-            purchasePrice: req.body.purchasePrice,
-            purchaseTotal: req.body.purchaseTotal
-        }).then(function(dbTransaction){
-            res.status(200).send("Purchase Successful");
-            
-        }).catch(function (err){
-            res.json(err);
-        });
     }else{
     //------------IN THE CASE OF A SELL-------------------------------->
         console.log("YOU ARE SELLING A STOCK!!!! OMG!")
@@ -214,7 +223,7 @@ router.post("/home/wallet", function(req,res){
         }).then(function(found){
       
             quantityOld = parseInt((found[0].dataValues.quantity));
-        })
+        });
     
         db.Portfolio.findAll({
             limit: 1,
@@ -229,28 +238,36 @@ router.post("/home/wallet", function(req,res){
             quantityNew = quantityOld - quantitySold;
             newCashBalance = currentCash + req.body.purchaseTotal;
             // console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
-    
-            db.Portfolio.create({
-                userId: userId,
-                quantity: quantityNew, 
-                symbol: symbolNew, 
-                cash: newCashBalance
-            });
+            
+            if(quantityNew > -1){
+
+                db.Portfolio.create({
+                    userId: userId,
+                    quantity: quantityNew, 
+                    symbol: symbolNew, 
+                    cash: newCashBalance
+                });
+
+                db.Transaction.create({
+                    userIdTransaction: userId,
+                    quantity: req.body.quantity.trim(),
+                    buy: false,
+                    symbol: req.body.symbol.trim(),
+                    purchasePrice: req.body.purchasePrice,
+                    purchaseTotal: req.body.purchaseTotal
+                }).then(function(dbTransaction){
+                    res.status(200).send("Sale Successful");
+                    
+                }).catch(function (err){
+                    res.json(err);
+                    console.log("SALE SUCCESSFUL")
+                })
+            }else{
+                console.log("SALE CANCELED: INSUFFICIENT SHARES")
+            }    
         })
         
-        db.Transaction.create({
-            userIdTransaction: userId,
-            quantity: req.body.quantity.trim(),
-            buy: false,
-            symbol: req.body.symbol.trim(),
-            purchasePrice: req.body.purchasePrice,
-            purchaseTotal: req.body.purchaseTotal
-        }).then(function(dbTransaction){
-            res.status(200).send("Sale Successful");
-            
-        }).catch(function (err){
-            res.json(err);
-        })
+
 
     }    
 })
