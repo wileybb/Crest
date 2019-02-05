@@ -27,6 +27,10 @@ class Navbar extends Component {
           console.log(res);
       }).catch(err => console.log(err));
   }
+    //Go to Home page
+  goToHomePage = () => {
+    this.props.history.push("/home");
+  }
 
   render() {
     return (
@@ -40,7 +44,7 @@ class Navbar extends Component {
               <MDBCollapse isOpen={this.state.collapse} navbar>
                 <MDBNavbarNav right>
                   <MDBNavItem>
-                    <MDBNavLink to="/home" className="text-uppercase">Home</MDBNavLink>
+                    <MDBNavLink to="/home" className="text-uppercase" onClick={this.goToHomePage.bind(this)}>Home</MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
                     <MDBNavLink to="/login" className="text-uppercase" onClick={this.logoutUser.bind(this)}>Log Out</MDBNavLink>

@@ -48,7 +48,7 @@ class App extends Component {
                 isLoggedIn ? (
                   <Route component={HomeUI} />
                 ) : (
-                    <Route component={Login} />
+                    <Route component={LoginUI} />
                   )
               }
             />
