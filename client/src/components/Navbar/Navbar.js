@@ -35,12 +35,7 @@ class Navbar extends Component {
                     <MDBNavLink to="/home" className="text-uppercase">Home</MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBTooltip
-                      placement="bottom"
-                      tag="div"
-                      tooltipContent="Right click and open in new tab">
-                       <MDBNavLink to="//github.com/sgenini/projectThree" className="text-uppercase">GitHub Repo</MDBNavLink>
-                    </MDBTooltip>
+                    <MDBNavLink to="/login" className="text-uppercase" onClick={localStorage.setItem("loggedIn","false")}>Log Out</MDBNavLink>
                   </MDBNavItem>
                 </MDBNavbarNav>
               </MDBCollapse>
