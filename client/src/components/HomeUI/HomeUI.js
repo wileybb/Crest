@@ -12,7 +12,7 @@ class HomeUI extends React.Component {
         <MDBView src="https://images.unsplash.com/photo-1460620105278-b7f0516e6d65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
-            <MDBRow className="flex-center text-white mt-5">
+            <MDBRow className="flex-center text-white mt-5 mb-5">
               <h1 className="">Welcome back to <strong>Crest.</strong></h1> 
             </MDBRow>
             
