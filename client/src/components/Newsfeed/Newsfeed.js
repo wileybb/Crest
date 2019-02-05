@@ -60,7 +60,7 @@ export default class Newsfeed extends Component {
          <div  className="row">
      
                {/* Market News Rendering here */}
-               <div style={{height: 1000, overflow:"scroll", opacity: ".9"}} className="col-md-12 pb-3">
+               <div style={{overflow:"auto", opacity: ".9"}} className="col-md-12 pb-3">
                <div className="list-overflow-container">
                {this.state.newsResponse ? (
                      <ul className="list-group">
