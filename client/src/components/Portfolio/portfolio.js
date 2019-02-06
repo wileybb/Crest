@@ -246,7 +246,7 @@ export default class Portfolio extends Component {
                                                          <td>{data.Stockquantity}</td>
                                                          <td>{data.latestPriceIEX}</td> 
                                                           <td>{data.TotalPurchase}</td> 
-                                                          <td>{(((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase)) ? (((parseFloat(data.Stockquantity))*(data.latestPriceIEX))-parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))).toFixed(2)}</td> 
+                                                          <td style={((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? {color:"green"} : {color:"red"}}>{((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? (((parseFloat(data.Stockquantity))*(data.latestPriceIEX))-parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))).toFixed(2)}</td> 
                                                      </tr>)
                                              })}
                                          </tbody>
