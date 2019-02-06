@@ -15,9 +15,17 @@ ReactFC.fcRoot(FusionCharts, ScrollArea2d, FusionTheme);
 
 // Step 8 - Creating the DOM element to pass the react-fusioncharts component
 class StaticAreaChart extends Component {
-  // state = {};
+  componentDidMount() {
+    this.update();
+  }
 
-  render() {
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      this.update();
+    }
+  }
+
+  update() {
     const chart = this.props.data.chart;
     const dataset = [];
     const dates = [];
@@ -35,8 +43,8 @@ class StaticAreaChart extends Component {
 
     });
 
-   
-    this.state = {
+
+    this.setState({
       type: 'scrollarea2d',// The chart type
       width: this.props.width, // Width of the chart
       height: this.props.height, // Height of the chartf
@@ -68,8 +76,12 @@ class StaticAreaChart extends Component {
           "data": dataset
         }]
       }
+    })
 
-    }
+
+  }
+
+  render() {
     return (
       <ReactFC
         {...this.state} />
