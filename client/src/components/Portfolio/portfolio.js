@@ -18,13 +18,14 @@ export default class Portfolio extends Component {
         updatePortfolio:[],
         userPortfolio:[],
         totalValue:0
+
         // chartData: []
     }
     componentDidMount() {
         API.getPertucularUserWatchList().then((res) => {
             this.setState({ watchList: res.data });
         }).then(() => {
-            this.getUserPortfolio();    
+            this.getUserPortfolio();
         });
     }
     //}
@@ -53,24 +54,24 @@ export default class Portfolio extends Component {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
             console.log(res.data);
             //this.setState({portfolio: res.data})
-             this.setState({updatePortfolio:res.data})
-             const updatePort = res.data;
-            const updateWatchList =[];
-            this.state.updatePortfolio.forEach(function(el){
+            this.setState({ updatePortfolio: res.data })
+            const updatePort = res.data;
+            const updateWatchList = [];
+            this.state.updatePortfolio.forEach(function (el) {
                 updateWatchList.push(el.symbol)
                 //return updateWatchList
             })
 
-             //const userWatchlist = this.state.updatePortfolio[this.state.updatePortfolio.length-1].symbols.join(",");
+            //const userWatchlist = this.state.updatePortfolio[this.state.updatePortfolio.length-1].symbols.join(",");
             //console.log(updateWatchlist.join(","));
-            API.batchStock(updateWatchList).then((res) =>{
+            API.batchStock(updateWatchList).then((res) => {
                 //console.log(this.state.updatePortfolio);
-            //   console.log(res.data);
-               for(let k in res.data){
-            //        console.log(k, res.data[k].quote.latestPrice);
-                    for(let i=0; i< updatePort.length; i++){
-                        if(k.toLowerCase() === updatePort[i].symbol){
-                            updatePort[i]["latestPriceIEX"]=res.data[k].quote.latestPrice;
+                //   console.log(res.data);
+                for (let k in res.data) {
+                    //        console.log(k, res.data[k].quote.latestPrice);
+                    for (let i = 0; i < updatePort.length; i++) {
+                        if (k.toLowerCase() === updatePort[i].symbol) {
+                            updatePort[i]["latestPriceIEX"] = res.data[k].quote.latestPrice;
                         }
                     }
                }
@@ -78,6 +79,7 @@ export default class Portfolio extends Component {
                  this.setState({userPortfolio: updatePort})
                  this.totalPortfolio();
              //console.log(price);
+
             })
         })
     }
@@ -123,102 +125,7 @@ export default class Portfolio extends Component {
         const updateWatchList = this.state;
         const totalValue = this.state;
         return (
-            // <div className="container">
-            //      <Jumbotron />
-            //      <hr />
-            //      <div className="text-center">
-            //          <Link to={'/login'} onClick={this.logoutUser.bind(this)}>Logout</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            //          <Link to={'/home'} onClick={this.goToHomePage.bind(this)}>Home</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            //          <Link to={'/transactions'} onClick={this.userTransaction.bind(this)}>Transactions</Link>
-
-            //      </div>
-            //      <hr />
-            //      <div className="row">
-            //          <div className="col-md-6">
-            //              <div className="container">
-            //                  {/* <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> */}
-            //                  <button className="btn btn-info" onClick={this.printDocument.bind(this)}>Generate PDF Report</button>
-            //                  <hr></hr>
-            //                  <div className="row">
-            //                      <div className="col-md-12">
-            //                        {(this.state.portfolio).length === 0 ? (<div><img src={require('../../image.png')} alt="stock" className="img-responsive" /></div>) : (
-            //                              <table id="mytable" className="table table-striped">
-            //                                  <thead className="table-dark">
-            //                                      <tr>
-            //                                          <th scope="col">Stock</th>
-            //                                          <th scope="col">Quantity</th>
-            //                                          {/* <th scope="col">Type</th> */}
-            //                                          {/* <th scope="col">Purchase Price</th> */}
-            //                                          {/* <th scope="col">Purchase Total</th> */}
-            //                                          {/* <th scope="col">Purchase Date</th> */}
-            //                                      </tr>
-            //                                  </thead>
-            //                                  <tbody>
-            //                                      {this.state.portfolio.map((data) => {
-            //                                          return (
-            //                                              <tr>
-            //                                                  <td><b>{data.symbol.toUpperCase()}</b></td>
-            //                                                  <td>{data.quantity}</td>
-            //                                                  {/* <td>{(data.buy) ? ("Buy") : ("Sell")}</td> */}
-            //                                                  {/* <td>{data.purchasePrice}</td> */}
-            //                                                  {/* <td>{data.purchaseTotal}</td> */}
-            //                                                  {/* <td>{data.updatedAt}</td> */}
-            //                                              </tr>)
-            //                                      })}
-            //                                  </tbody>
-            //                              </table>
-            //                          )}
-            //                     </div>
-            //                  </div>
-            //              </div>
-            //          </div>
-            //          {/* End of Stocklist column */}
-            //        <div className="col-md-6">
-            //             {(this.state.portfolio).length === 0 ?
-            //                 (
-            //                     <div>
-            //                         <p>Your Portfolio is Empty!</p>
-            //                         {/* for reference */}
-            //                         {/* < FolioCharts width="100%" height="500" /> */}
-            //                     </div>
-            //                 )
-            //                 :
-            //                 (
-            //                     <div>
-            //                         <FolioPie
-            //                             width="100%"
-            //                             height="600"
-            //                             data={""}
-            //                         />
-            //                         <FolioDoughnut
-            //                             width="100%"
-            //                             height="600"
-            //                             data={""}
-            //                         />
-            //                         <FolioBar
-            //                             width="100%"
-            //                             height="600"
-            //                             data={""}
-            //                         />
-            //                         <FolioMultiLine
-            //                             width="100%"
-            //                             height="600"
-            //                             data={""}
-            //                         />
-            //                     </div>
-            //                 )
-            //             }
-            //         </div>
-            //         {/* End of Chart column */}
-
-
-            //      </div> {/* Row div end */}
-
-            //  </div> //Container Div End
-
-            
-            
-            
+           
              <div className="container">
              <Jumbotron />
              <hr />
@@ -269,7 +176,7 @@ export default class Portfolio extends Component {
                  {/* End of Stocklist column */}
                  
                 <div className="col-md-6">
-                     {(this.state.portfolio).length === 0 ?
+                        {this.state.userPortfolio.length === 0 ?
                          (
                              <div>
                                  <p>Your Portfolio is Empty!</p>
@@ -279,28 +186,18 @@ export default class Portfolio extends Component {
                          )
                          :
                          (
-                             <div>
-                                 <FolioPie
-                                     width="100%"
-                                     height="600"
-                                     data={""}
-                                 />
-                                 <FolioDoughnut
-                                     width="100%"
-                                     height="600"
-                                     data={""}
-                                 />
-                                 <FolioBar
-                                     width="100%"
-                                     height="600"
-                                     data={""}
-                                 />
-                                 <FolioMultiLine
-                                     width="100%"
-                                     height="600"
-                                     data={""}
-                                 />
-                             </div>
+                                    <div>
+                                    <FolioPie
+                                        width="100%"
+                                        height="600"
+                                        data={this.state.userPortfolio}
+                                    />
+                                    <FolioDoughnut
+                                        width="100%"
+                                        height="600"
+                                        data={this.state.userPortfolio}
+                                    />
+                                </div>
                          )
                      }
                  </div>
@@ -334,7 +231,6 @@ export default class Portfolio extends Component {
                </div>
 
            </div> //Container Div End
-
 
         )
     }   //Return and Render-Method End
