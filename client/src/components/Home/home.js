@@ -117,7 +117,11 @@ export default class Home extends Component {
     //Handle Buy stock
     addBuy = (userBuy) => {
         API.createPurchase(userBuy)
-            .then(res => { console.log(res) })
+            .then(res => { 
+                console.log(res); 
+                this.setState({symbol:""});
+                this.setState({quantity:""});
+            })
             .catch(err => console.log(err))
     }
 
@@ -137,7 +141,11 @@ export default class Home extends Component {
     //Sell a stock
     addSale = (userSell) => {
         API.createPurchase(userSell)
-            .then(res => { console.log(res) })
+            .then(res => {
+                console.log(res);
+                this.setState({symbol:""});
+                this.setState({quantity:""});
+            })
             .catch(err => console.log(err))
     }
 
