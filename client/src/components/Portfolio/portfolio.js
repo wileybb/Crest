@@ -7,9 +7,7 @@ import html2canvas from "html2canvas";
 import 'jspdf-autotable';
 
 import FolioPie from "../Charts/FolioPie.js";
-import FolioBar from "../Charts/FolioBar.js";
-import FolioDoughnut from "../Charts/FolioDoughnut.js";
-import FolioMultiLine from "../Charts/FolioMultiLine.js";
+// import FolioDoughnut from "../Charts/FolioDoughnut.js";
 
 export default class Portfolio extends Component {
     state = {
@@ -177,26 +175,24 @@ export default class Portfolio extends Component {
                  
                 <div className="col-md-6">
                         {this.state.userPortfolio.length === 0 ?
-                         (
-                             <div>
-                                 <p>Your Portfolio is Empty!</p>
-                                 {/* for reference */}
-                                 {/* < FolioCharts width="100%" height="500" /> */}
-                             </div>
-                         )
-                         :
-                         (
-                                    <div>
+                            (
+                                <div>
+                                    <p>Your Portfolio is Empty!</p>
+                                </div>
+                            )
+                            :
+                            (
+                                <div>
                                     <FolioPie
                                         width="100%"
                                         height="600"
                                         data={this.state.userPortfolio}
                                     />
-                                    <FolioDoughnut
+                                    {/* <FolioDoughnut
                                         width="100%"
                                         height="600"
                                         data={this.state.userPortfolio}
-                                    />
+                                    /> */}
                                 </div>
                          )
                      }

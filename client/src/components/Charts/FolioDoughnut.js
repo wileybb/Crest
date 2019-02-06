@@ -18,18 +18,13 @@ class FolioDoughnut extends React.Component {
         let total = 0;
         const res = this.props.data;
 
-        console.log(this.props.data)
         Object.keys(res).forEach(function (key) {
             data.push({
                 "label": res[key].symbol.toUpperCase(),
-                "value": res[key].latestPriceIEX
+                "value": res[key].TotalPurchase
             })
-            total += res[key].latestPriceIEX;
+            total += res[key].TotalPurchase;
         })
-
-
-
-        console.log("DATA ARRAY: ", data);
 
         this.setState({
             type: 'doughnut2d',// The chart type
@@ -41,13 +36,13 @@ class FolioDoughnut extends React.Component {
                     // "bgColor": this.props.bgColor,
                     "caption": "Net Worth by Stock",
                     "sub-caption": "",
-                    "plottooltext": "<b>$percentValue</b> $label Stocks, Amount: $value",
+                    "plottooltext": "<b>$percentValue</b> $label Stocks, Amount: $$value",
                     "showlegend": "1",
                     "showpercentvalues": "1",
                     "legendposition": "bottom",
                     "usedataplotcolorforlabels": "1",
                     "decimals": "0",
-                    "defaultCenterLabel": "Net Worth (Rounded) " + "$"+Math.round(total),
+                    "defaultCenterLabel": "Net Worth (Rounded) " + "$" + Math.round(total),
                     "theme": "fusion"
                 },
                 "data": data

@@ -22,7 +22,7 @@ class FolioPie extends React.Component {
 
             data.push({
                 "label": res[key].symbol.toUpperCase(),
-                "value": res[key].latestPriceIEX
+                "value": res[key].TotalPurchase
             })
         })
 
