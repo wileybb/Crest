@@ -31,7 +31,7 @@ export default class CashCheck extends Component {
          return(
             <div>
 
-             {this.state.userCash}
+             $ {this.state.userCash}
 
             </div>
          )

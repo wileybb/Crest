@@ -41,7 +41,7 @@ class Landing extends React.Component {
         </header>
 
         <main>
-          <MDBRow >
+          <MDBRow>
             <MDBCol md="7" className="mx-auto">
               <MDBContainer className="text-center my-5">
                 <p align="justify-center">Crest is a mock stock trading platform that enables users to purchase and trade imaginary shares of real stocks in real time. Its purpose is to allow the user to practice stock trading strategies without putting up real money. Upon creating an account, the user will be given a budget of $20,000, and will be asked to build a portfolio by searching and purchasing stocks at their real-time market prices. Afterwards, the user will be able to sell and buy stocks at their discretion, based on their trading strategies and fluctuating market values. Crest will chart their portfolio performance over time and let the user see how their trades would have done in a real market. Crest will also allow users to access price history data for stocks, enabling users to experiment with alternate trading time lines, (i.e. what would my return be if I had bought x amount of this stock two years ago).</p>
@@ -53,8 +53,8 @@ class Landing extends React.Component {
                 <p align="justify-center">Another feature we would like to add if we have time is a fantasy-football style game mode that allows friendly competition between users. Users will agree to participate in a competition to see who can earn the most “money” trading stocks in a predetermined period of time. A group of users will all start the game with the same amount of “money” in their portfolio, and the winner will be the one who has the best return on investment after the time period has ended. We think this feature would motivate users to trade more by creating a good-spirited competitive/social element to the app.</p>
               </MDBContainer>
             </MDBCol>
-            <MDBCol md="4" className="mx-auto">
-              <MDBCard className="shadow-box-example hoverable" style={{marginTop: 150, opacity: ".85"}} >
+            <MDBCol md="4" className="mx-auto my-auto">
+              <MDBCard className="shadow-box-example hoverable" style={{opacity: ".85"}} >
                 <MDBCardBody>
                   <MDBCardTitle>
                     <h3 className="text-center mt-3"><strong>Current Market Prices</strong></h3>

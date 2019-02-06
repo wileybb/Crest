@@ -8,6 +8,7 @@ import QuickPortfolio from "../Portfolio/QuickPortfolio"
 import HomeCopy from "./HomeCopy"
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
 import Footer from "../Footer/Footer"
+import CashCheck from "../CashCheck/CashCheck"
 
 
 
@@ -177,6 +178,10 @@ class Allocation extends React.Component {
           .catch(err => console.log(err));
   }
 
+  refreshPage(){
+    window.location.reload();
+  } 
+
   render() {
     return (
       <div>
@@ -201,7 +206,7 @@ class Allocation extends React.Component {
                           <MDBCol md="8">
                             <MDBCard className="mb-3">
                               <MDBCardBody>
-                                <MDBCardTitle><strong>Maximum Budget:</strong> $20,000</MDBCardTitle>
+                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashCheck /></MDBCardTitle>
                                 <MDBCardText>
                                   <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
@@ -275,7 +280,6 @@ class Allocation extends React.Component {
                               </MDBCardBody>
                             </MDBCard>
                             <MDBBtn className="mt-3" outline color="white" href="/portfolio">Return to Portfolio</MDBBtn>
-
                           </MDBCol>                 
                         </MDBRow>
                       </MDBCardText>
