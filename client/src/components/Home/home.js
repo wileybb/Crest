@@ -98,7 +98,7 @@ export default class Home extends Component {
         //     symbol: this.state.symbol,
         // }
         this.setState({ symbol: this.state.symbol });
-        this.stockSymbol(this.state.symbol);
+        this.stockSymbol(this.state.symbol.toLowerCase());
     }
 
     handleBuySubmit = (event) => {
