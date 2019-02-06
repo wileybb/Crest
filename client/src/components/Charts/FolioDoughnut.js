@@ -38,7 +38,7 @@ class FolioDoughnut extends React.Component {
             dataFormat: 'json', // Data type
             dataSource: {
                 "chart": {
-                    "bgColor": this.props.bgColor,
+                    // "bgColor": this.props.bgColor,
                     "caption": "Net Worth by Stock",
                     "sub-caption": "",
                     "plottooltext": "<b>$percentValue</b> $label Stocks, Amount: $value",

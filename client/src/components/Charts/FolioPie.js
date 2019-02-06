@@ -36,7 +36,7 @@ class FolioPie extends React.Component {
             dataFormat: 'json', // Data type
             dataSource: {
                 "chart": {
-                    "bgColor": this.props.bgColor,
+                    // "bgColor": this.props.bgColor,
                     "caption": "Net Worth by Stock",
                     "sub-caption": "Hover to see Total Values",
                     "plottooltext": "<b>$percentValue</b> $label Stocks at $$value",

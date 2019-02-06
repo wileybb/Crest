@@ -127,7 +127,8 @@ export default class Portfolio extends Component {
 
                 </div>
 
-                <div className="row w-75 mx-auto py-3 pb-5 bg-light">
+                <hr />
+                <div className="row">
                     <div className="col-md-6">
                         <div className="container">
                             {/* <Link to={'/portfolio'} onClick={this.userPortfolio.bind(this)}>Portfolio</Link><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> */}
@@ -155,7 +156,7 @@ export default class Portfolio extends Component {
                                                             <td>{data.Stockquantity}</td>
                                                             <td>{data.latestPriceIEX}</td>
                                                             <td>{data.TotalPurchase}</td>
-                                                            <td>{(((parseFloat(data.Stockquantity)) * (data.latestPriceIEX)) > parseFloat(data.TotalPurchase)) ? (((parseFloat(data.Stockquantity)) * (data.latestPriceIEX)) - parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase) - (parseFloat(data.Stockquantity) * (data.latestPriceIEX))).toFixed(2)}</td>
+                                                            <td style={((parseFloat(data.Stockquantity)) * (data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? { color: "green" } : { color: "red" }}>{((parseFloat(data.Stockquantity)) * (data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? (((parseFloat(data.Stockquantity)) * (data.latestPriceIEX)) - parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase) - (parseFloat(data.Stockquantity) * (data.latestPriceIEX))).toFixed(2)}</td>
                                                         </tr>)
                                                 })}
                                             </tbody>
@@ -166,12 +167,12 @@ export default class Portfolio extends Component {
                         </div>
                     </div>
                     {/* End of Stocklist column */}
+
                     <div className="col-md-6">
-                        {(this.state.userPortfolio).length === 0 ?
+                        {this.state.userPortfolio.length === 0 ?
                             (
                                 <div>
-                                    <br></br>
-                                    <p className="text-center">Your Portfolio is Empty!</p>
+                                    <p>Your Portfolio is Empty!</p>
                                     {/* for reference */}
                                     {/* < FolioCharts width="100%" height="500" /> */}
                                 </div>
@@ -180,13 +181,11 @@ export default class Portfolio extends Component {
                             (
                                 <div>
                                     <FolioPie
-                                        bgColor="#82B7BB"
                                         width="100%"
                                         height="600"
                                         data={this.state.userPortfolio}
                                     />
                                     <FolioDoughnut
-                                        bgColor="#FF7440"
                                         width="100%"
                                         height="600"
                                         data={this.state.userPortfolio}
@@ -198,8 +197,7 @@ export default class Portfolio extends Component {
                     {/* End of Chart column */}
                 </div> {/* Row div end */}
 
-
-            </div>
+            </div> //Container Div End
 
 
         )

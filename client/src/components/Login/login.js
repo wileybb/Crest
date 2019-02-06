@@ -36,8 +36,8 @@ export default class Login extends Component {
         //const storeUser = localStorage.removeItem("loggedIn") do this when logout
         this.props.history.push("/home");
         //this.context.router.history.push('/home');
-        console.log(this.state.userid)  
-        console.log(res)})
+        //Cleared console.log can add later if required
+        })
       .catch(err => {
           alert("Email or Password is invalid");
           console.log(err);});
