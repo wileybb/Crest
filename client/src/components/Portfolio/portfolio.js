@@ -19,12 +19,11 @@ export default class Portfolio extends Component {
     }
     componentDidMount() {
         API.getPertucularUserWatchList().then((res) => {
-            console.log(res.data);
             this.setState({ watchList: res.data });
-            console.log(this.state.watchList.stock);
+            //this.getUserTransaction();
         }).then(() => {
-            console.log("dot then function ran in portfolio");
             this.getUserPortfolio();
+            
         });
     }
     //}
@@ -32,33 +31,32 @@ export default class Portfolio extends Component {
     //API AJAX Call to user portfolio table 
     getUserPortfolio = () => {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
-            console.log("front portfolio route hit");
             // this.setState({portfolio: res.data})
-            console.log(this.state.portfolio)
             this.filterPortfolioData(res.data)
         })
     }
     filterPortfolioData = (dataArray) => {
-        console.log(dataArray);
-        console.log("above is the data");
         let primedArray = []
         for (var i = 0; i < dataArray.length; i++) {
-            // console.log(dataArray[i].symbol)
             if (dataArray[i].quantity > 0) {
                 primedArray.push(dataArray[i]);
-                console.log(primedArray)
             } else { };
         }
         this.setState({ portfolio: primedArray });
-        console.log(primedArray);
     }
+
+    //API AJAX Call to user transaction table
+    // getUserTransaction = () => {
+    // API.getUserTransactionDataForPortfolio(this.state.watchList.UserId).then((res)=> {
+    // console.log("transaction route hit");
+    // })
+    // }
 
     //Logout User Link 
     logoutUser = () => {
         //this.intervalClear();
         localStorage.removeItem("loggedIn");
         API.signOutUser().then((res) => {
-            console.log(res);
         }).catch(err => console.log(err));
     }
     //Go to Home page
