@@ -41,12 +41,7 @@ class App extends Component {
            <Route exact path="/watchlist" component={WatchlistUI} />
            <Route exact path="/topstock" component={Topstock} />
            <Route exact path="/defaultStock" component={DefaultStock} />
-<<<<<<< HEAD
-           <Route exact path="/CashCheck" component={CashCheck} />
-=======
-          <Route exact path="/cashcheck" component={CashCheck} />
->>>>>>> f763509d5931ae6ca0f2ded4d04ea5ca08a9b369
-
+           <Route exact path="/cashcheck" component={CashCheck} />
            {/* <Route exact path="/home" component={Home} /> */}
            <Route
               path="/home"
