@@ -155,14 +155,16 @@ export default class Portfolio extends Component {
                                          </thead>
                                          <tbody>
                                              {this.state.userPortfolio.map((data) => {
+                                                if (data.Stockquantity != 0) {
                                                  return (
                                                      <tr>
                                                          <td><b>{data.symbol.toUpperCase()}</b></td>
                                                          <td>{data.Stockquantity}</td>
                                                          <td>{data.latestPriceIEX}</td> 
-                                                          <td>{(parseFloat(data.Stockquantity))*(data.latestPriceIEX)}</td> 
+                                                          <td>{(parseFloat(data.Stockquantity))*(data.latestPriceIEX).toFixed(2)}</td> 
                                                           <td style={((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? {color:"green"} : {color:"red"}}>{((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? (((parseFloat(data.Stockquantity))*(data.latestPriceIEX))-parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))).toFixed(2)}</td> 
                                                      </tr>)
+                                                }
                                              })}
                                          </tbody>
                                      </table>
