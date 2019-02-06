@@ -60,6 +60,7 @@ export default class Watchlist extends Component {
         }
         console.log(data);
         this.updateWatchList(data);
+        this.setState({ watchListsymbol: ""})
     }
     updateWatchList = (stockTicker) => {
         API.updatePertucularUserWatchList(stockTicker)
@@ -121,7 +122,7 @@ export default class Watchlist extends Component {
                     {/*Live stock col md 4 for multiple sotcks */}
                     <div style={{ marginTop: -25, height: 500, overflow: "auto" }} className="col-md-12 mx-auto">
                                                                                   
-                                  <form style={{ marginTop: 10 }} className="form text-center">
+                                  <form style={{ marginTop: 10 }} className="form text-center" onSubmit={this.handleFormSubmit}>
                                     <div className="form-group text-center">
                                       {/* <label htmlFor="email">Email:</label> */}
                                       <input className="col-md-8" type="text"
@@ -130,7 +131,7 @@ export default class Watchlist extends Component {
                                           name="watchListsymbol"
                                           placeholder="Stock Symbol" />
                                       </div>
-                                      <MDBBtn outline color="elegant" className="mb-3" disabled={!this.validateForm} onClick={this.handleWatchListFormSubmit}>Add to Watch List</MDBBtn>
+                                      <MDBBtn outline type="submit" color="elegant" className="mb-3" disabled={!this.validateForm} onClick={this.handleWatchListFormSubmit}>Add to Watch List</MDBBtn>
                                   </form>
 
                         {this.state.stockResponse

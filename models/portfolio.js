@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
     // },
 
     cash: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         defaultValue: 20000
     },
     // purchaseTotal: {
