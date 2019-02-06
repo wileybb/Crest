@@ -257,6 +257,7 @@ export default class Portfolio extends Component {
                      </div>
                  </div>
                  {/* End of Stocklist column */}
+                 
                 <div className="col-md-6">
                      {(this.state.portfolio).length === 0 ?
                          (
