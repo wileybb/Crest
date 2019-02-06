@@ -175,6 +175,10 @@ class Allocation extends React.Component {
           .catch(err => console.log(err));
   }
 
+  refreshPage(){
+    window.location.reload();
+  } 
+
   render() {
     return (
       <div>
@@ -270,7 +274,7 @@ class Allocation extends React.Component {
                                     <QuickPortfolio />
                                   </MDBContainer>
                                 </MDBCardText>
-                                <MDBBtn color="elegant" href="#">Continue</MDBBtn>
+                                <MDBBtn color="elegant" href="#" onClick={this.refreshPage}>Refresh List</MDBBtn>
                               </MDBCardBody>
                             </MDBCard>
                           </MDBCol>                 
