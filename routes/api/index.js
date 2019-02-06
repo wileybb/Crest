@@ -92,7 +92,7 @@ router.put("/home/watchlist", isAuthenticated, function (req, res) {
 })
 
 
-//Get User Portfolio data for rendering on portfolio page
+//Get User Portfolio Data for rendering on portfolio page
 router.get("/portfolio/:id", isAuthenticated, function(req, res){
     console.log(parseInt(req.user.id) === parseInt(req.params.id));
     console.log("user id from req.user " + req.user.id);
@@ -168,8 +168,7 @@ router.post("/home/wallet", function (req, res) {
             }else{
                 firstBuy = false;
             };
-            console.log(firstBuy);
-            console.log("above is found *****************")
+            console.log("first buy? " +firstBuy);
             quantityOld = parseInt((found[0].dataValues.quantity));
         })
 

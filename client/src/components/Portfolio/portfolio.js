@@ -10,21 +10,30 @@ import 'jspdf-autotable';
 export default class Portfolio extends Component {
     state = {
         watchList:{},
-        portfolio:[]
+        portfolio:[],
+        chartData: [],
+        userCash: null,
+        stockResponse: {},
+        batchResponse: {},
+        batchResponsePrices: []
+
     }
     componentDidMount(){
-            API.getPertucularUserWatchList().then((res) => {
-                console.log(res.data);
-                this.setState({watchList:res.data});
-                console.log(this.state.watchList.stock);
-            }).then(() => {
-                console.log("dot then function ran in portfolio");
-                this.getUserPortfolio();
-            });
-        }
-    //}
+        API.getPertucularUserWatchList().then((res) => {
+            console.log(res.data);
+            console.log("above is res data");
+            this.setState({watchList:res.data});
+            console.log(this.state.watchList.stock);
+            console.log(" above is this dot state dot watchhlist dot stock");
+        }).then(() => {
+            console.log("dot then function ran in portfolio");
+            this.getUserPortfolio();
+            this.autoStockData();
+        });
+    }
+  
 
-    //API AJAX Call to user portfolio table 
+     //API AJAX Call to user portfolio table 
     getUserPortfolio = () => {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
             console.log("front portfolio route hit");
@@ -33,22 +42,82 @@ export default class Portfolio extends Component {
             this.filterPortfolioData(res.data)
         })
     }
+
     filterPortfolioData = (dataArray) => {
         console.log(dataArray);
-        console.log("above is the data");
+        // console.log("above is the data");
         let primedArray = []
+        let stockPriceQuery = ""
         for (var i=0; i<dataArray.length; i++){
             // console.log(dataArray[i].symbol)
             if(dataArray[i].quantity > 0){
+                    
                     primedArray.push(dataArray[i]);
-                    console.log(primedArray)
+                    console.log(primedArray);
+
+                    if (stockPriceQuery.length == 0){
+
+                    
+                        stockPriceQuery += (dataArray[i].symbol.toLowerCase());
+                        console.log(stockPriceQuery+ " is the stock price query")
+                       
+                    }else{
+                        stockPriceQuery += ("," + dataArray[i].symbol.toLowerCase())
+                        console.log(stockPriceQuery + "is the stock price query")
+                    }
+                    
             }else{};
         }
+        // this.setState({watchList: stockPriceQuery});
         this.setState({portfolio: primedArray});
+        // this.setState({watchList})
         console.log(primedArray);
+        // this.autoStockData(primedArray);
+        this.batchStockData(stockPriceQuery);
     }
 
-    //Logout User Link 
+     //Get stock prices based on this dot watchList
+    autoStockData = () => {
+            console.log(this.state.watchList.stock);
+            console.log("above is this dot state dot wl dot stock")
+            //let symbols = this.state.stock.join(",") 
+         API.batchStock(this.state.watchList.stock).then((res) => {
+             console.log(res.data);
+             console.log("above is the data response");
+            this.setState({ stockResponse: res.data });
+            console.log(this.state.stockResponse);
+            console.log("above is the stock response from state auto")
+        })
+    }
+
+    batchStockData = (string) => {
+        //console.log(this.state.watchList.stock);
+        //let symbols = this.state.stock.join(",") 
+     API.batchStock(string).then((res) => {
+         console.log(res.data);
+         console.log("above is the data response from batch");
+        this.setState({ batchResponse: res.data });
+        console.log(this.state.batchResponse);
+        console.log("above is the stock response from state batch************")
+        console.log(this.state.batchResponse.AMZN)
+
+        let portfolioPrices = [];
+        // console.log(this.state.stoc)
+    })
+}
+
+    //Get info on one stock symbol
+    stockSymbol = (symbol) => {
+        API.singleStock(symbol)
+            .then((res) => {
+                //this.props.history.replace('/home');  
+                this.setState({ oneStockResponse: res });
+                console.log(this.state.oneStockResponse)
+        })
+        .catch(err => console.log(err));
+    }
+
+     //Logout User Link 
     logoutUser = () => {
         //this.intervalClear();
         localStorage.removeItem("loggedIn");
@@ -56,11 +125,11 @@ export default class Portfolio extends Component {
             console.log(res);
         }).catch(err => console.log(err));
     }
-    //Go to Home page
+     //Go to Home page
     goToHomePage = () => {
         this.props.history.push("/home");
     }
-    //Go to Transaction page when user clicked on Transactions link
+     //Go to Transaction page when user clicked on Transactions link
     userTransaction = () => {
         this.props.history.push("/transactions");
     }
@@ -105,7 +174,7 @@ export default class Portfolio extends Component {
                      <tr>
                          <th scope="col">Stock</th>
                          <th scope="col">Quantity</th>
-                         {/* <th scope="col">Type</th> */}
+                         <th scope="col">Value(of All Shares)</th>
                          {/* <th scope="col">Purchase Price</th> */}
                          {/* <th scope="col">Purchase Total</th> */}
                          {/* <th scope="col">Purchase Date</th> */}
@@ -117,11 +186,14 @@ export default class Portfolio extends Component {
                             <tr>
                             <td><b>{data.symbol.toUpperCase()}</b></td>
                             <td>{data.quantity}</td>
-                            {/* <td>{(data.buy) ? ("Buy") : ("Sell")}</td> */}
+                            {/* <td>{this.state.batchResponse[data.symbol].quote.latestPrice.toFixed(2)}</td> */}
                             {/* <td>{data.purchasePrice}</td> */}
                             {/* <td>{data.purchaseTotal}</td> */}
                             {/* <td>{data.updatedAt}</td> */}
                             </tr>)
+                     })}
+
+                         
                      })}
                  </tbody>
                 </table>

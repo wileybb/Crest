@@ -17,6 +17,7 @@ export default {
   singleStock: function(symbol){
     return axios.get(`https://api.iextrading.com/1.0/stock/${symbol}/batch?types=quote,news,chart&range=1m&last=10`)
   },
+  //Get Stock Price Data for a group of stocks
   batchStock: function(symbols){
     return axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote,news,chart&range=1m&last=5`)
   },

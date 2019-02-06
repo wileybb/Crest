@@ -75,7 +75,7 @@ export default class Home extends Component {
             .catch(err => console.log(err))
     }
 
-    //Get Real time stock prices based on stocks in state stocks
+     //Get Real time stock prices based on stocks in state stocks
     autoStockData = () => {
         //console.log(this.state.watchList.stock);
         //let symbols = this.state.stock.join(",") 
@@ -100,7 +100,7 @@ export default class Home extends Component {
         this.setState({ symbol: this.state.symbol });
         this.stockSymbol(this.state.symbol);
     }
-
+     //When a User Buys a quantity of stock
     handleBuySubmit = (event) => {
         event.preventDefault();
         const purchaseData = {
@@ -120,7 +120,8 @@ export default class Home extends Component {
             .then(res => { console.log(res) })
             .catch(err => console.log(err))
     }
-
+ 
+     //When a user sells a quantity of stock
     handleSellSubmit = (event) => {
         event.preventDefault();
         const sellData = {
