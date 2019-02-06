@@ -7,7 +7,7 @@ import Jumbotron from "../Jumbotron/index";
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
 
 //var stockArr =[];
-export default class Home extends Component {
+export default class HomeCopy extends Component {
 
     state = {
         stockResponse: {},
@@ -98,7 +98,7 @@ export default class Home extends Component {
         //     symbol: this.state.symbol,
         // }
         this.setState({ symbol: this.state.symbol });
-        this.stockSymbol(this.state.symbol.toLowerCase());
+        this.stockSymbol(this.state.symbol);
     }
 
     handleBuySubmit = (event) => {

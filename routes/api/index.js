@@ -98,13 +98,24 @@ router.get("/portfolio/:id", isAuthenticated, function(req, res){
     console.log("user id from req.user " + req.user.id);
     console.log("user id from params " + req.params.id);
     if(parseInt(req.user.id) === parseInt(req.params.id)){
-        db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
-            res.json(userFolio);
-
-        })
+        db.sequelize.query(`SELECT SUM(CASE buy WHEN 1 THEN quantity WHEN 0 THEN -quantity END) AS Stockquantity, SUM(CASE buy WHEN 1 THEN purchaseTotal WHEN 0 THEN -purchaseTotal END) AS TotalPurchase, symbol, userIdTransaction FROM wavetrendingdb.Transactions WHERE userIdTransaction=${req.params.id} GROUP BY symbol,userIdTransaction;`, { type: db.sequelize.QueryTypes.SELECT}).then(function(transactions) {
+            res.json(transactions)
+          });
+        // db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
+        //     res.json(userFolio);  
+        // })
     }
-
 });
+
+//Get User Portfolio data for Profit __ Ritesh
+// router.post("/portfolio/:id", isAuthenticated, function(req, res){
+//     console.log("TRANSACTIONS user id from req.user ");
+//     console.log("TRANSACTIONS user id from req.user " + req.query);
+//     console.log("user id from params " + req.params.id);
+//     // db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
+//     // res.json(userFolio);
+//     //    })
+// });
 
 //Get User Transaction data for rendering on transaction page
 router.get("/transactions/:id", isAuthenticated, function (req, res) {
@@ -145,7 +156,7 @@ router.post("/home/wallet", function (req, res) {
 
     let newCashBalance = 0
     let quantityNew = parseInt(req.body.quantity.trim());
-    let symbolNew = req.body.symbol.trim();
+    let symbolNew = req.body.symbol.toLowerCase().trim();
     let quantityOld = 0;
   
     // -------------IN THE CASE OF A BUY ---------------------------------->
@@ -213,7 +224,7 @@ router.post("/home/wallet", function (req, res) {
                 db.Transaction.create({
                     userIdTransaction: userId,
                     quantity: req.body.quantity.trim(),
-                    symbol: req.body.symbol.trim(),
+                    symbol: req.body.symbol.toLowerCase().trim(),
                     purchasePrice: req.body.purchasePrice,
                     purchaseTotal: req.body.purchaseTotal
                 }).then(function(dbTransaction){
@@ -288,7 +299,7 @@ router.post("/home/wallet", function (req, res) {
                     userIdTransaction: userId,
                     quantity: req.body.quantity.trim(),
                     buy: false,
-                    symbol: req.body.symbol.trim(),
+                    symbol: req.body.symbol.toLowerCase().trim(),
                     purchasePrice: req.body.purchasePrice,
                     purchaseTotal: req.body.purchaseTotal
                 }).then(function(dbTransaction){
