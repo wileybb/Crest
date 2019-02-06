@@ -111,8 +111,8 @@ class Allocation extends React.Component {
           buy: true,
           quantity: this.state.quantity,
           symbol: this.state.symbol,
-          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
-          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
@@ -131,8 +131,8 @@ class Allocation extends React.Component {
           buy: false,
           quantity: this.state.quantity,
           symbol: this.state.symbol,
-          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
-          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
       }
       console.log(sellData);
       this.addSale(sellData);

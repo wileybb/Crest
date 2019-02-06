@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "berkeley",
-    "database": "wavetrendingdb",
+    "database": "crestdb",
     "host": "localhost",
     "dialect": "mysql"
   },
