@@ -98,21 +98,20 @@ router.get("/portfolio/:id", isAuthenticated, function(req, res){
     console.log("user id from req.user " + req.user.id);
     console.log("user id from params " + req.params.id);
     if(parseInt(req.user.id) === parseInt(req.params.id)){
-        db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
-            res.json(userFolio);
-            db.sequelize.query("SELECT SUM(CASE buy WHEN 1 THEN quantity WHEN 0 THEN -quantity END) AS Stockquantity, SUM(CASE buy WHEN 1 THEN purchaseTotal WHEN 0 THEN -purchaseTotal END) AS TotalPurchase, symbol, userIdTransaction FROM wavetrendingdb.Transactions GROUP BY symbol,userIdTransaction;", { type: db.sequelize.QueryTypes.SELECT}).then(function(transactions) {
-                console.log(transactions);
-                var symbolArr =[];
-                transactions.forEach(function(trans){
-                    symbolArr.push(trans.symbol);
-                    return symbolArr
-                })
-                console.log(symbolArr);
-              });
-        })
+        db.sequelize.query("SELECT SUM(CASE buy WHEN 1 THEN quantity WHEN 0 THEN -quantity END) AS Stockquantity, SUM(CASE buy WHEN 1 THEN purchaseTotal WHEN 0 THEN -purchaseTotal END) AS TotalPurchase, symbol, userIdTransaction FROM wavetrendingdb.Transactions GROUP BY symbol,userIdTransaction;", { type: db.sequelize.QueryTypes.SELECT}).then(function(transactions) {
+            // var symbolArr =[];
+            // transactions.forEach(function(trans){
+            //     symbolArr.push(trans.symbol);
+            //     return symbolArr;
+            // });
+            // transactions.push({symbols:symbolArr});
+            console.log(transactions);
+            res.json(transactions)
+          });
+        // db.Portfolio.findAll({where:{userId:parseInt(req.params.id)}}).then(function (userFolio){
+        //     res.json(userFolio);  
+        // })
     }
-
-
 });
 
 //Get User Portfolio data for Profit __ Ritesh
