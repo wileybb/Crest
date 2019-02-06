@@ -16,7 +16,7 @@ class WatchlistUI extends React.Component {
               <h2 className=""><strong>Watchlist</strong></h2> 
             </MDBRow>
             
-            <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -25, height: 2500 }}>
+            <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: -25, height: 2500 }}>
               <MDBCol md="12">
                 <MDBRow>
                   <MDBContainer>
