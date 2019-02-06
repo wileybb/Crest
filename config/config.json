@@ -3,6 +3,7 @@
     "username": "root",
     "password": "berkeley",
     "database": "crestdb",
+
     "host": "localhost",
     "dialect": "mysql"
   },
