@@ -35,11 +35,6 @@ class Allocation extends React.Component {
       this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
   }
 
-  //Clear interval on real time stock purchase when unmounting from this component
-  // componentWillUnmount(){
-  //   clearInterval(this.intervalId);
-  // }
-
   //Clear interval when logging out or move to portfolio page or other page
   intervalClear() {
       clearInterval(this.intervalId);
@@ -106,42 +101,54 @@ class Allocation extends React.Component {
   }
 
   handleBuySubmit = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       const purchaseData = {
           buy: true,
           quantity: this.state.quantity,
           symbol: this.state.symbol,
-          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
-          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
+      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
+      window.location.reload();
   }
 
   //Handle Buy stock
   addBuy = (userBuy) => {
       API.createPurchase(userBuy)
-          .then(res => { console.log(res) })
+          .then(res => { 
+            console.log(res);
+            this.setState({symbol:""});
+            this.setState({quantity:""});
+          })
           .catch(err => console.log(err))
   }
 
   handleSellSubmit = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       const sellData = {
           buy: false,
           quantity: this.state.quantity,
           symbol: this.state.symbol,
-          purchasePrice: this.state.oneStockResponse.data.quote.latestPrice,
-          purchaseTotal: (this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity)
+          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
       }
       console.log(sellData);
       this.addSale(sellData);
+      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
+      window.location.reload();
   }
 
   //Sell a stock
   addSale = (userSell) => {
       API.createPurchase(userSell)
-          .then(res => { console.log(res) })
+          .then(res => { 
+            console.log(res);
+            this.setState({symbol:""});
+            this.setState({quantity:""});
+          })
           .catch(err => console.log(err))
   }
 
@@ -170,27 +177,6 @@ class Allocation extends React.Component {
           .catch(err => console.log(err));
   }
 
-  //Logout User Link 
-  logoutUser = () => {
-      this.intervalClear();
-      localStorage.removeItem("loggedIn");
-      API.signOutUser().then((res) => {
-          console.log(res);
-      }).catch(err => console.log(err));
-  }
-
-  //Go to Portfolio page when user clicked on portfolio link
-  userPortfolio = () => {
-      this.intervalClear();
-      this.props.history.push("/portfolio");
-  }
-
-  //Go to Transaction page when user clicked on Transactions link
-  userTransaction = () => {
-      this.intervalClear();
-      this.props.history.push("/transactions");
-  }
-
   render() {
     return (
       <div>
@@ -199,7 +185,7 @@ class Allocation extends React.Component {
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
             <MDBRow className="flex-center text-white mt-3">
-              <h1>Welcome to Crest.</h1> 
+              <h1>Crest Trading Portal</h1> 
             </MDBRow>
 
             <MDBContainer className="flex-center flex-column" style={{ marginTop: -50, height: 2500 }}>
@@ -208,14 +194,14 @@ class Allocation extends React.Component {
                   <MDBCard className="transparent-background" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <MDBCardBody>
                       <MDBCardTitle className="text-white">
-                        <strong>Initialize Fund Allocation</strong>
+                        {/* <strong>Initialize Fund Allocation</strong> */}
                       </MDBCardTitle>
                       <MDBCardText>
                         <MDBRow center>
                           <MDBCol md="8">
                             <MDBCard className="mb-3">
                               <MDBCardBody>
-                                <MDBCardTitle><strong>Remaining Budget:</strong> $20,000</MDBCardTitle>
+                                <MDBCardTitle><strong>Maximum Budget:</strong> $20,000</MDBCardTitle>
                                 <MDBCardText>
                                   <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
@@ -269,7 +255,10 @@ class Allocation extends React.Component {
                                 <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleSellSubmit}>Sell</MDBBtn>
                                 <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleBuySubmit}>Buy</MDBBtn>
                                 <div className="float-right" style={{ width: 75 }}>
-                                  <MDBInput name="quantity" label="Quantity" />
+                                  <MDBInput name="quantity" label="Quantity" 
+                                    onChange={this.handleInputChange}
+                                    value={this.state.quantity}
+                                    name="quantity" />
                                 </div>
                               </MDBCardBody>
                             </MDBCard>
@@ -283,9 +272,10 @@ class Allocation extends React.Component {
                                     <QuickPortfolio />
                                   </MDBContainer>
                                 </MDBCardText>
-                                <MDBBtn color="elegant" href="#">Continue</MDBBtn>
                               </MDBCardBody>
                             </MDBCard>
+                            <MDBBtn className="mt-3" outline color="white" href="/portfolio">Return to Portfolio</MDBBtn>
+
                           </MDBCol>                 
                         </MDBRow>
                       </MDBCardText>

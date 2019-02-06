@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import ReactDOM from 'react-dom';
+import React, { Component } from "react"
 import ReactFC from 'react-fusioncharts';
 import FusionCharts from 'fusioncharts';
 
@@ -15,9 +14,26 @@ ReactFC.fcRoot(FusionCharts, ScrollArea2d, FusionTheme);
 
 // Step 8 - Creating the DOM element to pass the react-fusioncharts component
 class StaticAreaChart extends Component {
-  // state = {};
+  state = {
+    type: 'scrollarea2d',// The chart type
+    width: this.props.width, // Width of the chart
+    height: this.props.height, // Height of the chart
+    dataFormat: 'json', // Data type
+    chart: {},
+    categories: [],
+    dataset: []
+  }
+  componentDidMount() {
+    this.update();
+  }
 
-  render() {
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      this.update();
+    }
+  }
+
+  update() {
     const chart = this.props.data.chart;
     const dataset = [];
     const dates = [];
@@ -25,22 +41,13 @@ class StaticAreaChart extends Component {
     let yAxisMax = 0;
 
     Object.keys(chart).forEach(function (key) {
-
       dates.push({ "label": chart[key].date.slice(-5) });
       dataset.push({ "value": chart[key].close });
-      // dataset.push({ "label": chart[key].date, "value": chart[key].close })
-
       yAxisMax = (chart[key].high > yAxisMax) ? Math.round(chart[key].high) : yAxisMax;
       yAxisMin = (yAxisMin === null || chart[key].low < yAxisMin) ? Math.round(chart[key].low) : yAxisMin;
-
     });
 
-   
-    this.state = {
-      type: 'scrollarea2d',// The chart type
-      width: this.props.width, // Width of the chart
-      height: this.props.height, // Height of the chartf
-      dataFormat: 'json', // Data type
+    this.setState({
       dataSource: {
         // Chart Configuration
         "chart": {
@@ -55,21 +62,20 @@ class StaticAreaChart extends Component {
           "flatScrollBars": "1",
           "scrollheight": "10",
           "numVisiblePlot": "6",
-
           "numVDivLines": this.props.data.chart.length - 1,
-
           "theme": "fusion",
         },
         "categories": [{
           "category": dates
         }],
-        // Chart Data
         "dataset": [{
           "data": dataset
         }]
       }
+    }) // end of setState
+  } // end of update()
 
-    }
+  render() {
     return (
       <ReactFC
         {...this.state} />
