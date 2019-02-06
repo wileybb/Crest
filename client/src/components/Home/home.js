@@ -16,19 +16,38 @@ export default class Home extends Component {
         watchListsymbol: "",
         oneStockResponse: {},
         responseLiveStock: [],
-        endpoint: "https://ws-api.iextrading.com/1.0/tops"
+        endpoint: "https://ws-api.iextrading.com/1.0/tops",
+        userCash: 0
     }
 
-    walletCheck = () => {
-        // const userData = {
-        //     userId : userId
-        // }
-        this.checkCash()
-    }
 
     componentDidMount() {
+        this.checkCash();
         this.getPertucularUserWatchList();
         this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
+        
+    }
+
+    // walletCheck = () => {
+    //     // const userData = {
+    //     //     userId : userId
+    //     // }
+    //     console.log("wallet check entered");
+    //     this.checkCash()
+    // }
+
+
+     //Check the cash value 
+    checkCash = () => {
+        console.log("check cash func hit");
+        API.getCashValue()
+            .then(res => {
+                console.log("checkcash() ", res);
+                console.log("above is the res dot data from checkCash");
+                this.setState({userCash: res.data});
+                // return (res);
+            })
+            .catch(err => console.log(err))
     }
 
     //Clear interval on real time stock purchase when unmounting from this component
@@ -121,6 +140,7 @@ export default class Home extends Component {
                 console.log(res); 
                 this.setState({symbol:""});
                 this.setState({quantity:""});
+                this.checkCash();
             })
             .catch(err => console.log(err))
     }
@@ -145,18 +165,14 @@ export default class Home extends Component {
                 console.log(res);
                 this.setState({symbol:""});
                 this.setState({quantity:""});
+                this.checkCash();
             })
             .catch(err => console.log(err))
+
+   
     }
 
-    //Check the cash value 
-    checkCash = () => {
-        API.getCashValue()
-            .then(res => {
-                return (res);
-            })
-            .catch(err => console.log(err))
-    }
+
 
     //Form Validataion to check if symbol is entered or not 
     validateForm() {
@@ -230,7 +246,7 @@ export default class Home extends Component {
                                     name="quantity"
                                     placeholder="How many shares to buy?" />
                             </div>
-                            <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button><spam>&nbsp;&nbsp;</spam>
+                            <button className="btn btn-lg btn-info" onClick={this.handleBuySubmit}>Buy</button><span>&nbsp;&nbsp;</span>
                             <button className="btn btn-lg btn-info" onClick={this.handleSellSubmit}>Sell</button>
                             <hr></hr>
                             {/* <div className="form-group">
@@ -335,7 +351,7 @@ export default class Home extends Component {
                         <div className="col-md-4">
                             <hr></hr>
                             <div>
-                                <h3>You have x{this.walletCheck} amount of dollars</h3>
+                                <h3>You have {this.state.userCash} amount of dollars</h3>
                             </div>
                         </div>
                     </div>

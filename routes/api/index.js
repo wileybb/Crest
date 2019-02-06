@@ -132,19 +132,23 @@ router.get("/transactions/:id", isAuthenticated, function (req, res) {
 });
 
 // route to check Wallet Value
-router.get("/home/:id", isAuthenticated, function (req, res) {
+router.get("/cashvalue", isAuthenticated, function (req, res) {
+    console.log("check wallet route hit res");
+    // console.log(req.params.id);
+    // console.log("above is req params id from check wallet value")
     db.Portfolio.findAll({
         limit: 1,
-        // where: {
-        //     id: 1
-        // },
+        where: {
+            UserId: req.user.id
+        },
         order: [['createdAt', 'DESC']]
     }).then(function (found) {
         console.log("GET WALLET VALUE ROUTE HIT!********************");
         console.log(found[0].dataValues.cash);
         let cashValue = found[0].dataValues.cash;
-        return (res);
-        return (cashValue);
+        console.log(cashValue + "is the found cash value")
+        res.json(cashValue)
+        
     })
 })
 
@@ -159,7 +163,7 @@ router.post("/home/wallet", function (req, res) {
     let symbolNew = req.body.symbol.toLowerCase().trim();
     let quantityOld = 0;
   
-    // -------------IN THE CASE OF A BUY ---------------------------------->
+    // -------------IN THE CASE OF  BUY---------------------------------->
     if(req.body.buy){
         console.log("YOU ARE BUYING A STOCK OMG!!")
 
