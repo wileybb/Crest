@@ -18,7 +18,7 @@ module.exports = function (sequelize, DataTypes) {
       },
 
       purchasePrice: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
 
@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
       },
 
       purchaseTotal: {
-          type: DataTypes.INTEGER,  
+          type: DataTypes.FLOAT,  
       }
 
     });
