@@ -35,11 +35,6 @@ class Allocation extends React.Component {
       this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
   }
 
-  //Clear interval on real time stock purchase when unmounting from this component
-  // componentWillUnmount(){
-  //   clearInterval(this.intervalId);
-  // }
-
   //Clear interval when logging out or move to portfolio page or other page
   intervalClear() {
       clearInterval(this.intervalId);
@@ -106,7 +101,7 @@ class Allocation extends React.Component {
   }
 
   handleBuySubmit = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       const purchaseData = {
           buy: true,
           quantity: this.state.quantity,
@@ -116,17 +111,22 @@ class Allocation extends React.Component {
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
+      alert(`Transaction complete! ${this.state.quantity} of ${this.state.symbol.toUpperCase()} purchased!`);
   }
 
   //Handle Buy stock
   addBuy = (userBuy) => {
       API.createPurchase(userBuy)
-          .then(res => { console.log(res) })
+          .then(res => { 
+            console.log(res);
+            this.setState({symbol:""});
+            this.setState({quantity:""});
+          })
           .catch(err => console.log(err))
   }
 
   handleSellSubmit = (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       const sellData = {
           buy: false,
           quantity: this.state.quantity,
@@ -136,12 +136,17 @@ class Allocation extends React.Component {
       }
       console.log(sellData);
       this.addSale(sellData);
+      alert(`Transaction complete! ${this.state.quantity} of ${this.state.symbol} sold!`);
   }
 
   //Sell a stock
   addSale = (userSell) => {
       API.createPurchase(userSell)
-          .then(res => { console.log(res) })
+          .then(res => { 
+            console.log(res);
+            this.setState({symbol:""});
+            this.setState({quantity:""});
+          })
           .catch(err => console.log(err))
   }
 
@@ -168,27 +173,6 @@ class Allocation extends React.Component {
               console.log(this.state.oneStockResponse)
           })
           .catch(err => console.log(err));
-  }
-
-  //Logout User Link 
-  logoutUser = () => {
-      this.intervalClear();
-      localStorage.removeItem("loggedIn");
-      API.signOutUser().then((res) => {
-          console.log(res);
-      }).catch(err => console.log(err));
-  }
-
-  //Go to Portfolio page when user clicked on portfolio link
-  userPortfolio = () => {
-      this.intervalClear();
-      this.props.history.push("/portfolio");
-  }
-
-  //Go to Transaction page when user clicked on Transactions link
-  userTransaction = () => {
-      this.intervalClear();
-      this.props.history.push("/transactions");
   }
 
   render() {
@@ -269,7 +253,10 @@ class Allocation extends React.Component {
                                 <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleSellSubmit}>Sell</MDBBtn>
                                 <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleBuySubmit}>Buy</MDBBtn>
                                 <div className="float-right" style={{ width: 75 }}>
-                                  <MDBInput name="quantity" label="Quantity" />
+                                  <MDBInput name="quantity" label="Quantity" 
+                                    onChange={this.handleInputChange}
+                                    value={this.state.quantity}
+                                    name="quantity" />
                                 </div>
                               </MDBCardBody>
                             </MDBCard>
