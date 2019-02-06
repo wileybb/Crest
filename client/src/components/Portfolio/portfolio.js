@@ -16,7 +16,8 @@ export default class Portfolio extends Component {
         watchList: {},
         portfolio: [],
         updatePortfolio:[],
-        userPortfolio:[]
+        userPortfolio:[],
+        totalValue:0
         // chartData: []
     }
     componentDidMount() {
@@ -75,12 +76,20 @@ export default class Portfolio extends Component {
                }
             //   console.log(updatePort);
                  this.setState({userPortfolio: updatePort})
-            //   console.log(this.state.userPortfolio);
+                 this.totalPortfolio();
              //console.log(price);
             })
         })
     }
 
+    totalPortfolio = () => {
+         let totalStockValue = 0;
+        this.state.userPortfolio.forEach(function(el){
+            totalStockValue +=(parseInt(el.Stockquantity)*parseFloat(el.latestPriceIEX));
+        })
+        this.setState({totalValue:totalStockValue});
+        console.log(this.state.totalValue);
+    }
 
     //Logout User Link 
     logoutUser = () => {
@@ -112,6 +121,7 @@ export default class Portfolio extends Component {
 
     render() {
         const updateWatchList = this.state;
+        const totalValue = this.state;
         return (
             // <div className="container">
             //      <Jumbotron />
@@ -233,7 +243,7 @@ export default class Portfolio extends Component {
                                                  <th scope="col">Stock</th>
                                                  <th scope="col">Quantity</th>
                                                  <th scope="col">Live Stock Price</th>
-                                                 <th scope="col">Purchase Total</th>
+                                                 <th scope="col">Current Total Value</th>
                                                  <th scope="col">Profit/Loss</th>
                                                  {/* <th scope="col">Purchase Date</th> */}
                                              </tr>
@@ -245,7 +255,7 @@ export default class Portfolio extends Component {
                                                          <td><b>{data.symbol.toUpperCase()}</b></td>
                                                          <td>{data.Stockquantity}</td>
                                                          <td>{data.latestPriceIEX}</td> 
-                                                          <td>{data.TotalPurchase}</td> 
+                                                          <td>{(parseFloat(data.Stockquantity))*(data.latestPriceIEX)}</td> 
                                                           <td style={((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? {color:"green"} : {color:"red"}}>{((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? (((parseFloat(data.Stockquantity))*(data.latestPriceIEX))-parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))).toFixed(2)}</td> 
                                                      </tr>)
                                              })}
@@ -294,8 +304,34 @@ export default class Portfolio extends Component {
                          )
                      }
                  </div>
-                 {/* End of Chart column */}
+                 {/* End of Table column */}
+
+                 
+
                </div> {/* Row div end */}
+
+               <div className="row">
+               <div className="col-lg-12">
+               <table>
+                   <thead className="table table-striped">
+                   <tr className="table-dark">
+                    <th scope="row">Intial Balance</th>
+                    <th scope="row">Total Stock Value</th>
+                    <th scope="row">Reamining Balance</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                        <td>$20000.00</td>
+                        <td>{(this.state.totalValue).toFixed(2)}</td>
+                        {/* <td>{(parseFloat(20000.00)-parseFloat(this.state.totalValue)).toFixed(2)}</td> */}
+                        <td>???</td>
+                     </tr>
+                   </tbody>
+                </table>
+               
+                </div>
+               </div>
 
            </div> //Container Div End
 
