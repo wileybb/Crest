@@ -7,9 +7,7 @@ import html2canvas from "html2canvas";
 import 'jspdf-autotable';
 
 import FolioPie from "../Charts/FolioPie.js";
-import FolioBar from "../Charts/FolioBar.js";
 import FolioDoughnut from "../Charts/FolioDoughnut.js";
-import FolioMultiLine from "../Charts/FolioMultiLine.js";
 
 export default class Portfolio extends Component {
     state = {
@@ -17,7 +15,6 @@ export default class Portfolio extends Component {
         portfolio: [],
         updatePortfolio: [],
         userPortfolio: []
-        // chartData: []
     }
     componentDidMount() {
         API.getPertucularUserWatchList().then((res) => {
@@ -173,8 +170,6 @@ export default class Portfolio extends Component {
                             (
                                 <div>
                                     <p>Your Portfolio is Empty!</p>
-                                    {/* for reference */}
-                                    {/* < FolioCharts width="100%" height="500" /> */}
                                 </div>
                             )
                             :
