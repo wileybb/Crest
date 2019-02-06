@@ -29,15 +29,17 @@ class FolioPie extends React.Component {
         console.log("DATA ARRAY: ", data);
 
         this.setState({
+            
             type: 'pie2d',// The chart type
             width: this.props.width, // Width of the chart
             height: this.props.height, // Height of the chartf
             dataFormat: 'json', // Data type
             dataSource: {
                 "chart": {
-                    "caption": "% Net Worth",
-                    "sub-caption": "",
-                    "plottooltext": "<b>$percentValue</b> $label Stocks at $value",
+                    "bgColor": this.props.bgColor,
+                    "caption": "Net Worth by Stock",
+                    "sub-caption": "Hover to see Total Values",
+                    "plottooltext": "<b>$percentValue</b> $label Stocks at $$value",
                     "showlegend": "1",
                     "showpercentvalues": "1",
                     "legendposition": "bottom",
@@ -48,7 +50,9 @@ class FolioPie extends React.Component {
             }
         })
         // END of setState
-    }
+    } 
+    // END of componentDidMount
+    
     render() {
 
 
