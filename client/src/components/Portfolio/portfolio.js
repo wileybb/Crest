@@ -7,7 +7,7 @@ import html2canvas from "html2canvas";
 import 'jspdf-autotable';
 
 import FolioPie from "../Charts/FolioPie.js";
-import FolioDoughnut from "../Charts/FolioDoughnut.js";
+// import FolioDoughnut from "../Charts/FolioDoughnut.js";
 
 export default class Portfolio extends Component {
     state = {
@@ -188,11 +188,11 @@ export default class Portfolio extends Component {
                                         height="600"
                                         data={this.state.userPortfolio}
                                     />
-                                    <FolioDoughnut
+                                    {/* <FolioDoughnut
                                         width="100%"
                                         height="600"
                                         data={this.state.userPortfolio}
-                                    />
+                                    /> */}
                                 </div>
                          )
                      }
