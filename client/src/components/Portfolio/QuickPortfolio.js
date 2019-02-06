@@ -13,9 +13,8 @@ export default class QuickPortfolio extends Component {
         updatePortfolio:[],
         userPortfolio:[],
         totalValue:0
-
-        // chartData: []
     }
+    
     componentDidMount() {
         API.getPertucularUserWatchList().then((res) => {
             this.setState({ watchList: res.data });
@@ -23,27 +22,7 @@ export default class QuickPortfolio extends Component {
             this.getUserPortfolio();
         });
     }
-    //}
-
-    //API AJAX Call to user portfolio table 
-    // getUserPortfolio = () => {
-    //     API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
-    //         this.setState({portfolio: res.data})
-    //         this.filterPortfolioData(res.data)
-    //     })
-    // }
-
-    // filterPortfolioData = (dataArray) => {
-    //     let primedArray = []
-    //     for (var i = 0; i < dataArray.length; i++) {
-    //         if (dataArray[i].quantity > 0) {
-    //             primedArray.push(dataArray[i]);
-    //         } else { };
-    //     }
-    //     this.setState({ portfolio: primedArray });
-    //     console.log(this.state.portfolio);
-    // }
-
+ 
     //API AJAX Call to user transaction table and generate user portfolio updated new table to get profit loss 
     getUserPortfolio = () => {
         API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
@@ -88,34 +67,6 @@ export default class QuickPortfolio extends Component {
         console.log(this.state.totalValue);
     }
 
-    //Logout User Link 
-    logoutUser = () => {
-        //this.intervalClear();
-        localStorage.removeItem("loggedIn");
-        API.signOutUser().then((res) => {
-        }).catch(err => console.log(err));
-    }
-    //Go to Home page
-    goToHomePage = () => {
-        this.props.history.push("/home");
-    }
-    //Go to Transaction page when user clicked on Transactions link
-    userTransaction = () => {
-        this.props.history.push("/transactions");
-    }
-
-    printDocument = () => {
-        const input = document.getElementById('mytable');
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png', 1.0);
-                const pdf = new jsPDF('p', 'mm');
-                pdf.addImage(imgData, 'PNG', 10, 10);
-                // pdf.output('dataurlnewwindow');
-                pdf.save("myDocument.pdf");
-            });
-    }
-
     render (){
 
         return (
@@ -128,23 +79,17 @@ export default class QuickPortfolio extends Component {
                      <tr>
                          <th scope="col">Stock</th>
                          <th scope="col">Quantity</th>
-                         {/* <th scope="col">Type</th> */}
-                         {/* <th scope="col">Purchase Price</th> */}
-                         {/* <th scope="col">Purchase Total</th> */}
-                         {/* <th scope="col">Purchase Date</th> */}
                      </tr>
                  </thead>
                  <tbody>
                      {this.state.userPortfolio.map((data) => {
-                         return (
+                         if (data.Stockquantity != 0) {
+                            return (
                             <tr>
                             <td><b>{data.symbol.toUpperCase()}</b></td>
                             <td>{data.Stockquantity}</td>
-                            {/* <td>{(data.buy) ? ("Buy") : ("Sell")}</td> */}
-                            {/* <td>{data.purchasePrice}</td> */}
-                            {/* <td>{data.purchaseTotal}</td> */}
-                            {/* <td>{data.updatedAt}</td> */}
                             </tr>)
+                         }
                      })}
                  </tbody>
                 </table>
