@@ -24,8 +24,22 @@ export default class Portfolio extends Component {
             this.setState({ watchList: res.data });
         }).then(() => {
             this.getUserPortfolio();
+            this.checkCash();
         });
     }
+
+    //Check the cash value 
+    checkCash = () => {
+            console.log("check cash func hit");
+     API.getCashValue()
+         .then(res => {
+            console.log("checkcash() ", res);
+            console.log("above is the res dot data from checkCash");
+            this.setState({userCash: res.data});
+        })
+        .catch(err => console.log(err))
+    
+     }
 
 
     //API AJAX Call to user transaction table and generate user portfolio updated new table to get profit loss 

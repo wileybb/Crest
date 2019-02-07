@@ -85,7 +85,7 @@ export default class PortfolioTable extends Component {
         return (
             <div className="row">
             <div className="col-md-12">
-                {(this.state.userPortfolio).length === 0 ? (<div>Once created, your portfolio information will appear here.</div>) : (
+                {(this.state.userPortfolio).length === 0 ? (<div></div>) : (
                     <table id="mytable" className="table table-striped">
                         <thead className="table-dark">
                             <tr>
@@ -100,10 +100,10 @@ export default class PortfolioTable extends Component {
                         <tbody>
                             {this.state.userPortfolio.map((data) => {
                                 var liveStockPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.latestPriceIEX);
-                                var currentTotalValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(((parseFloat(data.Stockquantity))*(data.latestPriceIEX)));
-                                var profitValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.Stockquantity)*data.latestPriceIEX)-parseFloat(data.TotalPurchase));
-                                var lossValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))));
-                                var madeProfit = (parseFloat(data.Stockquantity)*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase)
+                                var currentTotalValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(((parseFloat(data.Stockquantity))*parseFloat(data.latestPriceIEX)));
+                                var profitValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.Stockquantity)*parseFloat(data.latestPriceIEX)-parseFloat(data.TotalPurchase)));
+                                var lossValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*parseFloat(data.latestPriceIEX))));
+                                var madeProfit = (parseFloat(data.Stockquantity)*parseFloat(data.latestPriceIEX)) > parseFloat(data.TotalPurchase)
                                 
                                if (data.Stockquantity != 0) {
                                 return (
@@ -112,7 +112,7 @@ export default class PortfolioTable extends Component {
                                         <td>{data.Stockquantity}</td>
                                         <td>{liveStockPrice}</td> 
                                          <td>{currentTotalValue}</td> 
-                                         <td style={ {madeProfit} ? {color:"green"} : {color:"red"}}>
+                                         <td style={ madeProfit ? {color:"green"} : {color:"red"}}>
                                             { madeProfit ? profitValue : lossValue  }
                                         </td> 
                                     </tr>)
