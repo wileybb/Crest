@@ -18,6 +18,7 @@ import HomeUI from "./components/HomeUI/HomeUI"
 import WatchlistUI from "./components/Watchlist/WatchlistUI"
 import DefaultStock from "./components/Topstock/DefaultStock"
 import CashCheck from "./components/CashCheck/CashCheck"
+import PortfolioDiversity from "./components/Portfolio/PortfolioDiversity"
 
 // import logo from "./logo.svg";
 // import "./App.css";
@@ -42,7 +43,7 @@ class App extends Component {
            <Route exact path="/topstock" component={Topstock} />
            <Route exact path="/defaultStock" component={DefaultStock} />
            <Route exact path="/cashcheck" component={CashCheck} />
-           {/* <Route exact path="/home" component={Home} /> */}
+           <Route exact path="/PortfolioDiversity" component={PortfolioDiversity} />
            <Route
               path="/home"
               render={() =>
