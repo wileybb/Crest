@@ -8,6 +8,7 @@ import QuickPortfolio from "../Portfolio/QuickPortfolio"
 import HomeCopy from "./HomeCopy"
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
 import Footer from "../Footer/Footer"
+import CashFormat from "../CashCheck/CashFormat"
 
 
 
@@ -21,13 +22,6 @@ class Allocation extends React.Component {
     oneStockResponse: {},
     responseLiveStock: [],
     endpoint: "https://ws-api.iextrading.com/1.0/tops"
-  }
-
-  walletCheck = () => {
-      // const userData = {
-      //     userId : userId
-      // }
-      this.checkCash()
   }
 
   componentDidMount() {
@@ -93,9 +87,6 @@ class Allocation extends React.Component {
   //Form Value submission to get once stock price 
   handleFormSubmit = (event) => {
       event.preventDefault();
-      // const stockTic = {
-      //     symbol: this.state.symbol,
-      // }
       this.setState({ symbol: this.state.symbol });
       this.stockSymbol(this.state.symbol);
   }
@@ -111,7 +102,8 @@ class Allocation extends React.Component {
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
-      alert(`Transaction complete! ${this.state.quantity} of ${this.state.symbol.toUpperCase()} purchased!`);
+      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
+      window.location.reload();
   }
 
   //Handle Buy stock
@@ -136,7 +128,8 @@ class Allocation extends React.Component {
       }
       console.log(sellData);
       this.addSale(sellData);
-      alert(`Transaction complete! ${this.state.quantity} of ${this.state.symbol} sold!`);
+      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
+      window.location.reload();
   }
 
   //Sell a stock
@@ -175,6 +168,10 @@ class Allocation extends React.Component {
           .catch(err => console.log(err));
   }
 
+  refreshPage(){
+    window.location.reload();
+  } 
+
   render() {
     return (
       <div>
@@ -183,7 +180,7 @@ class Allocation extends React.Component {
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
             <MDBRow className="flex-center text-white mt-3">
-              <h1>Welcome to Crest.</h1> 
+              <h1>Crest Trading Portal</h1> 
             </MDBRow>
 
             <MDBContainer className="flex-center flex-column" style={{ marginTop: -50, height: 2500 }}>
@@ -192,14 +189,14 @@ class Allocation extends React.Component {
                   <MDBCard className="transparent-background" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <MDBCardBody>
                       <MDBCardTitle className="text-white">
-                        <strong>Initialize Fund Allocation</strong>
+                        {/* <strong>Initialize Fund Allocation</strong> */}
                       </MDBCardTitle>
                       <MDBCardText>
                         <MDBRow center>
                           <MDBCol md="8">
                             <MDBCard className="mb-3">
                               <MDBCardBody>
-                                <MDBCardTitle><strong>Remaining Budget:</strong> $20,000</MDBCardTitle>
+                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashFormat /></MDBCardTitle>
                                 <MDBCardText>
                                   <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
@@ -270,9 +267,9 @@ class Allocation extends React.Component {
                                     <QuickPortfolio />
                                   </MDBContainer>
                                 </MDBCardText>
-                                <MDBBtn color="elegant" href="#">Continue</MDBBtn>
                               </MDBCardBody>
                             </MDBCard>
+                            <MDBBtn className="mt-3" outline color="white" href="/portfolio">Return to Portfolio</MDBBtn>
                           </MDBCol>                 
                         </MDBRow>
                       </MDBCardText>

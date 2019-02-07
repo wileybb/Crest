@@ -33,9 +33,9 @@ class FolioPie extends Component {
             dataSource: {
                 "chart": {
                     // "bgColor": this.props.bgColor,
-                    "caption": "Net Worth by Stock",
+                    "caption": "Portfolio Value by Stock Symbol",
                     "sub-caption": "Hover to see Total Values",
-                    "plottooltext": "<b>$percentValue</b> $label Stocks at $$value",
+                    "plottooltext": "<b>$percentValue</b> $label stock, worth $$value total",
                     "showlegend": "1",
                     "showpercentvalues": "1",
                     "legendposition": "bottom",

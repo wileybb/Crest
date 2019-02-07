@@ -26,26 +26,7 @@ export default class Portfolio extends Component {
             this.getUserPortfolio();
         });
     }
-    //}
 
-    //API AJAX Call to user portfolio table 
-    // getUserPortfolio = () => {
-    //     API.getUserPortfolioData(this.state.watchList.UserId).then((res) => {
-    //         this.setState({portfolio: res.data})
-    //         this.filterPortfolioData(res.data)
-    //     })
-    // }
-
-    // filterPortfolioData = (dataArray) => {
-    //     let primedArray = []
-    //     for (var i = 0; i < dataArray.length; i++) {
-    //         if (dataArray[i].quantity > 0) {
-    //             primedArray.push(dataArray[i]);
-    //         } else { };
-    //     }
-    //     this.setState({ portfolio: primedArray });
-    //     console.log(this.state.portfolio);
-    // }
 
     //API AJAX Call to user transaction table and generate user portfolio updated new table to get profit loss 
     getUserPortfolio = () => {
