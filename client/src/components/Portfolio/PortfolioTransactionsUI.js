@@ -1,13 +1,28 @@
 import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import PortfolioPie from './PortfolioPie'
-import Footer from '../Footer/Footer'
+import PortfolioTransactions from './PortfolioTransactions'
 import TotalValue from './TotalValue'
+import Footer from '../Footer/Footer'
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 
+class PortfolioTransactionsUI extends React.Component {
 
-class PortfolioDiversityUI extends React.Component {
+  
+  printDocument = () => {
+    const input = document.getElementById('mytable');
+    html2canvas(input)
+        .then((canvas) => {
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const pdf = new jsPDF('p', 'mm');
+            pdf.addImage(imgData, 'PNG', 10, 10);
+            // pdf.output('dataurlnewwindow');
+            pdf.save("myDocument.pdf");
+        });
+  }
+
   render() {
     return (
       <div>
@@ -15,14 +30,15 @@ class PortfolioDiversityUI extends React.Component {
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
             <MDBRow className="flex-center text-white mt-5">
+              {/* <h2 className=""><strong>Current Portfolio</strong></h2> <br /> */}
               <Link to="/PortfolioDiversityUI">
-                <MDBBtn size="lg" active color="elegant">Portfolio Diversity</MDBBtn>
+                <MDBBtn size="lg" color="elegant">Portfolio Diversity</MDBBtn>
               </Link>
               <Link to="/PortfolioSummaryUI">
                 <MDBBtn size="lg" color="elegant">Portfolio Summary</MDBBtn>
               </Link>
               <Link to="/PortfolioTransactionsUI">
-                <MDBBtn size="lg" color="elegant">Transactions</MDBBtn>
+                <MDBBtn size="lg" active color="elegant">Transactions</MDBBtn>
               </Link>
             </MDBRow>
             
@@ -36,7 +52,7 @@ class PortfolioDiversityUI extends React.Component {
                           <MDBCardBody>
                             <MDBCard className="shadow-box-example hoverable mx-auto" style={{opacity: ".85"}} >
                               <TotalValue />
-                              <PortfolioPie />
+                              <PortfolioTransactions />            
                             </MDBCard>
                           </MDBCardBody>
                         </MDBCard>
@@ -62,4 +78,4 @@ class PortfolioDiversityUI extends React.Component {
   }
 }
 
-export default PortfolioDiversityUI;
+export default PortfolioTransactionsUI;
