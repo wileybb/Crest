@@ -141,7 +141,7 @@ router.get("/cashvalue", isAuthenticated, function (req, res) {
         where: {
             UserId: req.user.id
         },
-        order: [['createdAt', 'DESC']]
+        order: [['updatedAt', 'DESC']]
     }).then(function (found) {
         console.log("GET WALLET VALUE ROUTE HIT!********************");
         console.log(found[0].dataValues.cash);
@@ -193,14 +193,14 @@ router.post("/home/wallet", function (req, res) {
             where: {
                 userId: userId
             },
-            order: [['createdAt', 'DESC']]
+            order: [['updatedAt', 'DESC']]
         }).then(function (found) {
 
-            let purchaseTotal = parseInt(req.body.purchaseTotal)
-            let currentCash = parseInt(found[0].dataValues.cash);
+            let purchaseTotal = parseFloat(req.body.purchaseTotal)
+            let currentCash = parseFloat(found[0].dataValues.cash);
             quantityNew = quantityNew + quantityOld;
 
-            newCashBalance = currentCash - parseInt(req.body.purchaseTotal);
+            newCashBalance = currentCash - parseFloat(req.body.purchaseTotal);
             console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
             // checking if user has adequate funds -------------->
             if(currentCash > purchaseTotal){
@@ -259,7 +259,7 @@ router.post("/home/wallet", function (req, res) {
                 symbol: symbolNew,
                 userId: userId
             },
-            order: [['createdAt', 'DESC']]
+            order: [['updatedAt', 'DESC']]
         }).then(function (found) {
 
             quantityOld = parseInt((found[0].dataValues.quantity));
@@ -271,7 +271,7 @@ router.post("/home/wallet", function (req, res) {
             where: {
                 userId: userId
             },
-            order: [ [ 'createdAt', 'DESC' ]]
+            order: [ [ 'updatedAt', 'DESC' ]]
         }).then(function(found){
             console.log(quantityOld + " is quantity old")
             console.log(quantitySold + " is quantity sold")
@@ -280,7 +280,7 @@ router.post("/home/wallet", function (req, res) {
             let currentCash = found[0].dataValues.cash;
             quantityNew = quantityOld - quantitySold;
 
-            newCashBalance = currentCash + req.body.purchaseTotal;
+            newCashBalance = currentCash + parseFloat(req.body.purchaseTotal);
             // console.log(newCashBalance +"_"+ quantityNew +"_"+ symbolNew + "is the info *******####*****");
 
             console.log(quantityNew + " is quantity new");

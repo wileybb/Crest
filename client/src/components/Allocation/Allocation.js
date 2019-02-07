@@ -8,7 +8,7 @@ import QuickPortfolio from "../Portfolio/QuickPortfolio"
 import HomeCopy from "./HomeCopy"
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
 import Footer from "../Footer/Footer"
-import CashCheck from "../CashCheck/CashCheck"
+import CashFormat from "../CashCheck/CashFormat"
 
 
 
@@ -22,13 +22,6 @@ class Allocation extends React.Component {
     oneStockResponse: {},
     responseLiveStock: [],
     endpoint: "https://ws-api.iextrading.com/1.0/tops"
-  }
-
-  walletCheck = () => {
-      // const userData = {
-      //     userId : userId
-      // }
-      this.checkCash()
   }
 
   componentDidMount() {
@@ -94,9 +87,6 @@ class Allocation extends React.Component {
   //Form Value submission to get once stock price 
   handleFormSubmit = (event) => {
       event.preventDefault();
-      // const stockTic = {
-      //     symbol: this.state.symbol,
-      // }
       this.setState({ symbol: this.state.symbol });
       this.stockSymbol(this.state.symbol);
   }
@@ -206,7 +196,7 @@ class Allocation extends React.Component {
                           <MDBCol md="8">
                             <MDBCard className="mb-3">
                               <MDBCardBody>
-                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashCheck /></MDBCardTitle>
+                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashFormat /></MDBCardTitle>
                                 <MDBCardText>
                                   <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
