@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 import API from "../../utils/API";
 import Footer from '../Footer/Footer';
-import Modal from '../Modals/Modals';
+import Modal from '../Modals/Modals.js';
 
 class LoginUI extends React.Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    show:false,
+    loginres:""
   }
   static contextTypes = {
       router: PropTypes.object
@@ -38,9 +40,16 @@ class LoginUI extends React.Component {
       console.log(this.state.userid)  
       console.log(res)})
     .catch(err => {
-        alert("Email or Password is invalid");
+        //alert("Email or Password is invalid");
+        this.setState({loginres: "Email or Password is invalid", show:true})
         console.log(err);});
   }
+
+  toggleModal = () => {
+    this.setState({
+    show: !this.state.show
+    });
+ };
 
   render() {
     return (
@@ -110,7 +119,7 @@ class LoginUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
-        <Modal></Modal>
+        <Modal show={this.state.show} toggleModal={this.toggleModal}>{this.state.loginres}</Modal>
         <Footer />
       </div>
     );
