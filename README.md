@@ -1,5 +1,3 @@
-# projectThree
-
 # Welcome to Crest
 ### Market Trading. Simplified.
 
