@@ -82,12 +82,10 @@ export default class PortfolioTable extends Component {
 
 
     render() {
-        const updateWatchList = this.state;
-        const totalValue = this.state;
         return (
             <div className="row">
             <div className="col-md-12">
-                {(this.state.userPortfolio).length === 0 ? (<div><img src={require('../../image.png')} alt="stock" className="img-responsive" /></div>) : (
+                {(this.state.userPortfolio).length === 0 ? (<div>Once created, your portfolio information will appear here.</div>) : (
                     <table id="mytable" className="table table-striped">
                         <thead className="table-dark">
                             <tr>
@@ -101,14 +99,22 @@ export default class PortfolioTable extends Component {
                         </thead>
                         <tbody>
                             {this.state.userPortfolio.map((data) => {
+                                var liveStockPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.latestPriceIEX);
+                                var currentTotalValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(((parseFloat(data.Stockquantity))*(data.latestPriceIEX)));
+                                var profitValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.Stockquantity)*data.latestPriceIEX)-parseFloat(data.TotalPurchase));
+                                var lossValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))));
+                                var madeProfit = (parseFloat(data.Stockquantity)*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase)
+                                
                                if (data.Stockquantity != 0) {
                                 return (
                                     <tr>
                                         <td><b>{data.symbol.toUpperCase()}</b></td>
                                         <td>{data.Stockquantity}</td>
-                                        <td>{data.latestPriceIEX}</td> 
-                                         <td>{((parseFloat(data.Stockquantity))*(data.latestPriceIEX)).toFixed(2)}</td> 
-                                         <td style={((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? {color:"green"} : {color:"red"}}>{((parseFloat(data.Stockquantity))*(data.latestPriceIEX)) > parseFloat(data.TotalPurchase) ? (((parseFloat(data.Stockquantity))*(data.latestPriceIEX))-parseFloat(data.TotalPurchase)).toFixed(2) : (parseFloat(data.TotalPurchase)-(parseFloat(data.Stockquantity)*(data.latestPriceIEX))).toFixed(2)}</td> 
+                                        <td>{liveStockPrice}</td> 
+                                         <td>{currentTotalValue}</td> 
+                                         <td style={ {madeProfit} ? {color:"green"} : {color:"red"}}>
+                                            { madeProfit ? profitValue : lossValue  }
+                                        </td> 
                                     </tr>)
                                }
                             })}
