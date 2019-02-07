@@ -12,15 +12,14 @@
 ## Tech
 
 ```
-React.js,
-Node.js,
-Passport.js,
-Express.js,
-Sequelize,
-Material Design Bootstrap for React,
-Live Stock IEX APIs
-FusionCharts
-
+- React.js
+- Node.js
+- Passport.js
+- Express.js
+- Sequelize
+- Material Design Bootstrap for React
+- Live Stock IEX APIs
+- FusionCharts
 ```
 
 #### Welcome Page shows top tech stock along with description
@@ -31,25 +30,14 @@ FusionCharts
 
 #### Login/Signup Dialog 
 
-![Login & Signup Page](snap/login.png)
+![Signup Page](snap/signup.png)
+![Login Page](snap/login.png)
 
 
 
 #### Once User Log In, Live top market news and differenct view options available
 
-![After Login](snap/afterLogin.png)
-
-
-
-#### Watchlist View, Each user can configure their own watchlist for live/current market price
-
-![Watch List View](snap/watchlist.png)
-
-
-
-#### Portfolio View, with all stock and current stock value along with Remaining Balance
-
-![Portfolio View](snap/portfolio.png)
+![Home](snap/home.png)
 
 
 
@@ -57,5 +45,18 @@ FusionCharts
 
 ![Trade View](snap/trade.png)
 
+
+
+#### Watchlist View, Each user can configure their own watchlist for live/current market price
+
+![Watchlist View](snap/watchlist.png)
+
+
+
+#### Portfolio View, with all stock and current stock value along with Remaining Balance
+
+![Portfolio Diversity](snap/portfolio-diversity.png)
+![Portfolio Summary](snap/portfolio-summary.png)
+![Portfolio Transactions](snap/portfolio-transactions.png)
 
 
