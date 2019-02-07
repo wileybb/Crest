@@ -24,13 +24,6 @@ class Allocation extends React.Component {
     endpoint: "https://ws-api.iextrading.com/1.0/tops"
   }
 
-  walletCheck = () => {
-      // const userData = {
-      //     userId : userId
-      // }
-      this.checkCash()
-  }
-
   componentDidMount() {
       this.getPertucularUserWatchList();
       this.intervalId = setInterval(this.autoStockData.bind(this), 1000);
@@ -94,9 +87,6 @@ class Allocation extends React.Component {
   //Form Value submission to get once stock price 
   handleFormSubmit = (event) => {
       event.preventDefault();
-      // const stockTic = {
-      //     symbol: this.state.symbol,
-      // }
       this.setState({ symbol: this.state.symbol });
       this.stockSymbol(this.state.symbol);
   }

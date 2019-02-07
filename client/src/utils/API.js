@@ -50,6 +50,7 @@ export default {
   getCashValue: function(){
     return axios.get("/user/cashvalue");
   },
+  
   alphaVantageCall: function(){
     return axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=1min&apikey=SK4M0EMARF3A00VS`)
   },
