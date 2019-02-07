@@ -12,38 +12,30 @@ class HomeUI extends React.Component {
         <MDBView src="https://images.unsplash.com/photo-1460620105278-b7f0516e6d65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
-            <MDBRow className="flex-center text-white mt-5 mb-5">
-              <h1 className="">Welcome back to <strong>Crest.</strong></h1> 
+            <MDBRow className="flex-center text-white">
+              <h1 className="">Welcome back to <strong>Crest.</strong></h1>
+            </MDBRow>
+
+            <MDBRow className="flex-center text-white mb-3" style={{ marginTop: -150 }}>
+              <Link to="/allocate">
+                <MDBBtn size="lg" color="elegant" style={{width: 250}}>Trade</MDBBtn>
+              </Link>
+              <Link to="/portfolio">
+                <MDBBtn size="lg" color="elegant" style={{width: 250}}>View Portfolio</MDBBtn>
+              </Link>
+              <Link to="/watchlist">
+                <MDBBtn size="lg" color="elegant" style={{width: 250}}>Watchlist</MDBBtn>
+              </Link>
             </MDBRow>
             
             <MDBContainer className="flex-center flex-column mx-auto" style={{ marginTop: -75, height: 2500 }}>
               <MDBCol md="12" className="mx-auto">
                 <MDBRow>
                   <MDBContainer>
-                    <MDBCol lg="8" className="mx-auto">
-                      <MDBRow className="mx-auto">
-                        <MDBCol lg="5" className="mx-auto white-text">
-                          <Link to="/portfolio">
-                            <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                              <p className="h2 py-4"><small>View Portfolio</small></p>
-                            </MDBBtn>
-                          </Link>
-                        </MDBCol>
-                        <MDBCol lg="5" className="mx-auto white-text">
-                          <Link to="/watchlist">
-                            <MDBBtn color="elegant" size="sm" style={{width: 300}}>
-                              <p className="h2 py-4"><small>My Watchlist</small></p>
-                            </MDBBtn>
-                          </Link>
-                        </MDBCol>
-                      </MDBRow>
-
-                    </MDBCol>
-
                     <MDBRow>
                       <MDBCol lg="11" className="mx-auto mt-3">
                       <h3 className="text-white mb-3">IEX Market News Articles</h3>
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 450, overflow: "auto" }}>
+                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 500, overflow: "auto" }}>
                           <MDBCardBody>
                             <Newsfeed />
                           </MDBCardBody>

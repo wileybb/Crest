@@ -94,11 +94,11 @@ export default class TotalValue extends Component {
       var stockValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.totalStockValue);
       var cashRemaining = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.userCash);
       var totalPortfolio = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.totalValue);
-      var madeProfit = (this.state.totalStockValue + this.state.userCash) > 20000;
+      var madeProfit = (this.state.totalStockValue + this.state.userCash) >= 20000;
 
         return (
           <div>
-            {stockValue} (Stock) + {cashRemaining} (Cash) = <p style={ madeProfit ? {color:"green"} : {color:"red"}}>{totalPortfolio} Total Value</p>
+            {stockValue} (Stock) + {cashRemaining} (Cash) = <p style={ madeProfit ? {color:"green"} : {color:"red"} }>{totalPortfolio} Total Value</p>
           </div>
         )
           

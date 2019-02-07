@@ -20,6 +20,7 @@ import DefaultStock from "./components/Topstock/DefaultStock"
 import CashCheck from "./components/CashCheck/CashCheck"
 import PortfolioDiversityUI from "./components/Portfolio/PortfolioDiversityUI"
 import PortfolioSummaryUI from "./components/Portfolio/PortfolioSummaryUI"
+import PortfolioTransactionsUI from "./components/Portfolio/PortfolioTransactionsUI"
 
 // import logo from "./logo.svg";
 // import "./App.css";
@@ -46,6 +47,7 @@ class App extends Component {
            <Route exact path="/cashcheck" component={CashCheck} />
            <Route exact path="/PortfolioDiversityUI" component={PortfolioDiversityUI} />
            <Route exact path="/PortfolioSummaryUI" component={PortfolioSummaryUI} />
+           <Route exact path="/PortfolioTransactionsUI" component={PortfolioTransactionsUI} />
            <Route 
               path="/home"
               render={() =>
@@ -59,7 +61,7 @@ class App extends Component {
            <Route path="/portfolio" 
               render={() => 
                 isLoggedIn ? ( 
-                 <Route component={Portfolio} />
+                 <Route component={PortfolioDiversityUI} />
                  ) : (<Route component={Login} /> )} />
             <Route path="/transactions" 
               render={() => 
