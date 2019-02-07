@@ -17,7 +17,7 @@ export default function Modals(props) {
               {/* {(this.state.show) ? ( */}
                 <MDBModal isOpen={props.show} toggle={props.toggleModal} >
                   <MDBModalHeader></MDBModalHeader>
-                  <MDBModalBody>{props.children}</MDBModalBody>
+                  <MDBModalBody className="mx-auto text-center">{props.children}</MDBModalBody>
                   <MDBModalFooter>
                   <MDBBtn className="btn-grey" variant="gray" onClick={props.toggleModal}>Close</MDBBtn>
                   </MDBModalFooter>
