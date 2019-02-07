@@ -1,14 +1,16 @@
 import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import API from "../../utils/API"
-import Footer from '../Footer/Footer'
+import API from "../../utils/API";
+import Footer from "../Footer/Footer";
+import Modal from "../Modals/Modals.js";
 
 class SignupUI extends React.Component {
   state = {
     username:"",
     password:"",
     email:"",
+    show:false
   }
   handleInputChange = (event) => {
       const {name, value} = event.target;
@@ -21,7 +23,7 @@ class SignupUI extends React.Component {
           password: this.state.password,
           email: this.state.email
           }
-      console.log(userData);
+      //console.log(userData);
       this.createUser(userData)
   }
   validateForm() {
@@ -30,12 +32,20 @@ class SignupUI extends React.Component {
   createUser = (userSignup) => {
       API.createUser(userSignup)
     .then(res => {
-      window.location.href = "/login"      //this.context.router.history.push('/login');
-        console.log(res);
-        alert(res.data);
+      this.setState({show:true});
+      //window.location.href = "/login"      //this.context.router.history.push('/login'); //moved this function to modal
+        //alert(res.data);
       })
     .catch(err => console.log(err));
   }
+
+  toggleModal = () => {
+    this.setState({
+    show: !this.state.show
+    });
+    window.location.href = "/login"  
+ };
+
   render() {
     return (
       <div>
@@ -127,6 +137,7 @@ class SignupUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Modal show={this.state.show} toggleModal={this.toggleModal}>Thank you for Registering! <br /> Please log in.</Modal>
         <Footer />
       </div>
     );

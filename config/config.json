@@ -2,11 +2,7 @@
   "development": {
     "username": "root",
     "password": "",
-
-
     "database": "crestdb",
-
-
     "host": "localhost",
     "dialect": "mysql"
   },

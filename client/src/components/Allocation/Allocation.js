@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import API from '../../utils/API';
 
 import Navbar from "../Navbar/Navbar";
-import QuickPortfolio from "../Portfolio/QuickPortfolio"
-import HomeCopy from "./HomeCopy"
+import QuickPortfolio from "../Portfolio/QuickPortfolio";
+import HomeCopy from "./HomeCopy";
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
-import Footer from "../Footer/Footer"
-import CashCheck from "../CashCheck/CashCheck"
-
+import Footer from "../Footer/Footer";
+import CashFormat from "../CashCheck/CashFormat";
+import Modal from "../Modals/Modals.js";
 
 
 class Allocation extends React.Component {
@@ -21,14 +21,10 @@ class Allocation extends React.Component {
     watchListsymbol: "",
     oneStockResponse: {},
     responseLiveStock: [],
-    endpoint: "https://ws-api.iextrading.com/1.0/tops"
-  }
+    endpoint: "https://ws-api.iextrading.com/1.0/tops",
+    show:false,
+    modalMessage: ""
 
-  walletCheck = () => {
-      // const userData = {
-      //     userId : userId
-      // }
-      this.checkCash()
   }
 
   componentDidMount() {
@@ -94,9 +90,6 @@ class Allocation extends React.Component {
   //Form Value submission to get once stock price 
   handleFormSubmit = (event) => {
       event.preventDefault();
-      // const stockTic = {
-      //     symbol: this.state.symbol,
-      // }
       this.setState({ symbol: this.state.symbol });
       this.stockSymbol(this.state.symbol);
   }
@@ -112,8 +105,9 @@ class Allocation extends React.Component {
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
-      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
-      window.location.reload();
+      //alert(`Transaction successful! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
+      //window.location.reload();
+      this.setState({modalMessage: `Transaction successful! \n ${this.state.quantity} share(s) of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for a total of $${purchaseData.purchaseTotal}.`})
   }
 
   //Handle Buy stock
@@ -123,6 +117,7 @@ class Allocation extends React.Component {
             console.log(res);
             this.setState({symbol:""});
             this.setState({quantity:""});
+            this.setState({show:true});
           })
           .catch(err => console.log(err))
   }
@@ -138,8 +133,9 @@ class Allocation extends React.Component {
       }
       console.log(sellData);
       this.addSale(sellData);
-      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
-      window.location.reload();
+      //alert(`Transaction successful! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
+      //window.location.reload();
+      this.setState({modalMessage: `Transaction successful! \n ${this.state.quantity} share(s) of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for a total of $${sellData.purchaseTotal}.`})
   }
 
   //Sell a stock
@@ -149,6 +145,7 @@ class Allocation extends React.Component {
             console.log(res);
             this.setState({symbol:""});
             this.setState({quantity:""});
+            this.setState({show:true});  
           })
           .catch(err => console.log(err))
   }
@@ -182,6 +179,14 @@ class Allocation extends React.Component {
     window.location.reload();
   } 
 
+  //Modal Toggle
+  toggleModal = () => {
+    this.setState({
+    show: !this.state.show
+    });
+    window.location.reload();
+ };
+
   render() {
     return (
       <div>
@@ -206,7 +211,7 @@ class Allocation extends React.Component {
                           <MDBCol md="8">
                             <MDBCard className="mb-3">
                               <MDBCardBody>
-                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashCheck /></MDBCardTitle>
+                                <MDBCardTitle><strong>Remaining Balance:</strong> <CashFormat /></MDBCardTitle>
                                 <MDBCardText>
                                   <form className="form-inline mt-4 mb-4 ml-5" onSubmit={this.handleFormSubmit}>
                                     <MDBIcon icon="search" />
@@ -279,7 +284,7 @@ class Allocation extends React.Component {
                                 </MDBCardText>
                               </MDBCardBody>
                             </MDBCard>
-                            <MDBBtn className="mt-3" outline color="white" href="/portfolio">Return to Portfolio</MDBBtn>
+                            <MDBBtn className="mt-3" outline color="white" href="/home">Return to Home</MDBBtn>
                           </MDBCol>                 
                         </MDBRow>
                       </MDBCardText>
@@ -290,6 +295,7 @@ class Allocation extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Modal show={this.state.show} toggleModal={this.toggleModal}>{this.state.modalMessage}</Modal>
         <Footer/>
       </div>
     );
