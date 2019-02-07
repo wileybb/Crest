@@ -19,6 +19,7 @@ Express.js,
 Sequelize,
 Material Design Bootstrap for React,
 Live Stock IEX APIs
+FusionCharts
 
 ```
 
