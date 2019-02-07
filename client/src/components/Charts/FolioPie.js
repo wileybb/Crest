@@ -17,15 +17,15 @@ class FolioPie extends Component {
         const data = [];
         const res = this.props.data;
         Object.keys(res).forEach(function (key) {
-
-            data.push({
-                "label": res[key].symbol.toUpperCase(),
-                "value": res[key].TotalPurchase
-            })
+            if (res[key].Stockquantity > 0)
+                data.push({
+                    "label": res[key].symbol.toUpperCase(),
+                    "value": res[key].TotalPurchase
+                })
         })
 
         this.setState({
-            
+
             type: 'pie2d',// The chart type
             width: this.props.width, // Width of the chart
             height: this.props.height, // Height of the chartf
@@ -47,9 +47,9 @@ class FolioPie extends Component {
             }
         })
         // END of setState
-    } 
+    }
     // END of componentDidMount
-    
+
     render() {
         return (
             <ReactFC
