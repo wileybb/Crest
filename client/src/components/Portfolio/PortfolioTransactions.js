@@ -47,13 +47,15 @@ export default class PortfolioTransactions extends Component {
                 </thead>
                 <tbody>
                     {this.state.transactions.map((data) => {
+                        var priceFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.purchasePrice);
+                        var totalFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.purchaseTotal);
                         return (
                             <tr>
                             <td><b>{data.symbol.toUpperCase()}</b></td>
                             <td>{data.quantity}</td>
                             <td>{(data.buy) ? ("Buy") : ("Sell")}</td>
-                            <td>{data.purchasePrice}</td>
-                            <td>{data.purchaseTotal}</td>
+                            <td>{priceFormat}</td>
+                            <td>{totalFormat}</td>
                             <td>{data.updatedAt.slice(0, data.updatedAt.length-5).replace(/T/g, " ")}</td>
                             </tr>)
                     })}
