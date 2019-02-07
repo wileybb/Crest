@@ -9,7 +9,7 @@ const Footer = () => {
           <MDBCol md="6">
             <h5 className="title"><strong>What is Crest?</strong></h5>
             <p>
-            Crest is a mock stock trading platform that enables users to purchase and trade imaginary shares of real stocks in real time. <br/><br/> Data provided for free by <a href="https://iextrading.com/developer" style={{ textDecoration: "underline" }}>IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/" style={{ textDecoration: "underline" }}>IEX’s Terms of Use.</a>
+            Crest is a mock stock trading platform that enables users to purchase and trade imaginary shares of real stocks in real time. <br/><br/> Data provided for free by <a href="https://iextrading.com/developer" style={{ textDecoration: "underline" }}>IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/" style={{ textDecoration: "underline" }}>IEX’s Terms of Use.</a> <br/><br/> 💻 Website designed for resolutions above 1600 by 1050 :) 💻
             </p>
           </MDBCol>
           <MDBCol md="4" className="text-center">
