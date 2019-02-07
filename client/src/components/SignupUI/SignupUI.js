@@ -32,7 +32,7 @@ class SignupUI extends React.Component {
   createUser = (userSignup) => {
       API.createUser(userSignup)
     .then(res => {
-      this.setState({show:true})
+      this.setState({show:true});
       //window.location.href = "/login"      //this.context.router.history.push('/login'); //moved this function to modal
         //alert(res.data);
       })
