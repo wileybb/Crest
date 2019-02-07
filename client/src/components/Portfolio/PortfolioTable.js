@@ -85,7 +85,7 @@ export default class PortfolioTable extends Component {
         return (
             <div className="row">
             <div className="col-md-12">
-                {(this.state.userPortfolio).length === 0 ? (<div>Once created, your portfolio information will appear here.</div>) : (
+                {(this.state.userPortfolio).length === 0 ? (<div></div>) : (
                     <table id="mytable" className="table table-striped">
                         <thead className="table-dark">
                             <tr>

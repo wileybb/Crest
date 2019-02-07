@@ -269,7 +269,7 @@ class Allocation extends React.Component {
                                 </MDBCardText>
                               </MDBCardBody>
                             </MDBCard>
-                            <MDBBtn className="mt-3" outline color="white" href="/portfolio">Return to Portfolio</MDBBtn>
+                            <MDBBtn className="mt-3" outline color="white" href="/home">Return to Home</MDBBtn>
                           </MDBCol>                 
                         </MDBRow>
                       </MDBCardText>

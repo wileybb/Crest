@@ -2,10 +2,27 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PortfolioTable from './PortfolioTable'
+import TotalValue from './TotalValue'
 import Footer from '../Footer/Footer'
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 
 class PortfolioSummaryUI extends React.Component {
+
+  
+  printDocument = () => {
+    const input = document.getElementById('mytable');
+    html2canvas(input)
+        .then((canvas) => {
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const pdf = new jsPDF('p', 'mm');
+            pdf.addImage(imgData, 'PNG', 10, 10);
+            // pdf.output('dataurlnewwindow');
+            pdf.save("myDocument.pdf");
+        });
+  }
+
   render() {
     return (
       <div>
@@ -20,6 +37,9 @@ class PortfolioSummaryUI extends React.Component {
               <Link to="/PortfolioSummaryUI">
                 <MDBBtn size="lg" active color="elegant">Portfolio Summary</MDBBtn>
               </Link>
+              <Link to="/PortfolioTransactionsUI">
+                <MDBBtn size="lg" color="elegant">Transactions</MDBBtn>
+              </Link>
             </MDBRow>
             
             <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: 0, height: 2500 }}>
@@ -28,10 +48,12 @@ class PortfolioSummaryUI extends React.Component {
                   <MDBContainer>
                     <MDBRow>
                       <MDBCol lg="8" className="mx-auto mt-1">
-                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 550, overflow: "auto" }}>
+                        <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 600, overflow: "auto" }}>
                           <MDBCardBody>
                             <MDBCard className="shadow-box-example hoverable mx-auto" style={{opacity: ".85"}} >
-                              <PortfolioTable />
+                              <TotalValue />
+                              <MDBBtn className="mx-auto mb-2" size="sm" style={{width: 200}} color="elegant" outline onClick={this.printDocument.bind(this)}>Generate PDF Report</MDBBtn>
+                              <PortfolioTable />            
                             </MDBCard>
                           </MDBCardBody>
                         </MDBCard>
