@@ -41,7 +41,7 @@ class LoginUI extends React.Component {
       console.log(res)})
     .catch(err => {
         //alert("Email or Password is invalid");
-        this.setState({loginres: "Email or Password is invalid", show:true})
+        this.setState({loginres: "Email or Password is invalid, please try again.", show:true})
         console.log(err);});
   }
 

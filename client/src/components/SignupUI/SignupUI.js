@@ -137,7 +137,7 @@ class SignupUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
-        <Modal show={this.state.show} toggleModal={this.toggleModal}>Signup Successful Yo!!!</Modal>
+        <Modal show={this.state.show} toggleModal={this.toggleModal}>Thank you for Registering! <br /> Please log in.</Modal>
         <Footer />
       </div>
     );
