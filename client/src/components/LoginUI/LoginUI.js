@@ -2,8 +2,9 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from "prop-types";
-import API from "../../utils/API"
-import Footer from '../Footer/Footer'
+import API from "../../utils/API";
+import Footer from '../Footer/Footer';
+import Modal from '../Modals/Modals';
 
 class LoginUI extends React.Component {
   state = {
@@ -109,6 +110,7 @@ class LoginUI extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Modal></Modal>
         <Footer />
       </div>
     );
