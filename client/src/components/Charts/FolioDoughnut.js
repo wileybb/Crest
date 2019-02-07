@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom';
 import ReactFC from 'react-fusioncharts';
 import FusionCharts from 'fusioncharts';
 
@@ -12,7 +11,7 @@ import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 // Step 6 - Adding the chart as dependency to the core fusioncharts
 ReactFC.fcRoot(FusionCharts, Doughnut2d, FusionTheme);
 
-class FolioDoughnut extends React.Component {
+class FolioDoughnut extends Component {
     componentDidMount() {
         const data = [];
         let total = 0;
