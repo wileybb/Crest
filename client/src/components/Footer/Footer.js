@@ -9,13 +9,13 @@ const Footer = () => {
           <MDBCol md="6">
             <h5 className="title"><strong>What is Crest?</strong></h5>
             <p>
-            Crest is a mock stock trading platform that enables users to purchase and trade imaginary shares of real stocks in real time.
+            Crest is a mock stock trading platform that enables users to purchase and trade imaginary shares of real stocks in real time. <br/><br/> Data provided for free by <a href="https://iextrading.com/developer" style={{ textDecoration: "underline" }}>IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/" style={{ textDecoration: "underline" }}>IEX’s Terms of Use.</a>
             </p>
           </MDBCol>
           <MDBCol md="4" className="text-center">
             <h5 className="title"><strong>Navigation</strong></h5>
-            <a href="/">Home</a> <br />
-            <a href="https://github.com/sgenini/projectThree">GitHub Repo</a>
+            <a href="/" style={{ textDecoration: "underline" }}>Home</a> <br />
+            <a href="https://github.com/sgenini/projectThree" style={{ textDecoration: "underline" }}>GitHub Repo</a>
           </MDBCol>
         </MDBRow>
       </MDBContainer>
