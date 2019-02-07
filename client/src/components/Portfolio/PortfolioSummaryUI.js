@@ -2,6 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBMask, MDBView, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon, MDBInput } from 'mdbreact';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PortfolioTable from './PortfolioTable'
+import TotalValue from './TotalValue'
 import Footer from '../Footer/Footer'
 
 
@@ -31,6 +32,7 @@ class PortfolioSummaryUI extends React.Component {
                         <MDBCard className="shadow-box-example hoverable" style={{ backgroundColor: 'rgba(0,0,0,.7)', height: 550, overflow: "auto" }}>
                           <MDBCardBody>
                             <MDBCard className="shadow-box-example hoverable mx-auto" style={{opacity: ".85"}} >
+                              <TotalValue />
                               <PortfolioTable />
                             </MDBCard>
                           </MDBCardBody>

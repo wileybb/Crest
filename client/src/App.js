@@ -46,7 +46,7 @@ class App extends Component {
            <Route exact path="/cashcheck" component={CashCheck} />
            <Route exact path="/PortfolioDiversityUI" component={PortfolioDiversityUI} />
            <Route exact path="/PortfolioSummaryUI" component={PortfolioSummaryUI} />
-           <Route
+           <Route 
               path="/home"
               render={() =>
                 isLoggedIn ? (
