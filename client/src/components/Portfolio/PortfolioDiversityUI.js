@@ -5,17 +5,20 @@ import PortfolioPie from './PortfolioPie'
 import Footer from '../Footer/Footer'
 
 
-class PortfolioDiversity extends React.Component {
+class PortfolioDiversityUI extends React.Component {
   render() {
     return (
       <div>
         <MDBView src="https://images.unsplash.com/photo-1460620105278-b7f0516e6d65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
           <MDBMask overlay="black-light" className="flex-center flex-column text-center align-middle mx-auto">
 
-            <MDBRow className="flex-center text-white mt-3">
+            <MDBRow className="flex-center text-white mt-5">
               {/* <h2 className=""><strong>Current Portfolio</strong></h2> <br /> */}
-              <Link to="/PortfolioDiversity">
+              <Link to="/PortfolioDiversityUI">
                 <MDBBtn size="lg" active color="elegant">Portfolio Diversity</MDBBtn>
+              </Link>
+              <Link to="/PortfolioSummaryUI">
+                <MDBBtn size="lg" color="elegant">Portfolio Summary</MDBBtn>
               </Link>
             </MDBRow>
             
@@ -54,4 +57,4 @@ class PortfolioDiversity extends React.Component {
   }
 }
 
-export default PortfolioDiversity;
+export default PortfolioDiversityUI;

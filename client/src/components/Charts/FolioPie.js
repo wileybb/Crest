@@ -22,7 +22,8 @@ class FolioPie extends React.Component {
 
             data.push({
                 "label": res[key].symbol.toUpperCase(),
-                "value": res[key].TotalPurchase.toFixed(2)
+                "value": res[key].TotalPurchase.toFixed(2),
+                // "cashValue": Intl.NumberFormat.call('en-US', { style: 'currency', currency: 'USD' }).format(res[key].value)
             })
         })
 
@@ -37,7 +38,7 @@ class FolioPie extends React.Component {
             dataSource: {
                 "chart": {
                     // "bgColor": this.props.bgColor,
-                    "caption": "Portfolio Diversity Percentages by Stock Symbol",
+                    "caption": "Portfolio Value by Stock Symbol",
                     "sub-caption": "Hover to see Total Values",
                     "plottooltext": "<b>$percentValue</b> $label stock, worth $$value total",
                     "showlegend": "1",

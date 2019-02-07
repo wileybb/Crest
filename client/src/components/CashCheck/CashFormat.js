@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import API from "../../utils/API"
 import { Link, Router } from 'react-router-dom';
 
-export default class CashCheck extends Component {
+export default class CashFormat extends Component {
 
     state = {
         userCash: 0
@@ -27,8 +27,15 @@ export default class CashCheck extends Component {
     
      }
 
+
      render(){
-         return this.state.userCash
+        var cashValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.state.userCash);
+
+         return(
+            <div>
+                {cashValue}
+            </div>
+         )
      } 
 
 }
