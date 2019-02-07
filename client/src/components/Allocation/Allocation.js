@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import API from '../../utils/API';
 
 import Navbar from "../Navbar/Navbar";
-import QuickPortfolio from "../Portfolio/QuickPortfolio"
-import HomeCopy from "./HomeCopy"
+import QuickPortfolio from "../Portfolio/QuickPortfolio";
+import HomeCopy from "./HomeCopy";
 import StaticAreaChart from "../Charts/StaticAreaChart.js";
-import Footer from "../Footer/Footer"
-import CashFormat from "../CashCheck/CashFormat"
-
+import Footer from "../Footer/Footer";
+import CashFormat from "../CashCheck/CashFormat";
+import Modal from "../Modals/Modals.js";
 
 
 class Allocation extends React.Component {
@@ -21,7 +21,9 @@ class Allocation extends React.Component {
     watchListsymbol: "",
     oneStockResponse: {},
     responseLiveStock: [],
-    endpoint: "https://ws-api.iextrading.com/1.0/tops"
+    endpoint: "https://ws-api.iextrading.com/1.0/tops",
+    show:false,
+
   }
 
   componentDidMount() {
@@ -102,8 +104,8 @@ class Allocation extends React.Component {
       };
       console.log(purchaseData);
       this.addBuy(purchaseData);
-      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
-      window.location.reload();
+      //alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
+      //window.location.reload();
   }
 
   //Handle Buy stock
@@ -113,6 +115,7 @@ class Allocation extends React.Component {
             console.log(res);
             this.setState({symbol:""});
             this.setState({quantity:""});
+            this.setState({show:true});
           })
           .catch(err => console.log(err))
   }
@@ -128,8 +131,8 @@ class Allocation extends React.Component {
       }
       console.log(sellData);
       this.addSale(sellData);
-      alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
-      window.location.reload();
+      //alert(`Transaction complete! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
+      //window.location.reload();
   }
 
   //Sell a stock
@@ -139,6 +142,7 @@ class Allocation extends React.Component {
             console.log(res);
             this.setState({symbol:""});
             this.setState({quantity:""});
+            this.setState({show:true});  
           })
           .catch(err => console.log(err))
   }
@@ -171,6 +175,14 @@ class Allocation extends React.Component {
   refreshPage(){
     window.location.reload();
   } 
+
+  //Modal Toggle
+  toggleModal = () => {
+    this.setState({
+    show: !this.state.show
+    });
+    window.location.reload();
+ };
 
   render() {
     return (
@@ -280,6 +292,7 @@ class Allocation extends React.Component {
             </MDBContainer>
           </MDBMask>
         </MDBView>
+        <Modal show={this.state.show} toggleModal={this.toggleModal}>Trade Successful !!!</Modal>
         <Footer/>
       </div>
     );
