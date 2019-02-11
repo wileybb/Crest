@@ -16,6 +16,9 @@ class Allocation extends React.Component {
 
   state = {
     stockResponse: {},
+    symbol:"",
+    quantity:null,
+    stockPrice:null,
     stock: ["googl", "fb"],
     watchList: {},
     watchListsymbol: "",
@@ -23,8 +26,8 @@ class Allocation extends React.Component {
     responseLiveStock: [],
     endpoint: "https://ws-api.iextrading.com/1.0/tops",
     show:false,
-    modalMessage: ""
-
+    modalMessage: "",
+    buttonDisabled: true
   }
 
   componentDidMount() {
@@ -41,7 +44,6 @@ class Allocation extends React.Component {
   getPertucularUserWatchList = () => {
       API.getPertucularUserWatchList().then((res) => {
           this.setState({ watchList: res.data });
-          console.log(this.state.watchList);
       });
   }
 
@@ -54,12 +56,10 @@ class Allocation extends React.Component {
   handleWatchListFormSubmit = (event) => {
       event.preventDefault();
       this.setState({ watchListsymbol: this.state.watchListsymbol });
-      console.log(this.state.watchListsymbol);
       const data = {
           id: this.state.watchList.UserId,
           stockSymbols: this.state.watchList.stock + "," + this.state.watchListsymbol.toLowerCase()
       }
-      console.log(data);
       this.updateWatchList(data);
   }
   updateWatchList = (stockTicker) => {
@@ -77,7 +77,6 @@ class Allocation extends React.Component {
       //let symbols = this.state.stock.join(",") 
       API.batchStock(this.state.watchList.stock).then((res) => {
           this.setState({ stockResponse: res.data });
-          console.log(this.state.stockResponse);
       })
   }
 
@@ -96,18 +95,22 @@ class Allocation extends React.Component {
 
   handleBuySubmit = (event) => {
       // event.preventDefault();
+      if(!this.state.quantity && !this.state.symbol && !this.state.stockPrice){
+        this.setState({modalMessage: "Please correct your input"});
+        this.toggleModal();
+      } else {
       const purchaseData = {
           buy: true,
           quantity: this.state.quantity,
           symbol: this.state.symbol,
-          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
-          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
+          purchasePrice: parseFloat(this.state.stockPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.stockPrice * this.state.quantity).toFixed(2)
       };
-      console.log(purchaseData);
       this.addBuy(purchaseData);
       //alert(`Transaction successful! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for $${purchaseData.purchaseTotal} total.`);
       //window.location.reload();
       this.setState({modalMessage: `Transaction successful! \n ${this.state.quantity} share(s) of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} purchased at $${purchaseData.purchasePrice} per share, for a total of $${purchaseData.purchaseTotal}.`})
+    }
   }
 
   //Handle Buy stock
@@ -122,21 +125,27 @@ class Allocation extends React.Component {
           .catch(err => console.log(err))
   }
 
+
   handleSellSubmit = (event) => {
       // event.preventDefault();
-      const sellData = {
+      if(!this.state.quantity && !this.state.symbol && !this.state.stockPrice){
+        this.setState({modalMessage: "Please correct your input"});
+        this.toggleModal();
+      } else {
+        const sellData = {
           buy: false,
-          quantity: this.state.quantity,
+          quantity: parseInt(this.state.quantity),
           symbol: this.state.symbol,
-          purchasePrice: parseFloat(this.state.oneStockResponse.data.quote.latestPrice).toFixed(2),
-          purchaseTotal: parseFloat(this.state.oneStockResponse.data.quote.latestPrice * this.state.quantity).toFixed(2)
+          purchasePrice: parseFloat(this.state.stockPrice).toFixed(2),
+          purchaseTotal: parseFloat(this.state.stockPrice * this.state.quantity).toFixed(2)
       }
       console.log(sellData);
       this.addSale(sellData);
       //alert(`Transaction successful! \n ${this.state.quantity} of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for $${sellData.purchaseTotal} total.`);
       //window.location.reload();
-      this.setState({modalMessage: `Transaction successful! \n ${this.state.quantity} share(s) of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for a total of $${sellData.purchaseTotal}.`})
-  }
+      this.setState({modalMessage: `Transaction successful! \n ${this.state.quantity} share(s) of ${this.state.oneStockResponse.data.quote.symbol.toUpperCase()} sold at $${sellData.purchasePrice} per share, for a total of $${sellData.purchaseTotal}.`});
+      }
+    }
 
   //Sell a stock
   addSale = (userSell) => {
@@ -168,9 +177,10 @@ class Allocation extends React.Component {
   stockSymbol = (symbol) => {
       API.singleStock(symbol)
           .then((res) => {
+              this.setState({stockPrice:res.data.quote.latestPrice})
               //this.props.history.replace('/home');  
               this.setState({ oneStockResponse: res });
-              console.log(this.state.oneStockResponse)
+              //console.log(this.state.oneStockResponse)
           })
           .catch(err => console.log(err));
   }
@@ -178,6 +188,7 @@ class Allocation extends React.Component {
   refreshPage(){
     window.location.reload();
   } 
+
 
   //Modal Toggle
   toggleModal = () => {
@@ -188,6 +199,7 @@ class Allocation extends React.Component {
  };
 
   render() {
+
     return (
       <div>
         {/* <Navbar /> */}
@@ -262,8 +274,8 @@ class Allocation extends React.Component {
                                       }
                                   </MDBContainer>
                                 </MDBContainer>
-                                <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleSellSubmit}>Sell</MDBBtn>
-                                <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleBuySubmit}>Buy</MDBBtn>
+                                  <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleSellSubmit}>Sell</MDBBtn>
+                                  <MDBBtn color="elegant" href="#" className="float-right" style={{ marginTop: 20 }} onClick={this.handleBuySubmit}>Buy</MDBBtn>
                                 <div className="float-right" style={{ width: 75 }}>
                                   <MDBInput name="quantity" label="Quantity" 
                                     onChange={this.handleInputChange}
