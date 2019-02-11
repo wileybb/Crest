@@ -42,7 +42,7 @@ class PortfolioSummaryUI extends React.Component {
               </Link>
             </MDBRow>
             
-            <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: 0, height: 2500 }}>
+            <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: 50, height: 2300 }}>
               <MDBCol md="12">
                 <MDBRow>
                   <MDBContainer>

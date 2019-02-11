@@ -41,8 +41,8 @@ class PortfolioTransactionsUI extends React.Component {
                 <MDBBtn size="lg" active color="elegant">Transactions</MDBBtn>
               </Link>
             </MDBRow>
-            
-            <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: 0, height: 2500 }}>
+
+            <MDBContainer className="flex-center flex-column mx-auto " style={{ marginTop: 50, height: 2500 }}>
               <MDBCol md="12">
                 <MDBRow>
                   <MDBContainer>
@@ -62,7 +62,7 @@ class PortfolioTransactionsUI extends React.Component {
                 </MDBRow>
               </MDBCol>  
             </MDBContainer>
-            
+
             <MDBRow className="flex-center text-white">
               <Link to="/home">
                 <MDBBtn color="elegant">Back to Home</MDBBtn>
