@@ -134,7 +134,7 @@ class Allocation extends React.Component {
       } else {
         const sellData = {
           buy: false,
-          quantity: parseInt(this.state.quantity),
+          quantity: this.state.quantity,
           symbol: this.state.symbol,
           purchasePrice: parseFloat(this.state.stockPrice).toFixed(2),
           purchaseTotal: parseFloat(this.state.stockPrice * this.state.quantity).toFixed(2)
