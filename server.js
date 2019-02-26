@@ -29,6 +29,10 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
+
+// adding line to try to fix heroku deployment
+app.listen(PORT);
+
 // Start the API server
 db.sequelize.sync().then(function () {
   app.listen(PORT, function () {
