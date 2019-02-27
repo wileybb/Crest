@@ -1,7 +1,7 @@
 # Welcome to Crest
-###  Risk Free Market Trading
+###  Stock trading simulator with fake cash, real stock data
 
-#### DEVELOPER'S NOTE: Heroku deployed version is forthcoming!
+*DEVELOPER'S NOTE: Heroku deployed version is forthcoming!*
 
 #### Have you ever wanted to try your hand at stock trading without putting real cash on the line? Now you can with Crest! Develop your own portfolio from our pre-allocated budget and track its performance over time.
 #### Practice and hone your trading strategies using real-time stock market data, 
