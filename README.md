@@ -1,7 +1,10 @@
 # Welcome to Crest
 ###  Stock trading simulator with fake cash, real stock data
 
-*DEVELOPER'S NOTE: Heroku deployed version is forthcoming!*
+*Heroku deployed version is forthcoming!
+
+DEVELOPER'S NOTE (3/1/19): 
+*This application was biult as a group project assignment in my full stack development course. I am currently rebiulding the entire project from scratch to better grasp MERN stack development, and update and add new features. The next generation is called wavecrest and can be found in a seperate repo. Stay Tuned.
 
 #### Have you ever wanted to try your hand at stock trading without putting real cash on the line? Now you can with Crest! Develop your own portfolio from our pre-allocated budget and track its performance over time.
 #### Practice and hone your trading strategies using real-time stock market data, 
