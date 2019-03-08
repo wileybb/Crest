@@ -1,5 +1,5 @@
 # Welcome to Crest
-###  Stock trading simulator with fake cash, real stock data
+###  Stock trading simulator with fake cash, real-time data
 
 *Heroku deployed version is forthcoming!
 
